@@ -20,5 +20,8 @@
     "metadata",
     "json"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "fflate": "^0.8.3"
+  }
 }
