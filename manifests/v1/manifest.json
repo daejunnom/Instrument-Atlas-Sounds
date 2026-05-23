@@ -20,11 +20,12 @@
     "permissiveOnly": "policies/permissive-only.json"
   },
   "indexFiles": {
-    "byInstrument": "maps/by-instrument.json",
-    "byLicense": "maps/by-license.json",
-    "byEngine": "maps/by-engine.json",
-    "byExecutionTarget": "maps/by-execution-target.json"
-  },
+    "byInstrument": "indexes/by-instrument.json",
+    "byLicense": "indexes/by-license.json",
+    "byEngine": "indexes/by-engine.json",
+    "byExecutionTarget": "indexes/by-execution-target.json",
+    "bySourceType": "indexes/by-source-type.json"
+  }
   "defaults": {
     "preferredSourceTypes": [
       "physical_model",
