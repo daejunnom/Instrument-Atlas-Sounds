@@ -11,7 +11,7 @@
   "render": {
     "sampleRate": 48000,
     "channels": 2,
-    "format": "flac"
+    "format": "wav"
   },
   "licensePolicy": {
     "allowCategories": [

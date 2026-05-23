@@ -7,7 +7,8 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "build": "node scripts/build.mjs",
-    "package": "node scripts/package-release.mjs"
+    "package": "node scripts/package-release.mjs",
+    "render:karplus": "node examples/render-karplus-strong.mjs"
   },
   "keywords": [
     "audio",

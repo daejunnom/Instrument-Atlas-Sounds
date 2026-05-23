@@ -5,7 +5,7 @@
     {
       "id": "src_custom_karplus_strong_pluck",
       "title": "Custom Karplus-Strong Plucked String",
-      "description": "A planned lightweight plucked-string physical model for early client and server experiments.",
+      "description": "A lightweight plucked-string physical model prototype for early client and server experiments.",
       "instrumentIds": [
         "inst_acoustic_guitar",
         "inst_harp",
@@ -15,7 +15,7 @@
       "sourceType": "physical_model",
       "engineType": "karplus_strong",
       "priority": 100,
-      "status": "planned",
+      "status": "prototype",
       "executionTargets": [
         "client",
         "server"
