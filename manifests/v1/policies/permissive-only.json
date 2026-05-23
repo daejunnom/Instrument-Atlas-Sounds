@@ -6,39 +6,80 @@
     "public_domain",
     "permissive_code"
   ],
-  "denyCategories": [
-    "weak_copyleft",
-    "server_only_copyleft",
-    "network_copyleft",
-    "restricted",
-    "to_be_verified"
+  "allowLicenseGroups": [
+    "public-domain",
+    "permissive"
   ],
   "allowLicenses": [
     "CC0-1.0",
+    "Public-Domain",
     "Public Domain",
     "MIT",
     "BSD-2-Clause",
     "BSD-3-Clause",
+    "ISC",
+    "Zlib",
     "Apache-2.0",
     "MIT-STK"
   ],
+  "denyCategories": [
+    "commercial_attribution",
+    "commercial_sharealike",
+    "weak_copyleft",
+    "server_only_copyleft",
+    "strong_copyleft",
+    "network_copyleft",
+    "noncommercial",
+    "no_derivatives",
+    "proprietary",
+    "unknown",
+    "restricted",
+    "to_be_verified"
+  ],
+  "denyLicenseGroups": [
+    "notice-attribution",
+    "sharealike",
+    "weak-copyleft",
+    "strong-copyleft",
+    "network-copyleft",
+    "noncommercial",
+    "no-derivatives",
+    "blocked"
+  ],
   "denyLicenses": [
-    "LGPL-2.1-or-later",
-    "LGPL-3.0",
+    "CC-BY-4.0",
+    "CC-BY-SA-4.0",
+    "CC-BY-NC-4.0",
+    "CC-BY-NC-SA-4.0",
+    "CC-BY-NC-ND-4.0",
+    "CC-BY-ND-4.0",
     "MPL-2.0",
+    "LGPL-2.1-or-later",
+    "LGPL-3.0-or-later",
     "GPL-2.0-only",
     "GPL-2.0-or-later",
     "GPL-3.0-only",
     "GPL-3.0-or-later",
     "AGPL-3.0-only",
     "AGPL-3.0-or-later",
-    "CC-BY-NC",
-    "CC-BY-ND",
-    "unknown"
+    "unknown",
+    "proprietary",
+    "disputed",
+    "unverified"
+  ],
+  "denyRestrictions": [
+    "attribution_required",
+    "sharealike_required",
+    "noncommercial",
+    "no_derivatives",
+    "source_disclosure_required",
+    "network_source_disclosure_required",
+    "rights_unknown"
   ],
   "allowCommercialUseOnly": true,
   "allowAttributionRequired": true,
   "allowClientDistribution": true,
   "allowServerOnlyCopyleft": false,
-  "preferPublicDomain": true
+  "preferPublicDomain": true,
+  "requiresAttributionReport": false
 }

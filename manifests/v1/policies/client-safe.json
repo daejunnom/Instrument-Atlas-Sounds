@@ -1,32 +1,71 @@
 {
   "id": "client-safe",
   "title": "Client Safe",
-  "description": "Allows only sources that are suitable for browser, WASM, or client-side distribution by default.",
+  "description": "Allows only sources that are suitable for browser, WASM, AudioWorklet, desktop client, or other client-side distribution by default.",
   "allowCategories": [
     "public_domain",
     "permissive_code"
   ],
+  "allowLicenseGroups": [
+    "public-domain",
+    "permissive"
+  ],
   "denyCategories": [
+    "commercial_attribution",
+    "commercial_sharealike",
     "weak_copyleft",
     "server_only_copyleft",
+    "strong_copyleft",
     "network_copyleft",
+    "noncommercial",
+    "no_derivatives",
+    "proprietary",
+    "unknown",
     "restricted",
     "to_be_verified"
   ],
+  "denyLicenseGroups": [
+    "notice-attribution",
+    "sharealike",
+    "weak-copyleft",
+    "strong-copyleft",
+    "network-copyleft",
+    "noncommercial",
+    "no-derivatives",
+    "blocked"
+  ],
   "denyLicenses": [
-    "AGPL-3.0-only",
-    "AGPL-3.0-or-later",
     "GPL-2.0-only",
     "GPL-2.0-or-later",
     "GPL-3.0-only",
     "GPL-3.0-or-later",
-    "CC-BY-NC",
-    "CC-BY-ND",
-    "unknown"
+    "AGPL-3.0-only",
+    "AGPL-3.0-or-later",
+    "CC-BY-4.0",
+    "CC-BY-SA-4.0",
+    "CC-BY-NC-4.0",
+    "CC-BY-NC-SA-4.0",
+    "CC-BY-NC-ND-4.0",
+    "CC-BY-ND-4.0",
+    "unknown",
+    "proprietary",
+    "disputed",
+    "unverified"
+  ],
+  "denyRestrictions": [
+    "attribution_required",
+    "sharealike_required",
+    "noncommercial",
+    "no_derivatives",
+    "source_disclosure_required",
+    "network_source_disclosure_required",
+    "client_distribution_risk",
+    "rights_unknown"
   ],
   "allowCommercialUseOnly": true,
-  "allowAttributionRequired": true,
+  "allowAttributionRequired": false,
   "allowClientDistribution": true,
   "allowServerOnlyCopyleft": false,
-  "preferPublicDomain": true
+  "preferPublicDomain": true,
+  "requiresAttributionReport": false
 }

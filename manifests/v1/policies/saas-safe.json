@@ -1,28 +1,65 @@
 {
   "id": "saas-safe",
   "title": "SaaS Safe",
-  "description": "Allows server-side use of public-domain, permissive, weak-copyleft, and server-only copyleft sources while blocking AGPL, non-commercial, no-derivatives, proprietary, and unknown sources by default.",
+  "description": "Allows server-side use of public-domain, permissive, weak-copyleft, and server-only copyleft sources while blocking AGPL, non-commercial, no-derivatives, proprietary, unknown, disputed, and unverified sources by default.",
   "allowCategories": [
     "public_domain",
     "permissive_code",
     "weak_copyleft",
     "server_only_copyleft"
   ],
+  "allowLicenseGroups": [
+    "public-domain",
+    "permissive",
+    "weak-copyleft"
+  ],
   "denyCategories": [
+    "commercial_sharealike",
+    "strong_copyleft",
     "network_copyleft",
+    "noncommercial",
+    "no_derivatives",
+    "proprietary",
+    "unknown",
     "restricted",
     "to_be_verified"
   ],
+  "denyLicenseGroups": [
+    "sharealike",
+    "strong-copyleft",
+    "network-copyleft",
+    "noncommercial",
+    "no-derivatives",
+    "blocked"
+  ],
   "denyLicenses": [
+    "GPL-2.0-only",
+    "GPL-2.0-or-later",
+    "GPL-3.0-only",
+    "GPL-3.0-or-later",
     "AGPL-3.0-only",
     "AGPL-3.0-or-later",
-    "CC-BY-NC",
-    "CC-BY-ND",
-    "unknown"
+    "CC-BY-NC-4.0",
+    "CC-BY-NC-SA-4.0",
+    "CC-BY-NC-ND-4.0",
+    "CC-BY-ND-4.0",
+    "unknown",
+    "proprietary",
+    "disputed",
+    "unverified"
+  ],
+  "denyRestrictions": [
+    "sharealike_required",
+    "noncommercial",
+    "no_derivatives",
+    "network_source_disclosure_required",
+    "saas_risk",
+    "rights_unknown"
   ],
   "allowCommercialUseOnly": true,
   "allowAttributionRequired": true,
   "allowClientDistribution": false,
   "allowServerOnlyCopyleft": true,
-  "preferPublicDomain": true
+  "preferPublicDomain": true,
+  "requiresAttributionReport": true
 }
