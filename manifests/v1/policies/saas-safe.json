@@ -1,14 +1,14 @@
 {
-  "id": "client-safe",
-  "title": "Client Safe",
-  "description": "Allows only sources that are suitable for browser, WASM, or client-side distribution by default.",
+  "id": "saas-safe",
+  "title": "SaaS Safe",
+  "description": "Allows server-side use of public-domain, permissive, weak-copyleft, and server-only copyleft sources while blocking AGPL, non-commercial, no-derivatives, proprietary, and unknown sources by default.",
   "allowCategories": [
     "public_domain",
-    "permissive_code"
+    "permissive_code",
+    "weak_copyleft",
+    "server_only_copyleft"
   ],
   "denyCategories": [
-    "weak_copyleft",
-    "server_only_copyleft",
     "network_copyleft",
     "restricted",
     "to_be_verified"
@@ -16,17 +16,13 @@
   "denyLicenses": [
     "AGPL-3.0-only",
     "AGPL-3.0-or-later",
-    "GPL-2.0-only",
-    "GPL-2.0-or-later",
-    "GPL-3.0-only",
-    "GPL-3.0-or-later",
     "CC-BY-NC",
     "CC-BY-ND",
     "unknown"
   ],
   "allowCommercialUseOnly": true,
   "allowAttributionRequired": true,
-  "allowClientDistribution": true,
-  "allowServerOnlyCopyleft": false,
+  "allowClientDistribution": false,
+  "allowServerOnlyCopyleft": true,
   "preferPublicDomain": true
 }
