@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "sourceType": "physical_model",
+  "items": [
+    {
+      "id": "src_custom_karplus_strong_pluck",
+      "title": "Custom Karplus-Strong Plucked String",
+      "description": "A planned lightweight plucked-string physical model for early client and server experiments.",
+      "instrumentIds": [
+        "inst_acoustic_guitar",
+        "inst_harp",
+        "inst_lute",
+        "inst_koto"
+      ],
+      "sourceType": "physical_model",
+      "engineType": "karplus_strong",
+      "priority": 100,
+      "status": "planned",
+      "executionTargets": [
+        "client",
+        "server"
+      ],
+      "license": {
+        "id": "MIT",
+        "category": "permissive_code",
+        "commercialUse": true,
+        "attributionRequired": true,
+        "sourceRequiredOnDistribution": false,
+        "networkSourceRequired": false,
+        "clientDistributionAllowed": true,
+        "serverUseAllowed": true
+      },
+      "capabilities": {
+        "notes": true,
+        "velocity": true,
+        "duration": true,
+        "pitchBend": false,
+        "sustainLoop": false,
+        "polyphony": true,
+        "realtime": true,
+        "offlineRender": true
+      },
+      "renderDefaults": {
+        "durationPolicy": "generated_decay",
+        "defaultDurationMs": 1200,
+        "minDurationMs": 80,
+        "maxDurationMs": 8000
+      },
+      "parameters": [
+        {
+          "id": "damping",
+          "type": "number",
+          "min": 0,
+          "max": 1,
+          "default": 0.35
+        },
+        {
+          "id": "brightness",
+          "type": "number",
+          "min": 0,
+          "max": 1,
+          "default": 0.65
+        }
+      ],
+      "provenance": {
+        "origin": "instrument-atlas-sounds",
+        "upstreamName": null,
+        "upstreamUrl": null,
+        "verifiedAt": "2026-05-23"
+      }
+    },
+    {
+      "id": "src_chowkick_kick_model",
+      "title": "ChowKick Kick Model",
+      "description": "A planned server-side kick drum physical/circuit modeling source based on ChowKick integration research.",
+      "instrumentIds": [
+        "inst_kick_drum"
+      ],
+      "sourceType": "physical_model",
+      "engineType": "chowkick",
+      "priority": 90,
+      "status": "planned",
+      "executionTargets": [
+        "server"
+      ],
+      "license": {
+        "id": "BSD-3-Clause",
+        "category": "permissive_code",
+        "commercialUse": true,
+        "attributionRequired": true,
+        "sourceRequiredOnDistribution": false,
+        "networkSourceRequired": false,
+        "clientDistributionAllowed": false,
+        "serverUseAllowed": true
+      },
+      "capabilities": {
+        "notes": true,
+        "velocity": true,
+        "duration": true,
+        "pitchBend": false,
+        "sustainLoop": false,
+        "polyphony": false,
+        "realtime": false,
+        "offlineRender": true
+      },
+      "renderDefaults": {
+        "durationPolicy": "generated_decay",
+        "defaultDurationMs": 900,
+        "minDurationMs": 80,
+        "maxDurationMs": 4000
+      },
+      "parameters": [
+        {
+          "id": "tone",
+          "type": "number",
+          "min": 0,
+          "max": 1,
+          "default": 0.5
+        },
+        {
+          "id": "decay",
+          "type": "number",
+          "min": 0,
+          "max": 1,
+          "default": 0.65
+        }
+      ],
+      "provenance": {
+        "origin": "third_party_reference",
+        "upstreamName": "ChowKick",
+        "upstreamUrl": "https://github.com/Chowdhury-DSP/ChowKick",
+        "verifiedAt": "2026-05-23"
+      }
+    },
+    {
+      "id": "src_stk_basic_models",
+      "title": "STK Basic Physical Models",
+      "description": "A planned server-side source for selected Synthesis ToolKit physical modeling instruments.",
+      "instrumentIds": [
+        "inst_flute",
+        "inst_clarinet",
+        "inst_sitar",
+        "inst_shaker"
+      ],
+      "sourceType": "physical_model",
+      "engineType": "stk",
+      "priority": 80,
+      "status": "planned",
+      "executionTargets": [
+        "server"
+      ],
+      "license": {
+        "id": "MIT-STK",
+        "category": "permissive_code",
+        "commercialUse": true,
+        "attributionRequired": true,
+        "sourceRequiredOnDistribution": false,
+        "networkSourceRequired": false,
+        "clientDistributionAllowed": false,
+        "serverUseAllowed": true
+      },
+      "capabilities": {
+        "notes": true,
+        "velocity": true,
+        "duration": true,
+        "pitchBend": true,
+        "sustainLoop": false,
+        "polyphony": true,
+        "realtime": false,
+        "offlineRender": true
+      },
+      "renderDefaults": {
+        "durationPolicy": "generated_sustain",
+        "defaultDurationMs": 2000,
+        "minDurationMs": 100,
+        "maxDurationMs": 15000
+      },
+      "parameters": [
+        {
+          "id": "expression",
+          "type": "number",
+          "min": 0,
+          "max": 1,
+          "default": 0.7
+        }
+      ],
+      "provenance": {
+        "origin": "third_party_reference",
+        "upstreamName": "Synthesis ToolKit",
+        "upstreamUrl": "https://github.com/thestk/stk",
+        "verifiedAt": "2026-05-23"
+      }
+    }
+  ]
+}

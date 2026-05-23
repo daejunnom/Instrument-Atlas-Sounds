@@ -1,0 +1,37 @@
+
+{
+  "schemaVersion": 1,
+  "soundLibraryVersion": "0.1.0",
+  "atlasCompatibility": {
+    "name": "Instrument Atlas",
+    "minimumVersion": "0.1.0"
+  },
+  "basePath": "sounds/v1",
+  "sourceFiles": {
+    "physicalModels": "sources/physical-models.json",
+    "sampleInstruments": "sources/sample-instruments.json",
+    "oneShots": "sources/one-shots.json",
+    "synthPatches": "sources/synth-patches.json"
+  },
+  "policyFiles": {
+    "clientSafe": "policies/client-safe.json",
+    "saasSafe": "policies/saas-safe.json",
+    "cc0Only": "policies/cc0-only.json",
+    "permissiveOnly": "policies/permissive-only.json"
+  },
+  "indexFiles": {
+    "byInstrument": "maps/by-instrument.json",
+    "byLicense": "maps/by-license.json",
+    "byEngine": "maps/by-engine.json",
+    "byExecutionTarget": "maps/by-execution-target.json"
+  },
+  "defaults": {
+    "preferredSourceTypes": [
+      "physical_model",
+      "sample_instrument",
+      "one_shot_sample",
+      "synth_patch"
+    ],
+    "defaultPolicy": "saas-safe"
+  }
+}
