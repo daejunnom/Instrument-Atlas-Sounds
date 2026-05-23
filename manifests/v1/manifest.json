@@ -25,7 +25,7 @@
     "byEngine": "indexes/by-engine.json",
     "byExecutionTarget": "indexes/by-execution-target.json",
     "bySourceType": "indexes/by-source-type.json"
-  }
+  },
   "defaults": {
     "preferredSourceTypes": [
       "physical_model",

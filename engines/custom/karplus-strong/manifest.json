@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "engineId": "engine_custom_karplus_strong",
+  "title": "Custom Karplus-Strong Plucked String",
+  "engineFamily": "physical_model",
+  "modelType": "plucked_string",
+  "implementation": {
+    "language": "javascript",
+    "module": "karplus-strong.mjs",
+    "exports": [
+      "renderKarplusStrongNote",
+      "renderKarplusStrongFromRequest",
+      "encodeWavPcm16"
+    ]
+  },
+  "license": {
+    "id": "MIT",
+    "category": "permissive_code"
+  },
+  "executionTargets": [
+    "client",
+    "server"
+  ],
+  "supportedSourceIds": [
+    "src_custom_karplus_strong_pluck"
+  ],
+  "supportedInstrumentIds": [
+    "inst_acoustic_guitar",
+    "inst_harp",
+    "inst_lute",
+    "inst_koto"
+  ],
+  "status": "prototype"
+}
