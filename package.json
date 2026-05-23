@@ -4,12 +4,16 @@
   "private": false,
   "type": "module",
   "description": "Playable sound-source registry for Instrument Atlas, prioritizing physical modeling engines with licensed sample fallbacks.",
+  "exports": {
+    "./resolve": "./src/resolve/resolve-sound-source.mjs"
+  },
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "build": "node scripts/build.mjs",
     "package": "node scripts/package-release.mjs",
     "check:boundaries": "node scripts/check-license-boundaries.mjs",
     "ci": "npm run validate && npm run build && npm run package && npm run check:boundaries",
+    "resolve:example": "node examples/resolve-sound-source.mjs",
     "render:karplus": "node examples/render-karplus-strong.mjs"
   },
   "keywords": [

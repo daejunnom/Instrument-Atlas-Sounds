@@ -660,6 +660,12 @@ Create a release zip:
 npm run package
 ```
 
+Resolve a runtime sound source example:
+
+```sh
+npm run resolve:example
+```
+
 Render the local Karplus-Strong prototype:
 
 ```sh
@@ -814,6 +820,66 @@ by-source-type.json
   }
 }
 ```
+
+## Runtime resolver
+
+The runtime resolver selects a playable source for a requested Instrument Atlas instrument ID.
+
+It loads generated runtime artifacts from:
+
+```txt
+dist/sounds/v1/
+```
+
+It uses:
+
+```txt
+manifest.json
+indexes/by-instrument.json
+policies/*.json
+sources/*.json
+```
+
+Example command:
+
+```sh
+npm run resolve:example
+```
+
+Default input:
+
+```txt
+examples/resolve-request.json
+```
+
+A custom request file may also be passed directly:
+
+```sh
+node examples/resolve-sound-source.mjs examples/client-safe-resolve-request.json
+```
+
+Resolver input should include:
+
+```txt
+instrumentId
+executionTarget
+policyId or licensePolicy
+enginePreference
+```
+
+Resolver output includes:
+
+```txt
+selectedSource
+candidates
+rejectedSources
+rejectionReasons
+attributionRequired
+```
+
+The resolver does not execute third-party engines.
+
+It only selects a compatible source definition based on the built runtime catalog and the selected policy.
 
 ## Consumer flow
 
