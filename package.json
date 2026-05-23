@@ -1,0 +1,24 @@
+{
+  "name": "instrument-atlas-sounds",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "Playable sound-source registry for Instrument Atlas, prioritizing physical modeling engines with licensed sample fallbacks.",
+  "scripts": {
+    "validate": "node scripts/validate.mjs",
+    "build": "node scripts/build.mjs",
+    "package": "node scripts/package-release.mjs"
+  },
+  "keywords": [
+    "audio",
+    "music",
+    "instrument",
+    "physical-modeling",
+    "sound-design",
+    "sample-library",
+    "sound-registry",
+    "metadata",
+    "json"
+  ],
+  "license": "MIT"
+}

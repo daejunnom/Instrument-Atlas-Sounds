@@ -1,0 +1,63 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+coverage/
+release/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local helper tools
+_import/
+_local/
+project_bundle.txt
+*project_bundle.txt
+package-bundle.txt
+
+# Audio sample files should not be stored in this repository
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.aac
+*.m4a
+*.aiff
+*.aif
+*.mid
+*.midi
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.midi
+
+# Large or unmanaged engine/vendor payloads
+third_party/
+vendor/
+external/
+downloads/
+models/
+checkpoints/
+datasets/
