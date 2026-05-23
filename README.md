@@ -660,10 +660,22 @@ Create a release zip:
 npm run package
 ```
 
-Resolve a runtime sound source example:
+Resolve the default runtime source example:
 
 ```sh
 npm run resolve:example
+```
+
+Resolve a SaaS-safe request:
+
+```sh
+npm run resolve:saas
+```
+
+Resolve a metadata-only request:
+
+```sh
+npm run resolve:metadata
 ```
 
 Render the local Karplus-Strong prototype:
@@ -880,6 +892,46 @@ attributionRequired
 The resolver does not execute third-party engines.
 
 It only selects a compatible source definition based on the built runtime catalog and the selected policy.
+
+### Runtime readiness
+
+The resolver does not select metadata-only sources by default.
+
+Default allowed source statuses:
+
+```txt
+production
+production_candidate
+prototype
+```
+
+The following statuses are excluded by default:
+
+```txt
+planned
+disabled
+```
+
+A consuming application may explicitly allow metadata-only resolution for discovery, planning, or UI preview workflows:
+
+```json
+{
+  "runtime": {
+    "allowStatuses": [
+      "production",
+      "production_candidate",
+      "prototype",
+      "experimental",
+      "planned"
+    ],
+    "allowMetadataOnly": true
+  }
+}
+```
+
+Metadata-only resolution should not be treated as render readiness.
+
+A selected `planned` source means that the source is known to the registry, not that it can already generate audio.
 
 ## Consumer flow
 

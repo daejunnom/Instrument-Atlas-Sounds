@@ -1,15 +1,17 @@
 {
   "instrumentId": "inst_kick_drum",
   "executionTarget": "server",
-  "useCase": "render",
+  "useCase": "metadata_preview",
   "policyId": "saas-safe",
   "runtime": {
     "allowStatuses": [
       "production",
       "production_candidate",
-      "prototype"
+      "prototype",
+      "experimental",
+      "planned"
     ],
-    "allowMetadataOnly": false
+    "allowMetadataOnly": true
   },
   "enginePreference": {
     "preferSourceTypes": [

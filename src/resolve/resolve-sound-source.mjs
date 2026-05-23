@@ -19,6 +19,16 @@ const DEFAULT_PREFERRED_SOURCE_TYPES = [
   'synth_patch'
 ];
 
+const DEFAULT_ALLOWED_RUNTIME_STATUSES = [
+  'production',
+  'production_candidate',
+  'prototype'
+];
+
+const METADATA_ONLY_STATUSES = new Set([
+  'planned'
+]);
+
 function stripBom(text) {
   return text.replace(/^\uFEFF/, '');
 }
@@ -73,6 +83,19 @@ function licenseListMatches(actualLicenseId, ruleLicenseIds = []) {
 
 function uniqueStrings(values) {
   return [...new Set(values.filter((value) => typeof value === 'string'))];
+}
+
+function getRuntimePolicy(request = {}) {
+  const runtime = isPlainObject(request.runtime) ? request.runtime : {};
+
+  const allowStatuses = isStringArray(runtime.allowStatuses) && runtime.allowStatuses.length > 0
+    ? runtime.allowStatuses
+    : DEFAULT_ALLOWED_RUNTIME_STATUSES;
+
+  return {
+    allowStatuses,
+    allowMetadataOnly: runtime.allowMetadataOnly === true
+  };
 }
 
 function getPolicyPathFromManifest(manifest, policyId) {
@@ -210,6 +233,27 @@ export function evaluateSourceAgainstPolicy(source, request, policy) {
 
   if (source.status === 'disabled') {
     return reject('source_disabled');
+  }
+
+  const runtimePolicy = getRuntimePolicy(request);
+
+  if (
+    !runtimePolicy.allowStatuses.includes(source.status) &&
+    runtimePolicy.allowMetadataOnly !== true
+  ) {
+    return reject('runtime_status_not_allowed', {
+      status: source.status,
+      allowedStatuses: runtimePolicy.allowStatuses
+    });
+  }
+
+  if (
+    METADATA_ONLY_STATUSES.has(source.status) &&
+    runtimePolicy.allowMetadataOnly !== true
+  ) {
+    return reject('source_is_metadata_only', {
+      status: source.status
+    });
   }
 
   if (
@@ -372,6 +416,8 @@ export function resolveSoundSource(request = {}, options = {}) {
     catalog.manifest.defaults?.preferredSourceTypes ??
     DEFAULT_PREFERRED_SOURCE_TYPES;
 
+  const runtimePolicy = getRuntimePolicy(request);
+
   const rawCandidates = getCandidatesForInstrument(catalog, request.instrumentId);
 
   const accepted = [];
@@ -420,7 +466,8 @@ export function resolveSoundSource(request = {}, options = {}) {
       instrumentId: request.instrumentId,
       executionTarget: request.executionTarget ?? null,
       policyId: policy.id,
-      preferSourceTypes: preferredSourceTypes
+      preferSourceTypes: preferredSourceTypes,
+      runtime: runtimePolicy
     },
     selectedSource,
     candidates,

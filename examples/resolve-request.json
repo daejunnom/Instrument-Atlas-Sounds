@@ -2,25 +2,14 @@
   "instrumentId": "inst_acoustic_guitar",
   "executionTarget": "server",
   "useCase": "render",
-  "licensePolicy": {
-    "allowCategories": [
-      "public_domain",
-      "permissive_code",
-      "weak_copyleft",
-      "server_only_copyleft"
+  "policyId": "saas-safe",
+  "runtime": {
+    "allowStatuses": [
+      "production",
+      "production_candidate",
+      "prototype"
     ],
-    "denyLicenses": [
-      "AGPL-3.0-only",
-      "AGPL-3.0-or-later",
-      "CC-BY-NC",
-      "CC-BY-ND",
-      "unknown"
-    ],
-    "allowCommercialUseOnly": true,
-    "allowAttributionRequired": true,
-    "allowClientDistribution": false,
-    "allowServerOnlyCopyleft": true,
-    "preferPublicDomain": true
+    "allowMetadataOnly": false
   },
   "enginePreference": {
     "preferSourceTypes": [

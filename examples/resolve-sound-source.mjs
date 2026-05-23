@@ -34,6 +34,8 @@ function main() {
   console.log(`Instrument: ${result.request.instrumentId}`);
   console.log(`Execution target: ${result.request.executionTarget ?? 'not specified'}`);
   console.log(`Policy: ${result.request.policyId}`);
+  console.log(`Allowed statuses: ${result.request.runtime.allowStatuses.join(', ')}`);
+  console.log(`Allow metadata only: ${result.request.runtime.allowMetadataOnly ? 'yes' : 'no'}`);
   console.log(`Accepted candidates: ${result.counts.accepted}`);
   console.log(`Rejected candidates: ${result.counts.rejected}`);
 
