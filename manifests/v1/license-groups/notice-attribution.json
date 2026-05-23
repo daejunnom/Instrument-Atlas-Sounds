@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "notice-attribution",
+  "title": "Notice or Attribution Required",
+  "description": "Sources that may be commercially usable but require attribution, license notice preservation, or generated attribution reports.",
+  "riskLevel": "medium",
+  "defaultBehavior": "allow_with_report",
+  "licenseIds": [
+    "Apache-2.0",
+    "CC-BY-4.0"
+  ],
+  "licenseFamilies": [
+    "permissive",
+    "commercial_attribution"
+  ],
+  "restrictions": [
+    "preserve_license_notice",
+    "attribution_required"
+  ],
+  "commercialUse": true,
+  "derivativesAllowed": true,
+  "redistributionAllowed": true,
+  "attributionRequired": true,
+  "noticeRequired": true,
+  "shareAlikeRequired": false,
+  "sourceDisclosureRequired": false,
+  "networkSourceDisclosureRequired": false,
+  "clientDistributionAllowed": true,
+  "serverUseAllowed": true,
+  "defaultIncludedInCore": false,
+  "fetchableByDefault": false,
+  "requiresExplicitConsent": false,
+  "requiresAttributionReport": true,
+  "notes": [
+    "CC-BY sources require attribution.",
+    "Apache-2.0 code may require NOTICE preservation.",
+    "This group is commercially usable only when attribution and notice handling are implemented."
+  ]
+}

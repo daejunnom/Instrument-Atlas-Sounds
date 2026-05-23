@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "network-copyleft",
+  "title": "Network Copyleft Licenses",
+  "description": "AGPL-family licenses that may impose source availability obligations when used over a network.",
+  "riskLevel": "very_high",
+  "defaultBehavior": "blocked_by_default",
+  "licenseIds": [
+    "AGPL-3.0-only",
+    "AGPL-3.0-or-later"
+  ],
+  "licenseFamilies": [
+    "network_copyleft"
+  ],
+  "restrictions": [
+    "source_disclosure_required",
+    "network_source_disclosure_required",
+    "client_distribution_risk",
+    "saas_risk",
+    "integration_model_sensitive"
+  ],
+  "commercialUse": true,
+  "derivativesAllowed": true,
+  "redistributionAllowed": true,
+  "attributionRequired": true,
+  "noticeRequired": true,
+  "shareAlikeRequired": true,
+  "sourceDisclosureRequired": true,
+  "networkSourceDisclosureRequired": true,
+  "clientDistributionAllowed": false,
+  "serverUseAllowed": false,
+  "defaultIncludedInCore": false,
+  "fetchableByDefault": false,
+  "requiresExplicitConsent": true,
+  "notes": [
+    "AGPL sources must be blocked from SaaS-safe workflows by default.",
+    "AGPL sources should not be fetched unless the consuming application explicitly accepts network source disclosure obligations."
+  ]
+}

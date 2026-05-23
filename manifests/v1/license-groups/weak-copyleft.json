@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "weak-copyleft",
+  "title": "Weak Copyleft Licenses",
+  "description": "Weak copyleft licenses that may be usable with careful separation, dynamic linking, or server-side integration depending on the consuming application.",
+  "riskLevel": "medium",
+  "defaultBehavior": "opt_in_only",
+  "licenseIds": [
+    "MPL-2.0",
+    "LGPL-2.1-or-later",
+    "LGPL-3.0-or-later"
+  ],
+  "licenseFamilies": [
+    "weak_copyleft"
+  ],
+  "restrictions": [
+    "source_disclosure_may_be_required",
+    "integration_model_sensitive"
+  ],
+  "commercialUse": true,
+  "derivativesAllowed": true,
+  "redistributionAllowed": true,
+  "attributionRequired": true,
+  "noticeRequired": true,
+  "shareAlikeRequired": false,
+  "sourceDisclosureRequired": "license_dependent",
+  "networkSourceDisclosureRequired": false,
+  "clientDistributionAllowed": "policy_dependent",
+  "serverUseAllowed": true,
+  "defaultIncludedInCore": false,
+  "fetchableByDefault": false,
+  "requiresExplicitConsent": true,
+  "notes": [
+    "Weak copyleft sources should not be treated as client-safe by default.",
+    "Use server-side or clearly separated integration unless compliance is fully handled."
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "blocked",
+  "title": "Blocked, Proprietary, Unknown, or Disputed Sources",
+  "description": "Sources that must not be fetched, mirrored, packaged, or used by default because their rights are unknown, proprietary, disputed, or otherwise unsafe.",
+  "riskLevel": "blocked",
+  "defaultBehavior": "blocked",
+  "licenseIds": [
+    "proprietary",
+    "unknown",
+    "disputed",
+    "unverified"
+  ],
+  "licenseFamilies": [
+    "proprietary",
+    "unknown"
+  ],
+  "restrictions": [
+    "blocked",
+    "rights_unknown",
+    "redistribution_unknown",
+    "commercial_use_unknown"
+  ],
+  "commercialUse": false,
+  "derivativesAllowed": false,
+  "redistributionAllowed": false,
+  "attributionRequired": "unknown",
+  "noticeRequired": "unknown",
+  "shareAlikeRequired": "unknown",
+  "sourceDisclosureRequired": "unknown",
+  "networkSourceDisclosureRequired": "unknown",
+  "clientDistributionAllowed": false,
+  "serverUseAllowed": false,
+  "defaultIncludedInCore": false,
+  "fetchableByDefault": false,
+  "requiresExplicitConsent": true,
+  "notes": [
+    "Blocked sources may be documented only as disabled metadata when there is a clear reason to track them.",
+    "Blocked sources must not be downloaded, mirrored, packaged, or exposed as usable runtime sources."
+  ]
+}

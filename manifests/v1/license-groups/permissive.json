@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "permissive",
+  "title": "Permissive Code Licenses",
+  "description": "Permissive software licenses that are generally suitable for commercial use when notices and license texts are preserved.",
+  "riskLevel": "low",
+  "defaultBehavior": "allow",
+  "licenseIds": [
+    "MIT",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "Apache-2.0",
+    "MIT-STK"
+  ],
+  "licenseFamilies": [
+    "permissive"
+  ],
+  "restrictions": [
+    "preserve_license_notice"
+  ],
+  "commercialUse": true,
+  "derivativesAllowed": true,
+  "redistributionAllowed": true,
+  "attributionRequired": false,
+  "noticeRequired": true,
+  "shareAlikeRequired": false,
+  "sourceDisclosureRequired": false,
+  "networkSourceDisclosureRequired": false,
+  "clientDistributionAllowed": true,
+  "serverUseAllowed": true,
+  "defaultIncludedInCore": true,
+  "fetchableByDefault": true,
+  "requiresExplicitConsent": false,
+  "notes": [
+    "Apache-2.0 may require preserving NOTICE files when present.",
+    "MIT, BSD, ISC, and Zlib still require preserving license notices."
+  ]
+}

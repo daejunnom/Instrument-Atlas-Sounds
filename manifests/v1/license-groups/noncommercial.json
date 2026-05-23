@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "noncommercial",
+  "title": "Non-Commercial Licenses",
+  "description": "Sources that are restricted to non-commercial use and must be excluded from commercial-safe workflows.",
+  "riskLevel": "high",
+  "defaultBehavior": "opt_in_only",
+  "licenseIds": [
+    "CC-BY-NC-4.0",
+    "CC-BY-NC-SA-4.0",
+    "CC-BY-NC-ND-4.0"
+  ],
+  "licenseFamilies": [
+    "noncommercial"
+  ],
+  "restrictions": [
+    "noncommercial",
+    "attribution_required"
+  ],
+  "commercialUse": false,
+  "derivativesAllowed": "license_dependent",
+  "redistributionAllowed": true,
+  "attributionRequired": true,
+  "noticeRequired": true,
+  "shareAlikeRequired": "license_dependent",
+  "sourceDisclosureRequired": false,
+  "networkSourceDisclosureRequired": false,
+  "clientDistributionAllowed": "policy_dependent",
+  "serverUseAllowed": "noncommercial_only",
+  "defaultIncludedInCore": false,
+  "fetchableByDefault": false,
+  "requiresExplicitConsent": true,
+  "notes": [
+    "Non-commercial sources must not be used in paid SaaS, monetized content, commercial products, or commercial-safe release packages.",
+    "Some non-commercial licenses may also include ShareAlike or NoDerivatives restrictions."
+  ]
+}

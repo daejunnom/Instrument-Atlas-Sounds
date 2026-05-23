@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "sharealike",
+  "title": "ShareAlike Licenses",
+  "description": "Sources that may require derivative works or adapted material to be shared under compatible license terms.",
+  "riskLevel": "high",
+  "defaultBehavior": "opt_in_only",
+  "licenseIds": [
+    "CC-BY-SA-4.0",
+    "CC-BY-NC-SA-4.0"
+  ],
+  "licenseFamilies": [
+    "commercial_sharealike",
+    "noncommercial"
+  ],
+  "restrictions": [
+    "attribution_required",
+    "sharealike_required"
+  ],
+  "commercialUse": "license_dependent",
+  "derivativesAllowed": true,
+  "redistributionAllowed": true,
+  "attributionRequired": true,
+  "noticeRequired": true,
+  "shareAlikeRequired": true,
+  "sourceDisclosureRequired": false,
+  "networkSourceDisclosureRequired": false,
+  "clientDistributionAllowed": "policy_dependent",
+  "serverUseAllowed": "policy_dependent",
+  "defaultIncludedInCore": false,
+  "fetchableByDefault": false,
+  "requiresExplicitConsent": true,
+  "requiresAttributionReport": true,
+  "notes": [
+    "ShareAlike sources are not suitable for default commercial-safe workflows unless the consuming application explicitly supports the relevant obligations.",
+    "CC-BY-NC-SA also carries a non-commercial restriction."
+  ]
+}

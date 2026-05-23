@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "public-domain",
+  "title": "Public Domain and CC0",
+  "description": "Sources that are public-domain, CC0, or equivalent public-domain style sources.",
+  "riskLevel": "low",
+  "defaultBehavior": "allow",
+  "licenseIds": [
+    "CC0-1.0",
+    "Public-Domain"
+  ],
+  "licenseFamilies": [
+    "public_domain"
+  ],
+  "restrictions": [],
+  "commercialUse": true,
+  "derivativesAllowed": true,
+  "redistributionAllowed": true,
+  "attributionRequired": false,
+  "shareAlikeRequired": false,
+  "sourceDisclosureRequired": false,
+  "networkSourceDisclosureRequired": false,
+  "clientDistributionAllowed": true,
+  "serverUseAllowed": true,
+  "defaultIncludedInCore": true,
+  "fetchableByDefault": true,
+  "requiresExplicitConsent": false
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "no-derivatives",
+  "title": "No-Derivatives Licenses",
+  "description": "Sources that restrict derivative works and are not suitable for editing, remixing, pitch shifting, time stretching, sample mapping, or generated-output workflows by default.",
+  "riskLevel": "high",
+  "defaultBehavior": "opt_in_only",
+  "licenseIds": [
+    "CC-BY-ND-4.0",
+    "CC-BY-NC-ND-4.0"
+  ],
+  "licenseFamilies": [
+    "no_derivatives"
+  ],
+  "restrictions": [
+    "no_derivatives",
+    "attribution_required"
+  ],
+  "commercialUse": "license_dependent",
+  "derivativesAllowed": false,
+  "redistributionAllowed": true,
+  "attributionRequired": true,
+  "noticeRequired": true,
+  "shareAlikeRequired": false,
+  "sourceDisclosureRequired": false,
+  "networkSourceDisclosureRequired": false,
+  "clientDistributionAllowed": "policy_dependent",
+  "serverUseAllowed": "policy_dependent",
+  "defaultIncludedInCore": false,
+  "fetchableByDefault": false,
+  "requiresExplicitConsent": true,
+  "blockedUseCases": [
+    "edit",
+    "remix",
+    "pitch_shift",
+    "time_stretch",
+    "sample_mapping",
+    "generated_output",
+    "derived_dataset"
+  ],
+  "notes": [
+    "No-derivatives sources should not be used in music generation, sample mapping, or editing workflows unless the use case clearly preserves the original work without creating derivatives."
+  ]
+}
