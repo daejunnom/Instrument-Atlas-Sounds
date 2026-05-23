@@ -1,4 +1,4 @@
-﻿# Optional Sources Policy
+# Optional Sources Policy
 
 Instrument Atlas Sounds is designed to be safe by default.
 
@@ -9,6 +9,12 @@ Optional sources may be indexed by metadata, but they must be fetched explicitly
 This document describes how optional sources are grouped, documented, and separated.
 
 This document is not legal advice. Consuming applications are responsible for final license compliance.
+
+For a human-readable explanation of license groups and project defaults, see:
+
+```txt
+LICENSES/LICENSE-REFERENCE.md
+```
 
 ## Default behavior
 

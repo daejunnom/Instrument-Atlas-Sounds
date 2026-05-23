@@ -1,4 +1,4 @@
-﻿# License Reference
+# License Reference
 
 This document is a practical license reference for Instrument Atlas Sounds.
 

@@ -1,4 +1,4 @@
-﻿# Licenses
+# Licenses
 
 This directory contains license reference documentation for Instrument Atlas Sounds.
 

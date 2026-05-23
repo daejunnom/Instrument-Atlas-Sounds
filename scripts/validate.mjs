@@ -195,17 +195,13 @@ function validateManifest() {
   }
 
   if (!isPlainObject(manifest.indexFiles)) {
-    fail(`${context}.policyFiles must be an object.`);
+    fail(`${context}.indexFiles must be an object.`);
   } else {
-    for (const [key, filePath] of Object.entries(manifest.policyFiles)) {
+    for (const [key, filePath] of Object.entries(manifest.indexFiles)) {
       if (typeof filePath !== 'string' || !filePath.endsWith('.json')) {
-        fail(`${context}.policyFiles.${key} must be a JSON file path.`);
+        fail(`${context}.indexFiles.${key} must be a JSON file path.`);
       }
     }
-  }
-
-  if (!isPlainObject(manifest.indexFiles)) {
-    fail(`${context}.indexFiles must be an object.`);
   }
 
   if (!isPlainObject(manifest.defaults)) {
