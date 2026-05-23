@@ -41,6 +41,9 @@ jobs:
       - name: Create release package
         run: npm run package
 
+      - name: Check license boundaries
+        run: npm run check:boundaries
+
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}

@@ -8,6 +8,8 @@
     "validate": "node scripts/validate.mjs",
     "build": "node scripts/build.mjs",
     "package": "node scripts/package-release.mjs",
+    "check:boundaries": "node scripts/check-license-boundaries.mjs",
+    "ci": "npm run validate && npm run build && npm run package && npm run check:boundaries",
     "render:karplus": "node examples/render-karplus-strong.mjs"
   },
   "keywords": [

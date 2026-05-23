@@ -41,6 +41,9 @@ jobs:
       - name: Create release package
         run: npm run package
 
+      - name: Check license boundaries
+        run: npm run check:boundaries
+
       - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:
