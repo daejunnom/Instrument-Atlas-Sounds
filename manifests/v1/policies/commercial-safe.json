@@ -1,0 +1,55 @@
+{
+  "id": "commercial-safe",
+  "title": "Commercial Safe",
+  "description": "Allows sources intended to be usable in commercial workflows while blocking non-commercial, no-derivatives, AGPL, proprietary, unknown, disputed, and unverified sources by default.",
+  "allowCategories": [
+    "public_domain",
+    "permissive_code",
+    "commercial_attribution"
+  ],
+  "allowLicenseGroups": [
+    "public-domain",
+    "permissive",
+    "notice-attribution"
+  ],
+  "denyCategories": [
+    "noncommercial",
+    "no_derivatives",
+    "network_copyleft",
+    "proprietary",
+    "unknown",
+    "restricted",
+    "to_be_verified"
+  ],
+  "denyLicenseGroups": [
+    "sharealike",
+    "noncommercial",
+    "no-derivatives",
+    "network-copyleft",
+    "blocked"
+  ],
+  "denyLicenses": [
+    "AGPL-3.0-only",
+    "AGPL-3.0-or-later",
+    "CC-BY-NC-4.0",
+    "CC-BY-NC-SA-4.0",
+    "CC-BY-NC-ND-4.0",
+    "CC-BY-ND-4.0",
+    "unknown",
+    "proprietary",
+    "disputed",
+    "unverified"
+  ],
+  "denyRestrictions": [
+    "noncommercial",
+    "no_derivatives",
+    "network_source_disclosure_required",
+    "rights_unknown"
+  ],
+  "allowCommercialUseOnly": true,
+  "allowAttributionRequired": true,
+  "allowClientDistribution": true,
+  "allowServerOnlyCopyleft": false,
+  "preferPublicDomain": true,
+  "requiresAttributionReport": true
+}

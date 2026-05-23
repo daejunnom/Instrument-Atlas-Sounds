@@ -17,7 +17,26 @@
     "clientSafe": "policies/client-safe.json",
     "saasSafe": "policies/saas-safe.json",
     "cc0Only": "policies/cc0-only.json",
-    "permissiveOnly": "policies/permissive-only.json"
+    "permissiveOnly": "policies/permissive-only.json",
+    "commercialSafe": "policies/commercial-safe.json",
+    "commercialSafeNoAttribution": "policies/commercial-safe-no-attribution.json",
+    "commercialSafeWithAttribution": "policies/commercial-safe-with-attribution.json",
+    "noncommercialOptIn": "policies/noncommercial-opt-in.json",
+    "noDerivativesOptIn": "policies/no-derivatives-opt-in.json",
+    "copyleftServerOptIn": "policies/copyleft-server-opt-in.json",
+    "networkCopyleftOptIn": "policies/network-copyleft-opt-in.json"
+  },
+  "licenseGroupFiles": {
+    "publicDomain": "license-groups/public-domain.json",
+    "permissive": "license-groups/permissive.json",
+    "noticeAttribution": "license-groups/notice-attribution.json",
+    "sharealike": "license-groups/sharealike.json",
+    "weakCopyleft": "license-groups/weak-copyleft.json",
+    "strongCopyleft": "license-groups/strong-copyleft.json",
+    "networkCopyleft": "license-groups/network-copyleft.json",
+    "noncommercial": "license-groups/noncommercial.json",
+    "noDerivatives": "license-groups/no-derivatives.json",
+    "blocked": "license-groups/blocked.json"
   },
   "indexFiles": {
     "byInstrument": "indexes/by-instrument.json",

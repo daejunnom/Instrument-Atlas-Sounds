@@ -1,0 +1,49 @@
+{
+  "id": "network-copyleft-opt-in",
+  "title": "Network Copyleft Opt-In",
+  "description": "Allows AGPL-family sources only when a consuming application explicitly accepts network source disclosure obligations. This policy is blocked from default SaaS-safe workflows.",
+  "allowCategories": [
+    "network_copyleft"
+  ],
+  "allowLicenseGroups": [
+    "network-copyleft"
+  ],
+  "allowLicenses": [
+    "AGPL-3.0-only",
+    "AGPL-3.0-or-later"
+  ],
+  "denyCategories": [
+    "proprietary",
+    "unknown",
+    "restricted",
+    "to_be_verified"
+  ],
+  "denyLicenseGroups": [
+    "blocked"
+  ],
+  "denyLicenses": [
+    "unknown",
+    "proprietary",
+    "disputed",
+    "unverified"
+  ],
+  "allowRestrictions": [
+    "source_disclosure_required",
+    "network_source_disclosure_required",
+    "client_distribution_risk",
+    "saas_risk",
+    "integration_model_sensitive"
+  ],
+  "allowCommercialUseOnly": true,
+  "allowAttributionRequired": true,
+  "allowClientDistribution": false,
+  "allowServerOnlyCopyleft": false,
+  "preferPublicDomain": false,
+  "requiresExplicitConsent": true,
+  "requiresNetworkSourceDisclosureReview": true,
+  "blockedUseCases": [
+    "default_saas",
+    "client_distribution",
+    "commercial_safe_default"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "copyleft-server-opt-in",
+  "title": "Copyleft Server Opt-In",
+  "description": "Allows weak-copyleft and GPL-family server-side sources only when a consuming application explicitly opts in and keeps them out of client-distributed code.",
+  "allowCategories": [
+    "weak_copyleft",
+    "server_only_copyleft",
+    "strong_copyleft"
+  ],
+  "allowLicenseGroups": [
+    "weak-copyleft",
+    "strong-copyleft"
+  ],
+  "allowLicenses": [
+    "MPL-2.0",
+    "LGPL-2.1-or-later",
+    "LGPL-3.0-or-later",
+    "GPL-2.0-only",
+    "GPL-2.0-or-later",
+    "GPL-3.0-only",
+    "GPL-3.0-or-later"
+  ],
+  "denyCategories": [
+    "network_copyleft",
+    "proprietary",
+    "unknown",
+    "restricted",
+    "to_be_verified"
+  ],
+  "denyLicenseGroups": [
+    "network-copyleft",
+    "blocked"
+  ],
+  "denyLicenses": [
+    "AGPL-3.0-only",
+    "AGPL-3.0-or-later",
+    "unknown",
+    "proprietary",
+    "disputed",
+    "unverified"
+  ],
+  "allowRestrictions": [
+    "source_disclosure_required",
+    "source_disclosure_may_be_required",
+    "integration_model_sensitive",
+    "client_distribution_risk"
+  ],
+  "allowCommercialUseOnly": true,
+  "allowAttributionRequired": true,
+  "allowClientDistribution": false,
+  "allowServerOnlyCopyleft": true,
+  "preferPublicDomain": false,
+  "requiresExplicitConsent": true,
+  "requiresSourceDisclosureReview": true
+}

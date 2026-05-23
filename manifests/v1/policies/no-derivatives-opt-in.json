@@ -1,0 +1,50 @@
+{
+  "id": "no-derivatives-opt-in",
+  "title": "No-Derivatives Opt-In",
+  "description": "Allows no-derivatives sources only for workflows that preserve the original work without editing, remixing, pitch shifting, time stretching, sample mapping, or generated-output use.",
+  "allowCategories": [
+    "no_derivatives"
+  ],
+  "allowLicenseGroups": [
+    "no-derivatives"
+  ],
+  "allowLicenses": [
+    "CC-BY-ND-4.0",
+    "CC-BY-NC-ND-4.0"
+  ],
+  "denyCategories": [
+    "proprietary",
+    "unknown",
+    "restricted",
+    "to_be_verified"
+  ],
+  "denyLicenseGroups": [
+    "blocked"
+  ],
+  "denyLicenses": [
+    "unknown",
+    "proprietary",
+    "disputed",
+    "unverified"
+  ],
+  "allowRestrictions": [
+    "no_derivatives",
+    "attribution_required",
+    "noncommercial"
+  ],
+  "allowCommercialUseOnly": false,
+  "allowAttributionRequired": true,
+  "allowClientDistribution": false,
+  "allowServerOnlyCopyleft": false,
+  "preferPublicDomain": false,
+  "requiresExplicitConsent": true,
+  "blockedUseCases": [
+    "edit",
+    "remix",
+    "pitch_shift",
+    "time_stretch",
+    "sample_mapping",
+    "generated_output",
+    "derived_dataset"
+  ]
+}

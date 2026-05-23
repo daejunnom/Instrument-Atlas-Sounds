@@ -9,12 +9,14 @@ const paths = {
   sourceManifest: path.join(rootDir, 'manifests', 'v1', 'manifest.json'),
   sourceSources: path.join(rootDir, 'manifests', 'v1', 'sources'),
   sourcePolicies: path.join(rootDir, 'manifests', 'v1', 'policies'),
+  sourceLicenseGroups: path.join(rootDir, 'manifests', 'v1', 'license-groups'),
   validateScript: path.join(rootDir, 'scripts', 'validate.mjs'),
   packageJson: path.join(rootDir, 'package.json'),
 
   distRoot: path.join(rootDir, 'dist', 'sounds', 'v1'),
   distSources: path.join(rootDir, 'dist', 'sounds', 'v1', 'sources'),
   distPolicies: path.join(rootDir, 'dist', 'sounds', 'v1', 'policies'),
+  distLicenseGroups: path.join(rootDir, 'dist', 'sounds', 'v1', 'license-groups'),
   distIndexes: path.join(rootDir, 'dist', 'sounds', 'v1', 'indexes')
 };
 
@@ -111,6 +113,23 @@ function loadPolicyFiles() {
   }
 
   return policyFiles;
+}
+
+function loadLicenseGroupFiles() {
+  const licenseGroupFiles = [];
+
+  for (const fileName of listJsonFiles(paths.sourceLicenseGroups)) {
+    const filePath = path.join(paths.sourceLicenseGroups, fileName);
+    const data = readJson(filePath);
+
+    licenseGroupFiles.push({
+      fileName,
+      filePath,
+      data
+    });
+  }
+
+  return licenseGroupFiles;
 }
 
 function flattenSources(sourceFiles) {
@@ -244,6 +263,7 @@ function buildDistManifest({
   version,
   sourceFiles,
   policyFiles,
+  licenseGroupFiles,
   sources
 }) {
   const sourceFileEntries = {};
@@ -256,6 +276,12 @@ function buildDistManifest({
   for (const policyFile of policyFiles) {
     const id = policyFile.fileName.replace(/\.json$/, '');
     policyFileEntries[id] = `policies/${policyFile.fileName}`;
+  }
+
+  const licenseGroupFileEntries = {};
+  for (const licenseGroupFile of licenseGroupFiles) {
+    const id = licenseGroupFile.fileName.replace(/\.json$/, '');
+    licenseGroupFileEntries[id] = `license-groups/${licenseGroupFile.fileName}`;
   }
 
   const countsBySourceType = {};
@@ -286,12 +312,14 @@ function buildDistManifest({
       sources: sources.length,
       sourceFiles: sourceFiles.length,
       policies: policyFiles.length,
+      licenseGroups: licenseGroupFiles.length,
       bySourceType: countsBySourceType,
       byLicenseCategory: countsByLicenseCategory,
       byExecutionTarget: countsByExecutionTarget
     },
     sourceFiles: sourceFileEntries,
     policyFiles: policyFileEntries,
+    licenseGroupFiles: licenseGroupFileEntries,
     indexFiles: {
       byInstrument: 'indexes/by-instrument.json',
       byLicense: 'indexes/by-license.json',
@@ -320,6 +348,15 @@ function copyPolicies(policyFiles) {
   }
 }
 
+function copyLicenseGroups(licenseGroupFiles) {
+  for (const licenseGroupFile of licenseGroupFiles) {
+    copyJsonFile(
+      licenseGroupFile.filePath,
+      path.join(paths.distLicenseGroups, licenseGroupFile.fileName)
+    );
+  }
+}
+
 function main() {
   runValidation();
 
@@ -327,16 +364,19 @@ function main() {
   const sourceManifest = readJson(paths.sourceManifest);
   const sourceFiles = loadSourceFiles();
   const policyFiles = loadPolicyFiles();
+  const licenseGroupFiles = loadLicenseGroupFiles();
   const sources = flattenSources(sourceFiles);
 
   removeDir(paths.distRoot);
 
   fs.mkdirSync(paths.distSources, { recursive: true });
   fs.mkdirSync(paths.distPolicies, { recursive: true });
+  fs.mkdirSync(paths.distLicenseGroups, { recursive: true });
   fs.mkdirSync(paths.distIndexes, { recursive: true });
 
   copySources(sourceFiles);
   copyPolicies(policyFiles);
+  copyLicenseGroups(licenseGroupFiles);
 
   const indexes = buildIndexes(sources, version);
 
@@ -351,6 +391,7 @@ function main() {
     version,
     sourceFiles,
     policyFiles,
+    licenseGroupFiles,
     sources
   });
 
@@ -360,6 +401,7 @@ function main() {
   console.log('Generated manifest: dist/sounds/v1/manifest.json');
   console.log(`Copied source files: ${sourceFiles.length}`);
   console.log(`Copied policy files: ${policyFiles.length}`);
+  console.log(`Copied license group files: ${licenseGroupFiles.length}`);
   console.log(`Generated indexes: 5`);
   console.log(`Indexed sound sources: ${sources.length}`);
 }

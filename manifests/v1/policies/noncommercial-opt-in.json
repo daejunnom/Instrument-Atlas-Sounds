@@ -1,0 +1,49 @@
+{
+  "id": "noncommercial-opt-in",
+  "title": "Non-Commercial Opt-In",
+  "description": "Allows non-commercial sources only when a consuming application explicitly opts in and blocks commercial workflows.",
+  "allowCategories": [
+    "noncommercial"
+  ],
+  "allowLicenseGroups": [
+    "noncommercial"
+  ],
+  "allowLicenses": [
+    "CC-BY-NC-4.0",
+    "CC-BY-NC-SA-4.0",
+    "CC-BY-NC-ND-4.0"
+  ],
+  "denyCategories": [
+    "proprietary",
+    "unknown",
+    "restricted",
+    "to_be_verified"
+  ],
+  "denyLicenseGroups": [
+    "blocked"
+  ],
+  "denyLicenses": [
+    "unknown",
+    "proprietary",
+    "disputed",
+    "unverified"
+  ],
+  "allowRestrictions": [
+    "noncommercial",
+    "attribution_required",
+    "sharealike_required",
+    "no_derivatives"
+  ],
+  "allowCommercialUseOnly": false,
+  "allowAttributionRequired": true,
+  "allowClientDistribution": false,
+  "allowServerOnlyCopyleft": false,
+  "preferPublicDomain": false,
+  "requiresExplicitConsent": true,
+  "blockedUseCases": [
+    "commercial_project",
+    "paid_saas",
+    "monetized_content",
+    "commercial_release"
+  ]
+}

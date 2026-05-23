@@ -6,7 +6,8 @@ const rootDir = process.cwd();
 const paths = {
   manifest: path.join(rootDir, 'manifests', 'v1', 'manifest.json'),
   sources: path.join(rootDir, 'manifests', 'v1', 'sources'),
-  policies: path.join(rootDir, 'manifests', 'v1', 'policies')
+  policies: path.join(rootDir, 'manifests', 'v1', 'policies'),
+  licenseGroups: path.join(rootDir, 'manifests', 'v1', 'license-groups')
 };
 
 const VALID_SOURCE_TYPES = new Set([
@@ -35,11 +36,34 @@ const VALID_EXECUTION_TARGETS = new Set([
 const VALID_LICENSE_CATEGORIES = new Set([
   'public_domain',
   'permissive_code',
+  'commercial_attribution',
+  'commercial_sharealike',
   'weak_copyleft',
   'server_only_copyleft',
+  'strong_copyleft',
   'network_copyleft',
+  'noncommercial',
+  'no_derivatives',
+  'proprietary',
+  'unknown',
   'restricted',
   'to_be_verified'
+]);
+
+const VALID_LICENSE_GROUP_RISK_LEVELS = new Set([
+  'low',
+  'medium',
+  'high',
+  'very_high',
+  'blocked'
+]);
+
+const VALID_LICENSE_GROUP_DEFAULT_BEHAVIORS = new Set([
+  'allow',
+  'allow_with_report',
+  'opt_in_only',
+  'blocked_by_default',
+  'blocked'
 ]);
 
 const VALID_DURATION_POLICIES = new Set([
@@ -148,17 +172,29 @@ function validateManifest() {
   requireString(manifest, 'soundLibraryVersion', context);
   requireString(manifest, 'basePath', context);
 
-  if (!isPlainObject(manifest.sourceFiles)) {
-    fail(`${context}.sourceFiles must be an object.`);
+  if (!isPlainObject(manifest.policyFiles)) {
+    fail(`${context}.policyFiles must be an object.`);
   } else {
-    for (const [key, filePath] of Object.entries(manifest.sourceFiles)) {
+    for (const [key, filePath] of Object.entries(manifest.policyFiles)) {
       if (typeof filePath !== 'string' || !filePath.endsWith('.json')) {
-        fail(`${context}.sourceFiles.${key} must be a JSON file path.`);
+        fail(`${context}.policyFiles.${key} must be a JSON file path.`);
       }
     }
   }
 
-  if (!isPlainObject(manifest.policyFiles)) {
+  if (manifest.licenseGroupFiles !== undefined) {
+    if (!isPlainObject(manifest.licenseGroupFiles)) {
+      fail(`${context}.licenseGroupFiles must be an object when present.`);
+    } else {
+      for (const [key, filePath] of Object.entries(manifest.licenseGroupFiles)) {
+        if (typeof filePath !== 'string' || !filePath.endsWith('.json')) {
+          fail(`${context}.licenseGroupFiles.${key} must be a JSON file path.`);
+        }
+      }
+    }
+  }
+
+  if (!isPlainObject(manifest.indexFiles)) {
     fail(`${context}.policyFiles must be an object.`);
   } else {
     for (const [key, filePath] of Object.entries(manifest.policyFiles)) {
@@ -255,6 +291,72 @@ function validatePolicies() {
   }
 
   return policyIds;
+}
+
+function validateLicenseGroupFile(fileName, licenseGroupIds) {
+  const filePath = path.join(paths.licenseGroups, fileName);
+  const group = readJson(filePath);
+  if (!group) return;
+
+  const expectedId = fileName.replace(/\.json$/, '');
+  const context = `license group "${fileName}"`;
+
+  if (group.id !== expectedId) {
+    fail(`${context}.id must match filename: "${group.id}" !== "${expectedId}".`);
+  }
+
+  if (licenseGroupIds.has(group.id)) {
+    fail(`Duplicate license group id: ${group.id}`);
+  }
+  licenseGroupIds.add(group.id);
+
+  requireString(group, 'id', context);
+  requireString(group, 'title', context);
+  requireString(group, 'description', context);
+
+  if (group.schemaVersion !== 1) {
+    fail(`${context}.schemaVersion must be 1.`);
+  }
+
+  if (!VALID_LICENSE_GROUP_RISK_LEVELS.has(group.riskLevel)) {
+    fail(`${context}.riskLevel has invalid value "${group.riskLevel}".`);
+  }
+
+  if (!VALID_LICENSE_GROUP_DEFAULT_BEHAVIORS.has(group.defaultBehavior)) {
+    fail(`${context}.defaultBehavior has invalid value "${group.defaultBehavior}".`);
+  }
+
+  if (!isStringArray(group.licenseIds) || group.licenseIds.length === 0) {
+    fail(`${context}.licenseIds must be a non-empty array of strings.`);
+  }
+
+  if (!isStringArray(group.licenseFamilies) || group.licenseFamilies.length === 0) {
+    fail(`${context}.licenseFamilies must be a non-empty array of strings.`);
+  }
+
+  if (!Array.isArray(group.restrictions)) {
+    fail(`${context}.restrictions must be an array.`);
+  }
+
+  for (const field of [
+    'defaultIncludedInCore',
+    'fetchableByDefault',
+    'requiresExplicitConsent'
+  ]) {
+    if (typeof group[field] !== 'boolean') {
+      fail(`${context}.${field} must be boolean.`);
+    }
+  }
+}
+
+function validateLicenseGroups() {
+  const licenseGroupIds = new Set();
+
+  for (const fileName of listJsonFiles(paths.licenseGroups)) {
+    validateLicenseGroupFile(fileName, licenseGroupIds);
+  }
+
+  return licenseGroupIds;
 }
 
 function validateCapabilities(source, context) {
@@ -550,7 +652,7 @@ function validateSources() {
   return sourceIds;
 }
 
-function validateManifestReferences(manifest, policyIds) {
+function validateManifestReferences(manifest, policyIds, licenseGroupIds) {
   if (!manifest) return;
 
   if (manifest.policyFiles) {
@@ -565,6 +667,22 @@ function validateManifestReferences(manifest, policyIds) {
       const expectedPolicyId = path.basename(filePath).replace(/\.json$/, '');
       if (!policyIds.has(expectedPolicyId)) {
         fail(`manifest.policyFiles.${key} points to policy id "${expectedPolicyId}", but that policy was not loaded.`);
+      }
+    }
+  }
+
+  if (manifest.licenseGroupFiles) {
+    for (const [key, filePath] of Object.entries(manifest.licenseGroupFiles)) {
+      const expectedPath = path.join(rootDir, 'manifests', 'v1', filePath);
+
+      if (!fs.existsSync(expectedPath)) {
+        fail(`manifest.licenseGroupFiles.${key} points to missing file: ${filePath}`);
+        continue;
+      }
+
+      const expectedLicenseGroupId = path.basename(filePath).replace(/\.json$/, '');
+      if (!licenseGroupIds.has(expectedLicenseGroupId)) {
+        fail(`manifest.licenseGroupFiles.${key} points to license group id "${expectedLicenseGroupId}", but that group was not loaded.`);
       }
     }
   }
@@ -587,8 +705,9 @@ function validateManifestReferences(manifest, policyIds) {
 function main() {
   const manifest = validateManifest();
   const policyIds = validatePolicies();
+  const licenseGroupIds = validateLicenseGroups();
   validateSources();
-  validateManifestReferences(manifest, policyIds);
+  validateManifestReferences(manifest, policyIds, licenseGroupIds);
 
   if (warnings.length > 0) {
     console.warn(`Validation completed with ${warnings.length} warning(s):`);
@@ -608,6 +727,7 @@ function main() {
 
   console.log('Validation OK');
   console.log(`Checked ${policyIds.size} policies.`);
+  console.log(`Checked ${licenseGroupIds.size} license groups.`);
   console.log('Checked source manifests.');
 }
 

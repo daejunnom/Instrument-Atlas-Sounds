@@ -1,0 +1,80 @@
+{
+  "id": "commercial-safe-with-attribution",
+  "title": "Commercial Safe With Attribution",
+  "description": "Allows commercial-safe sources that may require attribution reports, license notices, or upstream credit preservation.",
+  "allowCategories": [
+    "public_domain",
+    "permissive_code",
+    "commercial_attribution"
+  ],
+  "allowLicenseGroups": [
+    "public-domain",
+    "permissive",
+    "notice-attribution"
+  ],
+  "allowLicenses": [
+    "CC0-1.0",
+    "Public-Domain",
+    "MIT",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "Apache-2.0",
+    "MIT-STK",
+    "CC-BY-4.0"
+  ],
+  "denyCategories": [
+    "commercial_sharealike",
+    "weak_copyleft",
+    "server_only_copyleft",
+    "strong_copyleft",
+    "network_copyleft",
+    "noncommercial",
+    "no_derivatives",
+    "proprietary",
+    "unknown",
+    "restricted",
+    "to_be_verified"
+  ],
+  "denyLicenseGroups": [
+    "sharealike",
+    "weak-copyleft",
+    "strong-copyleft",
+    "network-copyleft",
+    "noncommercial",
+    "no-derivatives",
+    "blocked"
+  ],
+  "denyLicenses": [
+    "CC-BY-SA-4.0",
+    "CC-BY-NC-4.0",
+    "CC-BY-ND-4.0",
+    "CC-BY-NC-SA-4.0",
+    "CC-BY-NC-ND-4.0",
+    "GPL-2.0-only",
+    "GPL-2.0-or-later",
+    "GPL-3.0-only",
+    "GPL-3.0-or-later",
+    "AGPL-3.0-only",
+    "AGPL-3.0-or-later",
+    "unknown",
+    "proprietary",
+    "disputed",
+    "unverified"
+  ],
+  "denyRestrictions": [
+    "sharealike_required",
+    "noncommercial",
+    "no_derivatives",
+    "source_disclosure_required",
+    "network_source_disclosure_required",
+    "rights_unknown"
+  ],
+  "allowCommercialUseOnly": true,
+  "allowAttributionRequired": true,
+  "allowClientDistribution": true,
+  "allowServerOnlyCopyleft": false,
+  "preferPublicDomain": true,
+  "requiresAttributionReport": true
+}
