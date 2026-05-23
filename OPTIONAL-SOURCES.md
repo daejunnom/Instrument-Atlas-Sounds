@@ -1,4 +1,4 @@
-# Optional Sources Policy
+﻿# Optional Sources Policy
 
 Instrument Atlas Sounds is designed to be safe by default.
 
