@@ -55,7 +55,6 @@ third_party_optional/
 *.tgz
 *.rar
 *.7z
-*.midi
 
 # Large or unmanaged engine/vendor payloads
 third_party/
