@@ -530,3 +530,22 @@ optional-sources/registry/
 ```
 
 All of these should agree with each other.
+
+## Relationship to resolver compliance output
+
+Runtime resolver output separates license and policy handling into three layers.
+
+```txt
+complianceRequirements
+  Source, policy, and effective requirements.
+
+compliancePlan
+  Application behavior hints.
+
+complianceDiagnostics
+  Explanation and audit information.
+```
+
+License reference metadata should inform resolver requirements, but resolver output should not be treated as legal advice.
+
+Consuming applications remain responsible for final license compliance, report generation, notice preservation, and attribution handling.

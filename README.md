@@ -1167,6 +1167,8 @@ complianceDiagnostics
 
 `rejectionReasons` provides a reason-count summary for quick diagnostics.
 
+The resolver enforces policy license groups.
+
 If a policy defines `allowLicenseGroups`, a source must match at least one allowed group.
 
 If a policy defines `denyLicenseGroups`, a source matching any denied group is rejected.

@@ -408,28 +408,39 @@ Optional downloaded files are committed.
 Optional downloaded files are included in the default release zip.
 ```
 
-## Release package rules
+## Relationship with core manifests
 
-The default release package should include only core registry files.
+Core manifests under `manifests/v1/sources/` may reference optional sources only as metadata or planned integration targets.
 
-Default package:
+A source being listed as optional does not make it available for automatic rendering or loading.
 
-```txt
-instrument-atlas-sounds-vX.Y.Z.zip
-```
-
-Optional packages may be added later, but must be separate.
-
-Possible future optional packages:
+A consuming application must still check:
 
 ```txt
-instrument-atlas-sounds-optional-engines-mit-vX.Y.Z.zip
-instrument-atlas-sounds-optional-engines-apache-2.0-vX.Y.Z.zip
-instrument-atlas-sounds-optional-samples-cc0-vX.Y.Z.zip
-instrument-atlas-sounds-optional-samples-cc-by-vX.Y.Z.zip
+license policy
+execution target
+runtime readiness
+asset verification
+download status
+notice, creator attribution, and output attribution requirements
+source disclosure requirements
 ```
 
-GPL, AGPL, NC, and ND packages should not be created unless their warnings, metadata, and boundary checks are fully implemented.
+Optional source metadata should be compatible with resolver compliance output.
+
+A future optional source that becomes runtime-selectable should provide enough metadata for:
+
+```txt
+complianceRequirements.source
+compliancePlan
+complianceDiagnostics
+```
+
+At minimum, optional sources should preserve exact license ID, license family, restrictions, notice requirements, attribution requirements, disclosure requirements, provenance, and checksum metadata.
+
+Optional sources should not become automatically renderable only because they are present in metadata.
+
+They must still pass policy filtering, runtime readiness checks, execution target checks, and compliance planning.
 
 ## Summary
 
