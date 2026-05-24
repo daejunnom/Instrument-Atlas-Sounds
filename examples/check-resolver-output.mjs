@@ -38,6 +38,12 @@ function assertArrayIncludes(values, expectedValue, message) {
   }
 }
 
+function assertArrayExcludes(values, unexpectedValue, message) {
+  if (Array.isArray(values) && values.includes(unexpectedValue)) {
+    errors.push(`${message}. Expected array not to include ${JSON.stringify(unexpectedValue)}.`);
+  }
+}
+
 function assertPlainObject(value, message) {
   const valid = value !== null && typeof value === 'object' && !Array.isArray(value);
 
@@ -158,10 +164,16 @@ function checkSuccessfulSaasResolution() {
     'diagnostics should show matched allow license group'
   );
 
-  assertArrayIncludes(
-    result.complianceDiagnostics?.matchedPolicyRules?.allowLicenses,
+  assertEqual(
+    result.selectedSource?.license?.id,
     'MIT',
-    'diagnostics should show matched MIT license rule'
+    'saas-safe success source should preserve the selected MIT license id'
+  );
+
+  assertArrayExcludes(
+    result.complianceDiagnostics?.matchedPolicyRules?.denyLicenses,
+    'MIT',
+    'diagnostics should not treat MIT as a denied license'
   );
 }
 

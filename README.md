@@ -828,7 +828,7 @@ Size: <size>
 
 ## Validation and CI checks
 
-The validation script checks:
+The validation script checks source metadata and policy integrity:
 
 - JSON parse errors
 - manifest file presence
@@ -856,7 +856,18 @@ The validation script checks:
 - policy license group references
 - policy and license group semantic conflicts
 - deprecated attribution field checks
-- resolver output shape checks through `npm run check:resolver-output`
+
+CI also checks runtime behavior and generated package boundaries:
+
+```txt
+npm run resolve:example
+npm run resolve:saas
+npm run resolve:metadata
+npm run resolve:expected-rejection
+npm run check:resolver-output
+npm run package:from-dist
+npm run check:boundaries
+```
 
 ## Build process
 
@@ -988,64 +999,107 @@ rejectedSources
 rejectedSources[].reason
 rejectedSources[].licenseGroups
 rejectionReasons
+
 complianceRequirements
 complianceRequirements.source
 complianceRequirements.policy
 complianceRequirements.effective
+
 compliancePlan
+
 complianceDiagnostics
 complianceDiagnostics.reasons
 complianceDiagnostics.matchedPolicyRules
+
 noticeReportRequired
 attributionReportRequired
 ```
 
-`rejectedSources[].reason` provides per-source rejection details.
+### Compliance output semantics
 
-`rejectionReasons` provides a reason-count summary for quick diagnostics.
+The resolver separates compliance output into three layers.
 
-`complianceRequirements.source` describes requirements from the selected source license metadata.
+```txt
+complianceRequirements
+  Structured requirements from the selected source, selected policy, and effective combined result.
 
-`complianceRequirements.policy` describes requirements from the selected policy.
+compliancePlan
+  Application behavior hints derived from source, policy, runtime readiness, and execution target.
 
-`complianceRequirements.effective` combines source and policy requirements into the final requirements that a consuming application should handle.
+complianceDiagnostics
+  Explanation data for debugging, logs, administrator views, and audit trails.
+```
 
-If no source is selected, `complianceRequirements` is `null`.
-
-`noticeReportRequired` and `attributionReportRequired` are convenience booleans derived from `complianceRequirements.effective`.
-
-`compliancePlan` provides application action hints derived from the selected source, selected policy, runtime readiness, and execution target.
-
-It is not legal advice and does not replace final license review.
+Use `complianceRequirements` when exact source, policy, and effective requirement boundaries matter.
 
 Use `compliancePlan` when an application needs to decide whether to render, warn, block download, or require additional review.
 
-`complianceDiagnostics` explains why the selected source received its compliance requirements and action plan.
+Use `complianceDiagnostics` when a developer or administrator needs to understand why a source was selected and why a compliance plan was produced.
 
-Use `complianceDiagnostics` for debugging, logs, administrator views, or audit trails.
+`compliancePlan` is application behavior guidance, not legal advice or a legal verdict.
 
-`complianceDiagnostics.reasons` lists machine-readable explanation codes.
+`noticeReportRequired` and `attributionReportRequired` are convenience booleans derived from `complianceRequirements.effective`.
 
-`complianceDiagnostics.matchedPolicyRules` shows which policy allow or deny rule groups matched the selected source.
-
-The resolver separates compliance requirements into three layers:
+Applications that need precise behavior should prefer:
 
 ```txt
-source
-  Requirements from the selected source license metadata.
+complianceRequirements.effective.noticeReportRequired
+complianceRequirements.effective.attributionReportRequired
+```
 
-policy
-  Requirements from the selected policy.
+instead of relying only on the top-level convenience booleans.
 
-effective
-  Final combined requirements for the consuming application.
+### complianceRequirements
+
+`complianceRequirements.source` describes requirements from the selected source license metadata.
+
+Examples:
+
+```txt
+noticeRequired
+licenseTextRequired
+noticeReportRequired
+creatorAttributionRequired
+outputAttributionRequired
+sourceDisclosureRequired
+networkSourceDisclosureRequired
+```
+
+`complianceRequirements.policy` describes requirements from the selected policy.
+
+Examples:
+
+```txt
+requiresNoticeReport
+requiresAttributionReport
+requiresExplicitConsent
+requiresSourceDisclosureReview
+requiresNetworkSourceDisclosureReview
+```
+
+`complianceRequirements.effective` combines source and policy requirements into final requirements that the consuming application should handle.
+
+Examples:
+
+```txt
+noticeReportRequired
+attributionReportRequired
+explicitConsentRequired
+sourceDisclosureReviewRequired
+networkSourceDisclosureReviewRequired
 ```
 
 This separation prevents MIT/BSD/Apache notice preservation from being confused with CC-BY-style creator or output attribution.
 
-The resolver also provides a `compliancePlan` object.
+If no source is selected, `complianceRequirements` is `null`.
 
-`compliancePlan` is action-oriented:
+### compliancePlan
+
+`compliancePlan` is action-oriented.
+
+It helps consuming applications decide what to do with the selected source.
+
+Fields include:
 
 ```txt
 canRender
@@ -1065,11 +1119,28 @@ shouldShowWarning
 warningLevel
 ```
 
-`compliancePlan` should be treated as application behavior guidance, not as a legal verdict.
+`warningLevel` is intended for application UI and logs.
 
-The resolver also provides a `complianceDiagnostics` object.
+Current values:
 
-`complianceDiagnostics` is explanation-oriented:
+```txt
+none
+notice
+warning
+blocked
+```
+
+A `blocked` warning level means the source should not be automatically rendered, downloaded, or used without resolving the blocking condition.
+
+A `notice` warning level usually means the source may be usable, but the consuming application should preserve notices, generate reports, or show compliance information.
+
+### complianceDiagnostics
+
+`complianceDiagnostics` is explanation-oriented.
+
+It is intended for debugging, logs, administrator views, and audit trails.
+
+Fields include:
 
 ```txt
 policyId
@@ -1078,11 +1149,23 @@ reasons
 matchedPolicyRules
 ```
 
-`rejectionReasons` summarizes why rejected candidates were rejected.
+`complianceDiagnostics.reasons` lists machine-readable explanation codes.
 
-`complianceDiagnostics` explains the selected source.
+`complianceDiagnostics.matchedPolicyRules` shows which policy allow or deny rule groups matched the selected source.
 
-The resolver enforces policy license groups.
+`rejectionReasons` and `complianceDiagnostics` have different roles:
+
+```txt
+rejectionReasons
+  Summarizes why rejected candidates were rejected.
+
+complianceDiagnostics
+  Explains the selected source.
+```
+
+`rejectedSources[].reason` provides per-source rejection details.
+
+`rejectionReasons` provides a reason-count summary for quick diagnostics.
 
 If a policy defines `allowLicenseGroups`, a source must match at least one allowed group.
 
@@ -1164,10 +1247,12 @@ A consuming application should use this flow:
 7. Enforce runtime readiness and execution target requirements.
 8. Prefer physical_model sources when available.
 9. Fall back to sample_instrument, one_shot_sample, or synth_patch sources when needed.
-10. Check notice, creator attribution, output attribution, and source disclosure requirements.
-11. Select a runnable source definition.
-12. Send a render request to a client or server engine only when the selected source is actually runnable.
-13. Return audio plus a license report when required.
+10. Read complianceRequirements to understand source, policy, and effective obligations.
+11. Read compliancePlan to decide whether to render, warn, block download, or require review.
+12. Use complianceDiagnostics for logs, administrator views, and audit trails.
+13. Select a runnable source definition.
+14. Send a render request to a client or server engine only when the selected source is actually runnable.
+15. Return audio plus a license or attribution report when required.
 ```
 
 ## Relationship with Instrument Atlas
