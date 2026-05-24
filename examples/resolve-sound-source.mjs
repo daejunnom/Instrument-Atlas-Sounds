@@ -47,7 +47,8 @@ function main() {
       console.log('');
       console.log('Rejected sources:');
       for (const rejected of result.rejectedSources) {
-        console.log(`- ${rejected.id}: ${rejected.reason}`);
+        const groups = (rejected.licenseGroups ?? []).join(', ') || 'none';
+        console.log(`- ${rejected.id}: ${rejected.reason} [groups: ${groups}]`);
       }
     }
 
@@ -63,6 +64,7 @@ function main() {
   console.log(`- engineType: ${result.selectedSource.engineType ?? 'none'}`);
   console.log(`- status: ${result.selectedSource.status}`);
   console.log(`- license: ${result.selectedSource.license?.id ?? 'unknown'}`);
+  console.log(`- licenseGroups: ${(result.selectedSource.licenseGroups ?? []).join(', ') || 'none'}`);
   console.log(`- noticeReportRequired: ${result.noticeReportRequired ? 'yes' : 'no'}`);
   console.log(`- attributionReportRequired: ${result.attributionReportRequired ? 'yes' : 'no'}`);
   console.log(`- resolverScore: ${result.selectedSource.resolverScore}`);
@@ -71,7 +73,8 @@ function main() {
     console.log('');
     console.log('Rejected sources:');
     for (const rejected of result.rejectedSources) {
-      console.log(`- ${rejected.id}: ${rejected.reason}`);
+      const groups = (rejected.licenseGroups ?? []).join(', ') || 'none';
+      console.log(`- ${rejected.id}: ${rejected.reason} [groups: ${groups}]`);
     }
   }
 }

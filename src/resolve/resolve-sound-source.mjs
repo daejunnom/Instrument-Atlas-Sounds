@@ -29,6 +29,23 @@ const METADATA_ONLY_STATUSES = new Set([
   'planned'
 ]);
 
+const LICENSE_CATEGORY_TO_LICENSE_FAMILY = new Map([
+  ['public_domain', 'public_domain'],
+  ['permissive_code', 'permissive'],
+  ['commercial_attribution', 'commercial_attribution'],
+  ['commercial_sharealike', 'commercial_sharealike'],
+  ['weak_copyleft', 'weak_copyleft'],
+  ['server_only_copyleft', 'strong_copyleft'],
+  ['strong_copyleft', 'strong_copyleft'],
+  ['network_copyleft', 'network_copyleft'],
+  ['noncommercial', 'noncommercial'],
+  ['no_derivatives', 'no_derivatives'],
+  ['proprietary', 'proprietary'],
+  ['unknown', 'unknown'],
+  ['restricted', 'unknown'],
+  ['to_be_verified', 'unknown']
+]);
+
 function stripBom(text) {
   return text.replace(/^\uFEFF/, '');
 }
@@ -85,6 +102,49 @@ function uniqueStrings(values) {
   return [...new Set(values.filter((value) => typeof value === 'string'))];
 }
 
+function normalizeLicenseFamily(license = {}) {
+  if (typeof license.family === 'string' && license.family.trim()) {
+    return license.family;
+  }
+
+  if (typeof license.category === 'string') {
+    return LICENSE_CATEGORY_TO_LICENSE_FAMILY.get(license.category) ?? license.category;
+  }
+
+  return null;
+}
+
+function getPolicyStringArray(policy, field) {
+  return isStringArray(policy[field]) ? policy[field] : [];
+}
+
+function getLicenseGroupsForSource(source, catalog) {
+  if (isStringArray(source.licenseGroups)) {
+    return uniqueStrings(source.licenseGroups).sort((a, b) => a.localeCompare(b));
+  }
+
+  const license = source.license ?? {};
+  const licenseId = license.id;
+  const licenseFamily = normalizeLicenseFamily(license);
+  const matchedGroupIds = [];
+
+  for (const group of catalog?.licenseGroups ?? []) {
+    const groupLicenseIds = isStringArray(group.licenseIds) ? group.licenseIds : [];
+    const groupLicenseFamilies = isStringArray(group.licenseFamilies) ? group.licenseFamilies : [];
+
+    if (typeof licenseId === 'string' && groupLicenseIds.includes(licenseId)) {
+      matchedGroupIds.push(group.id);
+      continue;
+    }
+
+    if (typeof licenseFamily === 'string' && groupLicenseFamilies.includes(licenseFamily)) {
+      matchedGroupIds.push(group.id);
+    }
+  }
+
+  return uniqueStrings(matchedGroupIds).sort((a, b) => a.localeCompare(b));
+}
+
 function getRuntimePolicy(request = {}) {
   const runtime = isPlainObject(request.runtime) ? request.runtime : {};
 
@@ -132,6 +192,20 @@ export function loadSoundCatalog(options = {}) {
   const manifest = readJson(manifestPath);
   const byInstrument = readJson(byInstrumentPath);
 
+  const licenseGroups = [];
+
+  if (isPlainObject(manifest.licenseGroupFiles)) {
+    for (const licenseGroupFilePath of Object.values(manifest.licenseGroupFiles)) {
+      const fullPath = path.join(distRoot, licenseGroupFilePath);
+
+      if (!fs.existsSync(fullPath)) {
+        throw new Error(`Missing license group file: ${toPosixPath(fullPath)}`);
+      }
+
+      licenseGroups.push(readJson(fullPath));
+    }
+  }
+
   const sourceById = new Map();
 
   if (isPlainObject(manifest.sourceFiles)) {
@@ -156,6 +230,7 @@ export function loadSoundCatalog(options = {}) {
     distRoot,
     manifest,
     byInstrument,
+    licenseGroups,
     sourceById
   };
 }
@@ -223,10 +298,11 @@ function accept() {
   };
 }
 
-export function evaluateSourceAgainstPolicy(source, request, policy) {
+export function evaluateSourceAgainstPolicy(source, request, policy, catalog = null) {
   const license = source.license ?? {};
   const licenseId = license.id;
   const category = license.category;
+  const licenseGroups = getLicenseGroupsForSource(source, catalog);
   const restrictions = collectSourceRestrictions(source);
 
   const executionTarget = request.executionTarget;
@@ -298,6 +374,29 @@ export function evaluateSourceAgainstPolicy(source, request, policy) {
   ) {
     return reject('license_category_denied', {
       category
+    });
+  }
+
+  const denyLicenseGroups = getPolicyStringArray(policy, 'denyLicenseGroups');
+  if (denyLicenseGroups.length > 0) {
+    const deniedGroups = licenseGroups.filter((licenseGroup) => denyLicenseGroups.includes(licenseGroup));
+
+    if (deniedGroups.length > 0) {
+      return reject('license_group_denied', {
+        licenseGroups,
+        deniedGroups
+      });
+    }
+  }
+
+  const allowLicenseGroups = getPolicyStringArray(policy, 'allowLicenseGroups');
+  if (
+    allowLicenseGroups.length > 0 &&
+    !licenseGroups.some((licenseGroup) => allowLicenseGroups.includes(licenseGroup))
+  ) {
+    return reject('license_group_not_allowed', {
+      licenseGroups,
+      allowLicenseGroups
     });
   }
 
@@ -438,16 +537,26 @@ export function resolveSoundSource(request = {}, options = {}) {
   const rejected = [];
 
   for (const source of rawCandidates) {
-    const evaluation = evaluateSourceAgainstPolicy(source, request, policy);
+    const sourceWithLicenseGroups = {
+      ...source,
+      licenseGroups: getLicenseGroupsForSource(source, catalog)
+    };
+
+    const evaluation = evaluateSourceAgainstPolicy(
+      sourceWithLicenseGroups,
+      request,
+      policy,
+      catalog
+    );
 
     if (evaluation.accepted) {
       accepted.push({
-        source,
-        score: scoreSource(source, request, policy, preferredSourceTypes)
+        source: sourceWithLicenseGroups,
+        score: scoreSource(sourceWithLicenseGroups, request, policy, preferredSourceTypes)
       });
     } else {
       rejected.push({
-        source,
+        source: sourceWithLicenseGroups,
         reason: evaluation.reason,
         details: evaluation.details
       });
@@ -500,6 +609,7 @@ export function resolveSoundSource(request = {}, options = {}) {
       status: item.source.status,
       executionTargets: item.source.executionTargets ?? [],
       license: item.source.license ?? null,
+      licenseGroups: item.source.licenseGroups ?? [],
       reason: item.reason,
       details: item.details
     })),
