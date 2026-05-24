@@ -1112,15 +1112,12 @@ Examples:
 
 ```txt
 requiresNoticeReport
-requiresAttributionReport
 requiresComplianceReportCapability
 requiresAttributionReportCapability
 requiresExplicitConsent
 requiresSourceDisclosureReview
 requiresNetworkSourceDisclosureReview
 ```
-
-`requiresAttributionReport` is a transitional legacy policy field. New policy logic should prefer `requiresAttributionReportCapability` and `requiresComplianceReportCapability`.
 
 Policy capability fields describe what the consuming application must be able to handle. They do not automatically mean that the selected source itself requires creator or output attribution.
 

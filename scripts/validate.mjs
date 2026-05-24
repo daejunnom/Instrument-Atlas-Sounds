@@ -436,6 +436,10 @@ function validatePolicyFile(fileName, policyIds, licenseGroupIds, licenseGroupsB
     fail(`${context}.allowAttributionRequired is deprecated. Use allowNoticeRequired, allowCreatorAttributionRequired, and allowOutputAttributionRequired instead.`);
   }
 
+  if (policy.requiresAttributionReport !== undefined) {
+    fail(`${context}.requiresAttributionReport is deprecated. Use requiresAttributionReportCapability and requiresComplianceReportCapability instead.`);
+  }
+
   for (const field of [
     'allowCommercialUseOnly',
     'allowNoticeRequired',
@@ -445,10 +449,6 @@ function validatePolicyFile(fileName, policyIds, licenseGroupIds, licenseGroupsB
     'allowServerOnlyCopyleft',
     'preferPublicDomain',
     'requiresNoticeReport',
-
-    // Transitional legacy policy field.
-    // Keep this until policy JSON files no longer carry requiresAttributionReport.
-    'requiresAttributionReport',
 
     // Policy-level capability requirements.
     'requiresComplianceReportCapability',
@@ -463,13 +463,6 @@ function validatePolicyFile(fileName, policyIds, licenseGroupIds, licenseGroupsB
     }
   }
 
-  if (
-    policy.requiresAttributionReport !== undefined &&
-    policy.requiresAttributionReportCapability !== undefined &&
-    policy.requiresAttributionReport !== policy.requiresAttributionReportCapability
-  ) {
-    fail(`${context}.requiresAttributionReport and ${context}.requiresAttributionReportCapability must match during the migration period.`);
-  }
 
   if (
     policy.requiresNoticeReport === true &&

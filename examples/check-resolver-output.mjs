@@ -89,12 +89,6 @@ function checkSuccessfulSaasResolution() {
   );
 
   assertEqual(
-    result.complianceRequirements?.policy.requiresAttributionReport,
-    true,
-    'saas-safe legacy policy field should remain true during migration'
-  );
-
-  assertEqual(
     result.complianceRequirements?.policy.requiresComplianceReportCapability,
     true,
     'saas-safe policy should require compliance report capability'

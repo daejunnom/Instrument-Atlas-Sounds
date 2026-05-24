@@ -84,7 +84,6 @@ function main() {
     console.log(`- source.creatorAttributionRequired: ${requirements.source.creatorAttributionRequired ? 'yes' : 'no'}`);
     console.log(`- source.outputAttributionRequired: ${requirements.source.outputAttributionRequired ? 'yes' : 'no'}`);
     console.log(`- policy.requiresNoticeReport: ${requirements.policy.requiresNoticeReport ? 'yes' : 'no'}`);
-    console.log(`- policy.requiresAttributionReport: ${requirements.policy.requiresAttributionReport ? 'yes' : 'no'}`);
     console.log(`- policy.requiresComplianceReportCapability: ${requirements.policy.requiresComplianceReportCapability ? 'yes' : 'no'}`);
     console.log(`- policy.requiresAttributionReportCapability: ${requirements.policy.requiresAttributionReportCapability ? 'yes' : 'no'}`);
     console.log(`- effective.noticeReportRequired: ${requirements.effective.noticeReportRequired ? 'yes' : 'no'}`);

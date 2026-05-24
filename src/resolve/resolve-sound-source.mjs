@@ -546,8 +546,7 @@ function buildSourceComplianceRequirements(source) {
 
 function buildPolicyComplianceRequirements(policy = {}) {
   const requiresAttributionReportCapability = Boolean(
-    policy.requiresAttributionReportCapability ??
-    policy.requiresAttributionReport
+    policy.requiresAttributionReportCapability
   );
 
   const requiresComplianceReportCapability = Boolean(
@@ -561,12 +560,6 @@ function buildPolicyComplianceRequirements(policy = {}) {
 
   return {
     requiresNoticeReport: Boolean(policy.requiresNoticeReport),
-
-    // Transitional legacy field.
-    // This is preserved for migration visibility, but it should no longer mean
-    // that the selected source itself requires creator/output attribution.
-    requiresAttributionReport: Boolean(policy.requiresAttributionReport),
-
     requiresComplianceReportCapability,
     requiresAttributionReportCapability,
 
@@ -819,7 +812,6 @@ function collectComplianceDiagnosticReasons(complianceRequirements, compliancePl
   if (source.networkSourceDisclosureRequired) reasons.push('source_network_disclosure_required');
 
   if (policy.requiresNoticeReport) reasons.push('policy_requires_notice_report');
-  if (policy.requiresAttributionReport) reasons.push('policy_requires_attribution_report_legacy');
   if (policy.requiresComplianceReportCapability) {
     reasons.push('policy_requires_compliance_report_capability');
   }
