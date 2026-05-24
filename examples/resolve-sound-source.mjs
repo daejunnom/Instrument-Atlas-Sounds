@@ -71,6 +71,7 @@ function main() {
   console.log(`- licenseGroups: ${(result.selectedSource.licenseGroups ?? []).join(', ') || 'none'}`);
   console.log(`- noticeReportRequired: ${result.noticeReportRequired ? 'yes' : 'no'}`);
   console.log(`- attributionReportRequired: ${result.attributionReportRequired ? 'yes' : 'no'}`);
+  console.log(`- complianceReportRequired: ${result.complianceReportRequired ? 'yes' : 'no'}`);
   console.log(`- resolverScore: ${result.selectedSource.resolverScore}`);
 
   if (result.complianceRequirements) {
@@ -84,8 +85,11 @@ function main() {
     console.log(`- source.outputAttributionRequired: ${requirements.source.outputAttributionRequired ? 'yes' : 'no'}`);
     console.log(`- policy.requiresNoticeReport: ${requirements.policy.requiresNoticeReport ? 'yes' : 'no'}`);
     console.log(`- policy.requiresAttributionReport: ${requirements.policy.requiresAttributionReport ? 'yes' : 'no'}`);
+    console.log(`- policy.requiresComplianceReportCapability: ${requirements.policy.requiresComplianceReportCapability ? 'yes' : 'no'}`);
+    console.log(`- policy.requiresAttributionReportCapability: ${requirements.policy.requiresAttributionReportCapability ? 'yes' : 'no'}`);
     console.log(`- effective.noticeReportRequired: ${requirements.effective.noticeReportRequired ? 'yes' : 'no'}`);
     console.log(`- effective.attributionReportRequired: ${requirements.effective.attributionReportRequired ? 'yes' : 'no'}`);
+    console.log(`- effective.complianceReportRequired: ${requirements.effective.complianceReportRequired ? 'yes' : 'no'}`);
   }
 
   if (result.compliancePlan) {
@@ -101,6 +105,7 @@ function main() {
     console.log(`- requiresLicenseText: ${plan.requiresLicenseText ? 'yes' : 'no'}`);
     console.log(`- requiresNoticeReport: ${plan.requiresNoticeReport ? 'yes' : 'no'}`);
     console.log(`- requiresAttributionReport: ${plan.requiresAttributionReport ? 'yes' : 'no'}`);
+    console.log(`- requiresComplianceReport: ${plan.requiresComplianceReport ? 'yes' : 'no'}`);
     console.log(`- requiresCreatorAttribution: ${plan.requiresCreatorAttribution ? 'yes' : 'no'}`);
     console.log(`- requiresOutputAttribution: ${plan.requiresOutputAttribution ? 'yes' : 'no'}`);
     console.log(`- requiresSourceDisclosureReview: ${plan.requiresSourceDisclosureReview ? 'yes' : 'no'}`);

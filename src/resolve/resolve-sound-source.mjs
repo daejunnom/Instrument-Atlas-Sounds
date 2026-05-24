@@ -544,40 +544,79 @@ function buildSourceComplianceRequirements(source) {
   };
 }
 
-function buildPolicyComplianceRequirements(policy) {
+function buildPolicyComplianceRequirements(policy = {}) {
+  const requiresAttributionReportCapability = Boolean(
+    policy.requiresAttributionReportCapability ??
+    policy.requiresAttributionReport
+  );
+
+  const requiresComplianceReportCapability = Boolean(
+    policy.requiresComplianceReportCapability ||
+    policy.requiresNoticeReport ||
+    requiresAttributionReportCapability ||
+    policy.requiresExplicitConsent ||
+    policy.requiresSourceDisclosureReview ||
+    policy.requiresNetworkSourceDisclosureReview
+  );
+
   return {
-    requiresNoticeReport: isTrue(policy.requiresNoticeReport),
-    requiresAttributionReport: isTrue(policy.requiresAttributionReport),
-    requiresExplicitConsent: isTrue(policy.requiresExplicitConsent),
-    requiresSourceDisclosureReview: isTrue(policy.requiresSourceDisclosureReview),
-    requiresNetworkSourceDisclosureReview: isTrue(policy.requiresNetworkSourceDisclosureReview)
+    requiresNoticeReport: Boolean(policy.requiresNoticeReport),
+
+    // Transitional legacy field.
+    // This is preserved for migration visibility, but it should no longer mean
+    // that the selected source itself requires creator/output attribution.
+    requiresAttributionReport: Boolean(policy.requiresAttributionReport),
+
+    requiresComplianceReportCapability,
+    requiresAttributionReportCapability,
+
+    requiresExplicitConsent: Boolean(policy.requiresExplicitConsent),
+    requiresSourceDisclosureReview: Boolean(policy.requiresSourceDisclosureReview),
+    requiresNetworkSourceDisclosureReview: Boolean(policy.requiresNetworkSourceDisclosureReview)
   };
 }
 
 function buildEffectiveComplianceRequirements(sourceRequirements, policyRequirements) {
+  const noticeReportRequired = Boolean(
+    sourceRequirements.noticeReportRequired ||
+    policyRequirements.requiresNoticeReport
+  );
+
+  const attributionReportRequired = Boolean(
+    sourceRequirements.creatorAttributionRequired ||
+    sourceRequirements.outputAttributionRequired
+  );
+
+  const explicitConsentRequired = Boolean(
+    policyRequirements.requiresExplicitConsent
+  );
+
+  const sourceDisclosureReviewRequired = Boolean(
+    sourceRequirements.sourceDisclosureRequired ||
+    policyRequirements.requiresSourceDisclosureReview
+  );
+
+  const networkSourceDisclosureReviewRequired = Boolean(
+    sourceRequirements.networkSourceDisclosureRequired ||
+    policyRequirements.requiresNetworkSourceDisclosureReview
+  );
+
+  const complianceReportRequired = Boolean(
+    noticeReportRequired ||
+    attributionReportRequired ||
+    explicitConsentRequired ||
+    sourceDisclosureReviewRequired ||
+    networkSourceDisclosureReviewRequired ||
+    policyRequirements.requiresComplianceReportCapability
+  );
+
   return {
-    noticeReportRequired: Boolean(
-      sourceRequirements.noticeRequired ||
-      sourceRequirements.licenseTextRequired ||
-      sourceRequirements.noticeReportRequired ||
-      policyRequirements.requiresNoticeReport
-    ),
-    attributionReportRequired: Boolean(
-      sourceRequirements.creatorAttributionRequired ||
-      sourceRequirements.outputAttributionRequired ||
-      policyRequirements.requiresAttributionReport
-    ),
-    explicitConsentRequired: Boolean(
-      policyRequirements.requiresExplicitConsent
-    ),
-    sourceDisclosureReviewRequired: Boolean(
-      sourceRequirements.sourceDisclosureRequired ||
-      policyRequirements.requiresSourceDisclosureReview
-    ),
-    networkSourceDisclosureReviewRequired: Boolean(
-      sourceRequirements.networkSourceDisclosureRequired ||
-      policyRequirements.requiresNetworkSourceDisclosureReview
-    )
+    noticeReportRequired,
+    attributionReportRequired,
+    complianceReportRequired,
+    explicitConsentRequired,
+    sourceDisclosureReviewRequired,
+    networkSourceDisclosureReviewRequired
   };
 }
 
@@ -615,6 +654,7 @@ function resolveComplianceWarningLevel(plan) {
     plan.requiresLicenseText ||
     plan.requiresNoticeReport ||
     plan.requiresAttributionReport ||
+    plan.requiresComplianceReport ||
     plan.requiresCreatorAttribution ||
     plan.requiresOutputAttribution
   ) {
@@ -687,6 +727,7 @@ function buildCompliancePlan(selectedSource, request, complianceRequirements) {
     requiresLicenseText: Boolean(source.licenseTextRequired),
     requiresNoticeReport: Boolean(effective.noticeReportRequired),
     requiresAttributionReport: Boolean(effective.attributionReportRequired),
+    requiresComplianceReport: Boolean(effective.complianceReportRequired),
     requiresCreatorAttribution: Boolean(source.creatorAttributionRequired),
     requiresOutputAttribution: Boolean(source.outputAttributionRequired),
     requiresSourceDisclosureReview,
@@ -778,7 +819,13 @@ function collectComplianceDiagnosticReasons(complianceRequirements, compliancePl
   if (source.networkSourceDisclosureRequired) reasons.push('source_network_disclosure_required');
 
   if (policy.requiresNoticeReport) reasons.push('policy_requires_notice_report');
-  if (policy.requiresAttributionReport) reasons.push('policy_requires_attribution_report');
+  if (policy.requiresAttributionReport) reasons.push('policy_requires_attribution_report_legacy');
+  if (policy.requiresComplianceReportCapability) {
+    reasons.push('policy_requires_compliance_report_capability');
+  }
+  if (policy.requiresAttributionReportCapability) {
+    reasons.push('policy_requires_attribution_report_capability');
+  }
   if (policy.requiresExplicitConsent) reasons.push('policy_requires_explicit_consent');
   if (policy.requiresSourceDisclosureReview) reasons.push('policy_requires_source_disclosure_review');
   if (policy.requiresNetworkSourceDisclosureReview) {
@@ -787,6 +834,7 @@ function collectComplianceDiagnosticReasons(complianceRequirements, compliancePl
 
   if (effective.noticeReportRequired) reasons.push('effective_notice_report_required');
   if (effective.attributionReportRequired) reasons.push('effective_attribution_report_required');
+  if (effective.complianceReportRequired) reasons.push('effective_compliance_report_required');
   if (effective.explicitConsentRequired) reasons.push('effective_explicit_consent_required');
   if (effective.sourceDisclosureReviewRequired) reasons.push('effective_source_disclosure_review_required');
   if (effective.networkSourceDisclosureReviewRequired) {
@@ -897,6 +945,10 @@ export function resolveSoundSource(request = {}, options = {}) {
     complianceRequirements?.effective.attributionReportRequired
   );
 
+  const complianceReportRequired = Boolean(
+    complianceRequirements?.effective.complianceReportRequired
+  );
+
   return {
     schemaVersion: 1,
     request: {
@@ -930,6 +982,7 @@ export function resolveSoundSource(request = {}, options = {}) {
     compliancePlan,
     complianceDiagnostics,
     noticeReportRequired,
-    attributionReportRequired
+    attributionReportRequired,
+    complianceReportRequired
   };
 }
