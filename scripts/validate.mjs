@@ -50,6 +50,23 @@ const VALID_LICENSE_CATEGORIES = new Set([
   'to_be_verified'
 ]);
 
+const LICENSE_CATEGORY_TO_LICENSE_FAMILY = new Map([
+  ['public_domain', 'public_domain'],
+  ['permissive_code', 'permissive'],
+  ['commercial_attribution', 'commercial_attribution'],
+  ['commercial_sharealike', 'commercial_sharealike'],
+  ['weak_copyleft', 'weak_copyleft'],
+  ['server_only_copyleft', 'strong_copyleft'],
+  ['strong_copyleft', 'strong_copyleft'],
+  ['network_copyleft', 'network_copyleft'],
+  ['noncommercial', 'noncommercial'],
+  ['no_derivatives', 'no_derivatives'],
+  ['proprietary', 'proprietary'],
+  ['unknown', 'unknown'],
+  ['restricted', 'unknown'],
+  ['to_be_verified', 'unknown']
+]);
+
 const VALID_LICENSE_GROUP_RISK_LEVELS = new Set([
   'low',
   'medium',
@@ -127,6 +144,113 @@ function isStringArray(value) {
 function hasDuplicates(values) {
   if (!Array.isArray(values)) return false;
   return new Set(values).size !== values.length;
+}
+
+function getIntersection(left = [], right = []) {
+  const rightSet = new Set(right);
+  return left.filter((value) => rightSet.has(value));
+}
+
+function validateNoOverlap(object, leftField, rightField, context) {
+  const left = Array.isArray(object[leftField]) ? object[leftField] : [];
+  const right = Array.isArray(object[rightField]) ? object[rightField] : [];
+  const overlap = getIntersection(left, right);
+
+  if (overlap.length > 0) {
+    fail(`${context}.${leftField} and ${context}.${rightField} overlap: ${overlap.join(', ')}`);
+  }
+}
+
+function validateStringArrayField(object, field, context, options = {}) {
+  if (object[field] === undefined) {
+    return [];
+  }
+
+  if (!isStringArray(object[field])) {
+    fail(`${context}.${field} must be an array of strings.`);
+    return [];
+  }
+
+  if (hasDuplicates(object[field])) {
+    fail(`${context}.${field} contains duplicate values.`);
+  }
+
+  if (options.allowedValues) {
+    for (const value of object[field]) {
+      if (!options.allowedValues.has(value)) {
+        fail(`${context}.${field} contains invalid value "${value}".`);
+      }
+    }
+  }
+
+  return object[field];
+}
+
+function getLicenseFamilyForCategory(category) {
+  return LICENSE_CATEGORY_TO_LICENSE_FAMILY.get(category) ?? category;
+}
+
+function validatePolicyLicenseGroupReferences(policy, context, licenseGroupIds) {
+  for (const field of ['allowLicenseGroups', 'denyLicenseGroups']) {
+    const values = Array.isArray(policy[field]) ? policy[field] : [];
+
+    for (const groupId of values) {
+      if (!licenseGroupIds.has(groupId)) {
+        fail(`${context}.${field} references missing license group "${groupId}".`);
+      }
+    }
+  }
+}
+
+function validatePolicyGroupConflicts(policy, context, licenseGroupsById) {
+  const allowLicenses = Array.isArray(policy.allowLicenses) ? policy.allowLicenses : [];
+  const denyLicenses = Array.isArray(policy.denyLicenses) ? policy.denyLicenses : [];
+  const allowCategories = Array.isArray(policy.allowCategories) ? policy.allowCategories : [];
+  const denyCategories = Array.isArray(policy.denyCategories) ? policy.denyCategories : [];
+  const allowLicenseGroups = Array.isArray(policy.allowLicenseGroups) ? policy.allowLicenseGroups : [];
+  const denyLicenseGroups = Array.isArray(policy.denyLicenseGroups) ? policy.denyLicenseGroups : [];
+
+  for (const groupId of denyLicenseGroups) {
+    const group = licenseGroupsById.get(groupId);
+    if (!group) continue;
+
+    const groupLicenseIds = Array.isArray(group.licenseIds) ? group.licenseIds : [];
+    const licenseOverlap = getIntersection(allowLicenses, groupLicenseIds);
+
+    if (licenseOverlap.length > 0) {
+      fail(`${context}.allowLicenses includes license(s) denied through denyLicenseGroups.${groupId}: ${licenseOverlap.join(', ')}`);
+    }
+
+    const groupFamilies = Array.isArray(group.licenseFamilies) ? group.licenseFamilies : [];
+    const categoryOverlap = allowCategories.filter((category) => {
+      return groupFamilies.includes(getLicenseFamilyForCategory(category));
+    });
+
+    if (categoryOverlap.length > 0) {
+      fail(`${context}.allowCategories includes category family denied through denyLicenseGroups.${groupId}: ${categoryOverlap.join(', ')}`);
+    }
+  }
+
+  for (const groupId of allowLicenseGroups) {
+    const group = licenseGroupsById.get(groupId);
+    if (!group) continue;
+
+    const groupLicenseIds = Array.isArray(group.licenseIds) ? group.licenseIds : [];
+    const licenseOverlap = getIntersection(denyLicenses, groupLicenseIds);
+
+    if (licenseOverlap.length > 0) {
+      fail(`${context}.denyLicenses includes license(s) allowed through allowLicenseGroups.${groupId}: ${licenseOverlap.join(', ')}`);
+    }
+
+    const groupFamilies = Array.isArray(group.licenseFamilies) ? group.licenseFamilies : [];
+    const categoryOverlap = denyCategories.filter((category) => {
+      return groupFamilies.includes(getLicenseFamilyForCategory(category));
+    });
+
+    if (categoryOverlap.length > 0) {
+      fail(`${context}.denyCategories includes category family allowed through allowLicenseGroups.${groupId}: ${categoryOverlap.join(', ')}`);
+    }
+  }
 }
 
 function isHttpUrl(value) {
@@ -225,7 +349,7 @@ function validateManifest() {
   return manifest;
 }
 
-function validatePolicyFile(fileName, policyIds) {
+function validatePolicyFile(fileName, policyIds, licenseGroupIds, licenseGroupsById) {
   const filePath = path.join(paths.policies, fileName);
   const policy = readJson(filePath);
   if (!policy) return;
@@ -246,25 +370,29 @@ function validatePolicyFile(fileName, policyIds) {
   }
   policyIds.add(policy.id);
 
-  for (const field of ['allowCategories', 'denyCategories']) {
-    if (policy[field] !== undefined) {
-      if (!isStringArray(policy[field])) {
-        fail(`${context}.${field} must be an array of strings.`);
-      } else {
-        for (const category of policy[field]) {
-          if (!VALID_LICENSE_CATEGORIES.has(category)) {
-            fail(`${context}.${field} contains invalid category "${category}".`);
-          }
-        }
-      }
-    }
-  }
+  validateStringArrayField(policy, 'allowCategories', context, {
+    allowedValues: VALID_LICENSE_CATEGORIES
+  });
 
-  for (const field of ['allowLicenses', 'denyLicenses']) {
-    if (policy[field] !== undefined && !isStringArray(policy[field])) {
-      fail(`${context}.${field} must be an array of strings.`);
-    }
-  }
+  validateStringArrayField(policy, 'denyCategories', context, {
+    allowedValues: VALID_LICENSE_CATEGORIES
+  });
+
+  validateStringArrayField(policy, 'allowLicenses', context);
+  validateStringArrayField(policy, 'denyLicenses', context);
+  validateStringArrayField(policy, 'allowLicenseGroups', context);
+  validateStringArrayField(policy, 'denyLicenseGroups', context);
+  validateStringArrayField(policy, 'allowRestrictions', context);
+  validateStringArrayField(policy, 'denyRestrictions', context);
+  validateStringArrayField(policy, 'blockedUseCases', context);
+
+  validateNoOverlap(policy, 'allowCategories', 'denyCategories', context);
+  validateNoOverlap(policy, 'allowLicenses', 'denyLicenses', context);
+  validateNoOverlap(policy, 'allowLicenseGroups', 'denyLicenseGroups', context);
+  validateNoOverlap(policy, 'allowRestrictions', 'denyRestrictions', context);
+
+  validatePolicyLicenseGroupReferences(policy, context, licenseGroupIds);
+  validatePolicyGroupConflicts(policy, context, licenseGroupsById);
 
   if (policy.allowAttributionRequired !== undefined) {
     fail(`${context}.allowAttributionRequired is deprecated. Use allowNoticeRequired, allowCreatorAttributionRequired, and allowOutputAttributionRequired instead.`);
@@ -290,11 +418,11 @@ function validatePolicyFile(fileName, policyIds) {
   }
 }
 
-function validatePolicies() {
+function validatePolicies(licenseGroupIds, licenseGroupsById) {
   const policyIds = new Set();
 
   for (const fileName of listJsonFiles(paths.policies)) {
-    validatePolicyFile(fileName, policyIds);
+    validatePolicyFile(fileName, policyIds, licenseGroupIds, licenseGroupsById);
   }
 
   return policyIds;
@@ -303,23 +431,26 @@ function validatePolicies() {
 function validateLicenseGroupFile(fileName, licenseGroupIds) {
   const filePath = path.join(paths.licenseGroups, fileName);
   const group = readJson(filePath);
-  if (!group) return;
+  if (!group) return null;
 
   const expectedId = fileName.replace(/\.json$/, '');
   const context = `license group "${fileName}"`;
+
+  requireString(group, 'id', context);
+  requireString(group, 'title', context);
+  requireString(group, 'description', context);
 
   if (group.id !== expectedId) {
     fail(`${context}.id must match filename: "${group.id}" !== "${expectedId}".`);
   }
 
-  if (licenseGroupIds.has(group.id)) {
-    fail(`Duplicate license group id: ${group.id}`);
-  }
-  licenseGroupIds.add(group.id);
+  const groupIdAlreadySeen = licenseGroupIds.has(group.id);
 
-  requireString(group, 'id', context);
-  requireString(group, 'title', context);
-  requireString(group, 'description', context);
+  if (groupIdAlreadySeen) {
+    fail(`Duplicate license group id: ${group.id}`);
+  } else if (typeof group.id === 'string') {
+    licenseGroupIds.add(group.id);
+  }
 
   if (group.schemaVersion !== 1) {
     fail(`${context}.schemaVersion must be 1.`);
@@ -333,17 +464,20 @@ function validateLicenseGroupFile(fileName, licenseGroupIds) {
     fail(`${context}.defaultBehavior has invalid value "${group.defaultBehavior}".`);
   }
 
-  if (!isStringArray(group.licenseIds) || group.licenseIds.length === 0) {
+  validateStringArrayField(group, 'licenseIds', context);
+  validateStringArrayField(group, 'licenseFamilies', context);
+
+  if (!Array.isArray(group.licenseIds) || group.licenseIds.length === 0) {
     fail(`${context}.licenseIds must be a non-empty array of strings.`);
   }
 
-  if (!isStringArray(group.licenseFamilies) || group.licenseFamilies.length === 0) {
+  if (!Array.isArray(group.licenseFamilies) || group.licenseFamilies.length === 0) {
     fail(`${context}.licenseFamilies must be a non-empty array of strings.`);
   }
 
-  if (!Array.isArray(group.restrictions)) {
-    fail(`${context}.restrictions must be an array.`);
-  }
+  validateStringArrayField(group, 'restrictions', context);
+  validateStringArrayField(group, 'blockedUseCases', context);
+  validateStringArrayField(group, 'notes', context);
 
   for (const field of [
     'defaultIncludedInCore',
@@ -354,16 +488,65 @@ function validateLicenseGroupFile(fileName, licenseGroupIds) {
       fail(`${context}.${field} must be boolean.`);
     }
   }
+
+  for (const field of [
+    'commercialUse',
+    'derivativesAllowed',
+    'redistributionAllowed',
+    'noticeRequired',
+    'licenseTextRequired',
+    'noticeReportRequired',
+    'creatorAttributionRequired',
+    'outputAttributionRequired',
+    'shareAlikeRequired',
+    'sourceDisclosureRequired',
+    'networkSourceDisclosureRequired',
+    'clientDistributionAllowed',
+    'serverUseAllowed',
+    'requiresNoticeReport',
+    'requiresAttributionReport'
+  ]) {
+    if (group[field] === undefined) {
+      continue;
+    }
+
+    const value = group[field];
+
+    const valid =
+      typeof value === 'boolean' ||
+      value === 'unknown' ||
+      value === 'license_dependent' ||
+      value === 'policy_dependent' ||
+      value === 'noncommercial_only';
+
+    if (!valid) {
+      fail(`${context}.${field} must be boolean or a known policy marker when present.`);
+    }
+  }
+
+  if (groupIdAlreadySeen || typeof group.id !== 'string') {
+    return null;
+  }
+
+  return group;
 }
 
 function validateLicenseGroups() {
   const licenseGroupIds = new Set();
+  const licenseGroupsById = new Map();
 
   for (const fileName of listJsonFiles(paths.licenseGroups)) {
-    validateLicenseGroupFile(fileName, licenseGroupIds);
+    const group = validateLicenseGroupFile(fileName, licenseGroupIds);
+
+    if (group) {
+      licenseGroupsById.set(group.id, group);
+    }
   }
 
-  return licenseGroupIds;
+  return {
+    licenseGroupIds,
+    licenseGroupsById
+  };
 }
 
 function validateCapabilities(source, context) {
@@ -719,8 +902,8 @@ function validateManifestReferences(manifest, policyIds, licenseGroupIds) {
 
 function main() {
   const manifest = validateManifest();
-  const policyIds = validatePolicies();
-  const licenseGroupIds = validateLicenseGroups();
+  const { licenseGroupIds, licenseGroupsById } = validateLicenseGroups();
+  const policyIds = validatePolicies(licenseGroupIds, licenseGroupsById);
   validateSources();
   validateManifestReferences(manifest, policyIds, licenseGroupIds);
 

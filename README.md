@@ -274,7 +274,14 @@ weak_copyleft
 Blocks by default:
 
 ```txt
+server_only_copyleft
+commercial_sharealike
+strong_copyleft
 network_copyleft
+noncommercial
+no_derivatives
+proprietary
+unknown
 restricted
 to_be_verified
 ```
