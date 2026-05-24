@@ -156,6 +156,7 @@ instrument-atlas-sounds/
         wav-encode-browser.mjs
         wav-encode-node.mjs
         karplus-strong.mjs
+        karplus-strong-node.mjs
 
   assets/
     README.md
@@ -604,12 +605,15 @@ wav-encode-node.mjs
   Node-only WAV Buffer and file output helpers.
 
 karplus-strong.mjs
-  Compatibility aggregate module.
+  Client-safe compatibility aggregate module.
+
+karplus-strong-node.mjs
+  Node compatibility aggregate module.
 ```
 
 The `client` execution target applies to the render core and browser-safe WAV encoding helpers.
 
-Node-only helpers such as `encodeWavPcm16ToBuffer`, `encodeWavPcm16`, and `writeWavFile` should not be treated as browser-safe exports.
+Node-only helpers such as `encodeWavPcm16ToBuffer`, `encodeWavPcm16`, and `writeWavFile` are exposed through `wav-encode-node.mjs` and `karplus-strong-node.mjs`, not through the client-safe aggregate `karplus-strong.mjs`.
 
 This prototype is useful for early local testing. It is not intended to replace a production-grade guitar, harp, lute, or koto model.
 

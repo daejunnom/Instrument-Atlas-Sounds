@@ -41,13 +41,17 @@ wav-encode-node.mjs
   Uses Buffer, fs, and path for local file output.
 
 karplus-strong.mjs
-  Compatibility aggregate module.
+  Client-safe compatibility aggregate module.
+  Re-exports the core and browser encoder only.
+
+karplus-strong-node.mjs
+  Node compatibility aggregate module.
   Re-exports the core, browser encoder, and Node helpers.
 ```
 
 Client applications should import from `karplus-strong-core.mjs` and `wav-encode-browser.mjs`.
 
-Node tools may import from `wav-encode-node.mjs` or the aggregate `karplus-strong.mjs`.
+Node tools may import from `wav-encode-node.mjs` or the Node aggregate `karplus-strong-node.mjs`.
 
 ## Current output
 
