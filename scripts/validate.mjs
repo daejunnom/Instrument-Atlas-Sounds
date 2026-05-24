@@ -446,8 +446,8 @@ function validatePolicyFile(fileName, policyIds, licenseGroupIds, licenseGroupsB
     'preferPublicDomain',
     'requiresNoticeReport',
 
-    // Transitional legacy field.
-    // Keep this until the resolver and examples are migrated.
+    // Transitional legacy policy field.
+    // Keep this until policy JSON files no longer carry requiresAttributionReport.
     'requiresAttributionReport',
 
     // Policy-level capability requirements.

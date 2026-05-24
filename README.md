@@ -840,7 +840,7 @@ Expected resolver output check:
 
 ```txt
 Resolver output check OK
-Checked complianceRequirements, compliancePlan, complianceDiagnostics, and expected rejection shape.
+Checked complianceRequirements, compliancePlan, complianceDiagnostics, report booleans, and expected rejection shape.
 ```
 
 Expected package output:
@@ -1160,6 +1160,7 @@ requiresNoticeReport
 requiresAttributionReport
 requiresComplianceReport
 requiresCreatorAttribution
+requiresOutputAttribution
 requiresSourceDisclosureReview
 requiresNetworkDisclosureReview
 shouldBlockDownload
