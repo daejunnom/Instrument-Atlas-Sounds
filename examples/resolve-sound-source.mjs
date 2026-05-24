@@ -73,6 +73,21 @@ function main() {
   console.log(`- attributionReportRequired: ${result.attributionReportRequired ? 'yes' : 'no'}`);
   console.log(`- resolverScore: ${result.selectedSource.resolverScore}`);
 
+  if (result.complianceRequirements) {
+    const requirements = result.complianceRequirements;
+
+    console.log('');
+    console.log('Compliance requirements:');
+    console.log(`- source.noticeRequired: ${requirements.source.noticeRequired ? 'yes' : 'no'}`);
+    console.log(`- source.licenseTextRequired: ${requirements.source.licenseTextRequired ? 'yes' : 'no'}`);
+    console.log(`- source.creatorAttributionRequired: ${requirements.source.creatorAttributionRequired ? 'yes' : 'no'}`);
+    console.log(`- source.outputAttributionRequired: ${requirements.source.outputAttributionRequired ? 'yes' : 'no'}`);
+    console.log(`- policy.requiresNoticeReport: ${requirements.policy.requiresNoticeReport ? 'yes' : 'no'}`);
+    console.log(`- policy.requiresAttributionReport: ${requirements.policy.requiresAttributionReport ? 'yes' : 'no'}`);
+    console.log(`- effective.noticeReportRequired: ${requirements.effective.noticeReportRequired ? 'yes' : 'no'}`);
+    console.log(`- effective.attributionReportRequired: ${requirements.effective.attributionReportRequired ? 'yes' : 'no'}`);
+  }
+
   if (result.rejectedSources.length > 0) {
     console.log('');
     console.log('Rejected sources:');

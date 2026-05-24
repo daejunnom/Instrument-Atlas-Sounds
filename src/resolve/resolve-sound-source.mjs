@@ -526,6 +526,77 @@ function summarizeRejectionReasons(rejectedSources) {
   );
 }
 
+function isTrue(value) {
+  return value === true;
+}
+
+function buildSourceComplianceRequirements(source) {
+  const license = source?.license ?? {};
+
+  return {
+    noticeRequired: isTrue(license.noticeRequired),
+    licenseTextRequired: isTrue(license.licenseTextRequired),
+    noticeReportRequired: isTrue(license.noticeReportRequired),
+    creatorAttributionRequired: isTrue(license.creatorAttributionRequired),
+    outputAttributionRequired: isTrue(license.outputAttributionRequired),
+    sourceDisclosureRequired: isTrue(license.sourceDisclosureRequired) || isTrue(license.sourceRequiredOnDistribution),
+    networkSourceDisclosureRequired: isTrue(license.networkSourceDisclosureRequired) || isTrue(license.networkSourceRequired)
+  };
+}
+
+function buildPolicyComplianceRequirements(policy) {
+  return {
+    requiresNoticeReport: isTrue(policy.requiresNoticeReport),
+    requiresAttributionReport: isTrue(policy.requiresAttributionReport),
+    requiresExplicitConsent: isTrue(policy.requiresExplicitConsent),
+    requiresSourceDisclosureReview: isTrue(policy.requiresSourceDisclosureReview),
+    requiresNetworkSourceDisclosureReview: isTrue(policy.requiresNetworkSourceDisclosureReview)
+  };
+}
+
+function buildEffectiveComplianceRequirements(sourceRequirements, policyRequirements) {
+  return {
+    noticeReportRequired: Boolean(
+      sourceRequirements.noticeRequired ||
+      sourceRequirements.licenseTextRequired ||
+      sourceRequirements.noticeReportRequired ||
+      policyRequirements.requiresNoticeReport
+    ),
+    attributionReportRequired: Boolean(
+      sourceRequirements.creatorAttributionRequired ||
+      sourceRequirements.outputAttributionRequired ||
+      policyRequirements.requiresAttributionReport
+    ),
+    explicitConsentRequired: Boolean(
+      policyRequirements.requiresExplicitConsent
+    ),
+    sourceDisclosureReviewRequired: Boolean(
+      sourceRequirements.sourceDisclosureRequired ||
+      policyRequirements.requiresSourceDisclosureReview
+    ),
+    networkSourceDisclosureReviewRequired: Boolean(
+      sourceRequirements.networkSourceDisclosureRequired ||
+      policyRequirements.requiresNetworkSourceDisclosureReview
+    )
+  };
+}
+
+function buildComplianceRequirements(selectedSource, policy) {
+  if (!selectedSource) {
+    return null;
+  }
+
+  const source = buildSourceComplianceRequirements(selectedSource);
+  const policyRequirements = buildPolicyComplianceRequirements(policy);
+  const effective = buildEffectiveComplianceRequirements(source, policyRequirements);
+
+  return {
+    source,
+    policy: policyRequirements,
+    effective
+  };
+}
+
 export function resolveSoundSource(request = {}, options = {}) {
   if (!isPlainObject(request)) {
     throw new TypeError('resolveSoundSource request must be an object.');
@@ -591,17 +662,14 @@ export function resolveSoundSource(request = {}, options = {}) {
   }));
 
   const selectedSource = candidates[0] ?? null;
+  const complianceRequirements = buildComplianceRequirements(selectedSource, policy);
 
   const noticeReportRequired = Boolean(
-    selectedSource?.license?.noticeRequired ||
-    selectedSource?.license?.noticeReportRequired ||
-    policy.requiresNoticeReport
+    complianceRequirements?.effective.noticeReportRequired
   );
 
   const attributionReportRequired = Boolean(
-    selectedSource?.license?.creatorAttributionRequired ||
-    selectedSource?.license?.outputAttributionRequired ||
-    policy.requiresAttributionReport
+    complianceRequirements?.effective.attributionReportRequired
   );
 
   return {
@@ -633,6 +701,7 @@ export function resolveSoundSource(request = {}, options = {}) {
       accepted: candidates.length,
       rejected: rejected.length
     },
+    complianceRequirements,
     noticeReportRequired,
     attributionReportRequired
   };

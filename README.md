@@ -972,6 +972,10 @@ rejectedSources
 rejectedSources[].reason
 rejectedSources[].licenseGroups
 rejectionReasons
+complianceRequirements
+complianceRequirements.source
+complianceRequirements.policy
+complianceRequirements.effective
 noticeReportRequired
 attributionReportRequired
 ```
@@ -980,7 +984,30 @@ attributionReportRequired
 
 `rejectionReasons` provides a reason-count summary for quick diagnostics.
 
-`noticeReportRequired` and `attributionReportRequired` may include requirements from the selected policy as well as the selected source. Source-specific requirements remain available under `selectedSource.license`.
+`complianceRequirements.source` describes requirements from the selected source license metadata.
+
+`complianceRequirements.policy` describes requirements from the selected policy.
+
+`complianceRequirements.effective` combines source and policy requirements into the final requirements that a consuming application should handle.
+
+If no source is selected, `complianceRequirements` is `null`.
+
+`noticeReportRequired` and `attributionReportRequired` are convenience booleans derived from `complianceRequirements.effective`.
+
+The resolver separates compliance requirements into three layers:
+
+```txt
+source
+  Requirements from the selected source license metadata.
+
+policy
+  Requirements from the selected policy.
+
+effective
+  Final combined requirements for the consuming application.
+```
+
+This separation prevents MIT/BSD/Apache notice preservation from being confused with CC-BY-style creator or output attribution.
 
 The resolver enforces policy license groups.
 
