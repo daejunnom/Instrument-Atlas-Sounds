@@ -445,7 +445,15 @@ function validatePolicyFile(fileName, policyIds, licenseGroupIds, licenseGroupsB
     'allowServerOnlyCopyleft',
     'preferPublicDomain',
     'requiresNoticeReport',
+
+    // Transitional legacy field.
+    // Keep this until the resolver and examples are migrated.
     'requiresAttributionReport',
+
+    // Policy-level capability requirements.
+    'requiresComplianceReportCapability',
+    'requiresAttributionReportCapability',
+
     'requiresExplicitConsent',
     'requiresSourceDisclosureReview',
     'requiresNetworkSourceDisclosureReview'
@@ -453,6 +461,49 @@ function validatePolicyFile(fileName, policyIds, licenseGroupIds, licenseGroupsB
     if (policy[field] !== undefined && typeof policy[field] !== 'boolean') {
       fail(`${context}.${field} must be boolean when present.`);
     }
+  }
+
+  if (
+    policy.requiresAttributionReport !== undefined &&
+    policy.requiresAttributionReportCapability !== undefined &&
+    policy.requiresAttributionReport !== policy.requiresAttributionReportCapability
+  ) {
+    fail(`${context}.requiresAttributionReport and ${context}.requiresAttributionReportCapability must match during the migration period.`);
+  }
+
+  if (
+    policy.requiresNoticeReport === true &&
+    policy.requiresComplianceReportCapability !== true
+  ) {
+    fail(`${context}.requiresNoticeReport=true requires requiresComplianceReportCapability=true.`);
+  }
+
+  if (
+    policy.requiresAttributionReportCapability === true &&
+    policy.requiresComplianceReportCapability !== true
+  ) {
+    fail(`${context}.requiresAttributionReportCapability=true requires requiresComplianceReportCapability=true.`);
+  }
+
+  if (
+    policy.requiresSourceDisclosureReview === true &&
+    policy.requiresComplianceReportCapability !== true
+  ) {
+    fail(`${context}.requiresSourceDisclosureReview=true requires requiresComplianceReportCapability=true.`);
+  }
+
+  if (
+    policy.requiresNetworkSourceDisclosureReview === true &&
+    policy.requiresComplianceReportCapability !== true
+  ) {
+    fail(`${context}.requiresNetworkSourceDisclosureReview=true requires requiresComplianceReportCapability=true.`);
+  }
+
+  if (
+    (policy.allowCreatorAttributionRequired === true || policy.allowOutputAttributionRequired === true) &&
+    policy.requiresAttributionReportCapability !== true
+  ) {
+    fail(`${context} allows creator/output-attribution-required sources, so requiresAttributionReportCapability must be true.`);
   }
 }
 

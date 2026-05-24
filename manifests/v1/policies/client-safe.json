@@ -71,5 +71,7 @@
   "allowServerOnlyCopyleft": false,
   "preferPublicDomain": true,
   "requiresNoticeReport": true,
-  "requiresAttributionReport": false
+  "requiresAttributionReport": false,
+  "requiresComplianceReportCapability": true,
+  "requiresAttributionReportCapability": false
 }

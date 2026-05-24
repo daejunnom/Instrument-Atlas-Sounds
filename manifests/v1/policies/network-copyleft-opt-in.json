@@ -43,6 +43,8 @@
   "preferPublicDomain": false,
   "requiresNoticeReport": true,
   "requiresAttributionReport": false,
+  "requiresComplianceReportCapability": true,
+  "requiresAttributionReportCapability": false,
   "requiresExplicitConsent": true,
   "requiresNetworkSourceDisclosureReview": true,
   "blockedUseCases": [

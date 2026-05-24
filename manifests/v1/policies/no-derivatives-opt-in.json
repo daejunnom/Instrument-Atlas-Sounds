@@ -42,6 +42,8 @@
   "preferPublicDomain": false,
   "requiresNoticeReport": true,
   "requiresAttributionReport": true,
+  "requiresComplianceReportCapability": true,
+  "requiresAttributionReportCapability": true,
   "requiresExplicitConsent": true,
   "blockedUseCases": [
     "edit",

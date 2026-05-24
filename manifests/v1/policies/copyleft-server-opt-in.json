@@ -55,5 +55,7 @@
   "allowCreatorAttributionRequired": false,
   "allowOutputAttributionRequired": false,
   "requiresNoticeReport": true,
-  "requiresAttributionReport": false
+  "requiresAttributionReport": false,
+  "requiresComplianceReportCapability": true,
+  "requiresAttributionReportCapability": false
 }
