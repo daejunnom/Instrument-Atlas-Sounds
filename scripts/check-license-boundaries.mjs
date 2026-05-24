@@ -117,6 +117,7 @@ const CLIENT_SAFE_DENY_CATEGORIES = [
 ];
 
 const SAAS_SAFE_DENY_CATEGORIES = [
+  'weak_copyleft',
   'server_only_copyleft',
   'commercial_sharealike',
   'strong_copyleft',

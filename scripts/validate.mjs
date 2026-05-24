@@ -83,6 +83,16 @@ const VALID_LICENSE_GROUP_DEFAULT_BEHAVIORS = new Set([
   'blocked'
 ]);
 
+const DEFAULT_POLICY_IDS = new Set([
+  'client-safe',
+  'saas-safe',
+  'cc0-only',
+  'permissive-only',
+  'commercial-safe',
+  'commercial-safe-no-output-attribution',
+  'commercial-safe-with-attribution'
+]);
+
 const VALID_DURATION_POLICIES = new Set([
   'generated_sustain',
   'generated_decay',
@@ -253,6 +263,33 @@ function validatePolicyGroupConflicts(policy, context, licenseGroupsById) {
   }
 }
 
+function validateDefaultPolicyDoesNotAllowOptInGroups(policy, context, licenseGroupsById) {
+  if (!DEFAULT_POLICY_IDS.has(policy.id)) {
+    return;
+  }
+
+  const allowLicenseGroups = Array.isArray(policy.allowLicenseGroups)
+    ? policy.allowLicenseGroups
+    : [];
+
+  for (const groupId of allowLicenseGroups) {
+    const group = licenseGroupsById.get(groupId);
+    if (!group) continue;
+
+    const isOptIn =
+      group.requiresExplicitConsent === true ||
+      group.defaultBehavior === 'opt_in_only' ||
+      group.defaultBehavior === 'blocked_by_default' ||
+      group.defaultBehavior === 'blocked';
+
+    if (isOptIn) {
+      fail(
+        `${context}.allowLicenseGroups includes opt-in or blocked license group "${groupId}". Default policies must not allow groups that require explicit consent.`
+      );
+    }
+  }
+}
+
 function isHttpUrl(value) {
   if (value === null) return true;
   if (typeof value !== 'string') return false;
@@ -393,6 +430,7 @@ function validatePolicyFile(fileName, policyIds, licenseGroupIds, licenseGroupsB
 
   validatePolicyLicenseGroupReferences(policy, context, licenseGroupIds);
   validatePolicyGroupConflicts(policy, context, licenseGroupsById);
+  validateDefaultPolicyDoesNotAllowOptInGroups(policy, context, licenseGroupsById);
 
   if (policy.allowAttributionRequired !== undefined) {
     fail(`${context}.allowAttributionRequired is deprecated. Use allowNoticeRequired, allowCreatorAttributionRequired, and allowOutputAttributionRequired instead.`);

@@ -512,6 +512,20 @@ function getCandidatesForInstrument(catalog, instrumentId) {
   });
 }
 
+function summarizeRejectionReasons(rejectedSources) {
+  const summary = {};
+
+  for (const rejected of rejectedSources) {
+    const reason = rejected.reason ?? 'unknown';
+
+    summary[reason] = (summary[reason] ?? 0) + 1;
+  }
+
+  return Object.fromEntries(
+    Object.entries(summary).sort(([left], [right]) => left.localeCompare(right))
+  );
+}
+
 export function resolveSoundSource(request = {}, options = {}) {
   if (!isPlainObject(request)) {
     throw new TypeError('resolveSoundSource request must be an object.');
@@ -613,6 +627,7 @@ export function resolveSoundSource(request = {}, options = {}) {
       reason: item.reason,
       details: item.details
     })),
+    rejectionReasons: summarizeRejectionReasons(rejected),
     counts: {
       total: rawCandidates.length,
       accepted: candidates.length,

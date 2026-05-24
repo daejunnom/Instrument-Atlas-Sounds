@@ -39,6 +39,10 @@ function main() {
   console.log(`Accepted candidates: ${result.counts.accepted}`);
   console.log(`Rejected candidates: ${result.counts.rejected}`);
 
+  if (Object.keys(result.rejectionReasons ?? {}).length > 0) {
+    console.log(`Rejection reasons: ${JSON.stringify(result.rejectionReasons)}`);
+  }
+
   if (!result.selectedSource) {
     console.log('');
     console.log('No compatible sound source selected.');

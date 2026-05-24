@@ -481,7 +481,7 @@ This project should prefer false negatives over unsafe inclusion.
 | CC-BY-SA | No | Policy-dependent | Policy-dependent | Policy-dependent | Yes | ShareAlike |
 | CC-BY-NC | No | No | No by default | Noncommercial only | Yes | Non-commercial restriction |
 | CC-BY-ND | No | Policy-dependent | No by default | Policy-dependent | Yes | No derivatives |
-| MPL / LGPL | No | Policy-dependent | No by default | Policy-dependent | Yes | Integration model |
+| MPL / LGPL | No | Policy-dependent | No by default | Opt-in only | Yes | Integration model |  
 | GPL | No | Policy-dependent | No | Server-only by default | Yes | Source disclosure / linking |
 | AGPL | No | No by default | No | No by default | Yes | Network source disclosure |
 | Proprietary / unknown | No | No | No | No | No | Rights unclear |

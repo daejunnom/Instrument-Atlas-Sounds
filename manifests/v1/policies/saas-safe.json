@@ -1,18 +1,17 @@
 {
   "id": "saas-safe",
   "title": "SaaS Safe",
-  "description": "Allows server-side use of public-domain, permissive, and weak-copyleft sources while blocking GPL, AGPL, non-commercial, no-derivatives, proprietary, unknown, disputed, and unverified sources by default.",
+  "description": "Allows server-side use of public-domain and permissive sources while blocking weak copyleft, GPL, AGPL, non-commercial, no-derivatives, proprietary, unknown, disputed, and unverified sources by default.",
   "allowCategories": [
     "public_domain",
-    "permissive_code",
-    "weak_copyleft"
+    "permissive_code"
   ],
   "allowLicenseGroups": [
     "public-domain",
-    "permissive",
-    "weak-copyleft"
+    "permissive"
   ],
   "denyCategories": [
+    "weak_copyleft",
     "server_only_copyleft",
     "commercial_sharealike",
     "strong_copyleft",
@@ -25,6 +24,7 @@
     "to_be_verified"
   ],
   "denyLicenseGroups": [
+    "weak-copyleft",
     "strong-copyleft",
     "network-copyleft",
     "noncommercial",
@@ -32,6 +32,9 @@
     "blocked"
   ],
   "denyLicenses": [
+    "MPL-2.0",
+    "LGPL-2.1-or-later",
+    "LGPL-3.0-or-later",
     "GPL-2.0-only",
     "GPL-2.0-or-later",
     "GPL-3.0-only",

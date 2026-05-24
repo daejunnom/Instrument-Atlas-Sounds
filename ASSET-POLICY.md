@@ -146,10 +146,13 @@ GPL, AGPL, unknown-license, non-commercial, and no-derivatives sources should no
 
 Server-side execution means the code runs only on infrastructure controlled by the application provider.
 
-Server-side policies may allow:
+Default server-side policies should generally allow:
 
 - public_domain
 - permissive_code
+
+Explicit opt-in server-side policies may allow:
+
 - weak_copyleft
 - server_only_copyleft
 

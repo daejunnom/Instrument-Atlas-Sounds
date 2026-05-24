@@ -284,12 +284,12 @@ Allows:
 ```txt
 public_domain
 permissive_code
-weak_copyleft
 ```
 
 Blocks by default:
 
 ```txt
+weak_copyleft
 server_only_copyleft
 commercial_sharealike
 strong_copyleft
@@ -969,11 +969,18 @@ selectedSource
 selectedSource.licenseGroups
 candidates
 rejectedSources
+rejectedSources[].reason
 rejectedSources[].licenseGroups
 rejectionReasons
 noticeReportRequired
 attributionReportRequired
 ```
+
+`rejectedSources[].reason` provides per-source rejection details.
+
+`rejectionReasons` provides a reason-count summary for quick diagnostics.
+
+`noticeReportRequired` and `attributionReportRequired` may include requirements from the selected policy as well as the selected source. Source-specific requirements remain available under `selectedSource.license`.
 
 The resolver enforces policy license groups.
 
