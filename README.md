@@ -162,8 +162,11 @@ instrument-atlas-sounds/
     resolve-request.json
     render-request.json
     render-karplus-strong.mjs
+    resolve-expected-rejection.mjs
     client-safe-resolve-request.json
-    saas-safe-resolve-request.json
+    saas-safe-success-request.json
+    saas-safe-expected-rejection-request.json
+    metadata-resolve-request.json
 
   scripts/
     validate.mjs
@@ -676,7 +679,7 @@ Resolve the default runtime source example:
 npm run resolve:example
 ```
 
-Resolve a SaaS-safe request:
+Resolve a SaaS-safe success request:
 
 ```sh
 npm run resolve:saas
@@ -686,6 +689,12 @@ Resolve a metadata-only request:
 
 ```sh
 npm run resolve:metadata
+```
+
+Check an expected runtime rejection:
+
+```sh
+npm run resolve:expected-rejection
 ```
 
 Render the local Karplus-Strong prototype:
@@ -942,6 +951,22 @@ A consuming application may explicitly allow metadata-only resolution for discov
 Metadata-only resolution should not be treated as render readiness.
 
 A selected `planned` source means that the source is known to the registry, not that it can already generate audio.
+
+### Expected rejection example
+
+Some sources are intentionally listed before they are render-ready.
+
+For example, `src_chowkick_kick_model` is a planned source for `inst_kick_drum`.
+
+The default runtime resolver must reject planned sources unless metadata-only resolution is explicitly allowed.
+
+Run:
+
+```sh
+npm run resolve:expected-rejection
+```
+
+This command succeeds only when the expected rejection occurs.
 
 ## Consumer flow
 

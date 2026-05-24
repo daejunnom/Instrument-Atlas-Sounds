@@ -19,5 +19,9 @@
       "synth_patch"
     ],
     "preferRealtime": false
+  },
+  "expectedRejection": {
+    "sourceId": "src_chowkick_kick_model",
+    "reason": "runtime_status_not_allowed"
   }
 }

@@ -38,6 +38,13 @@ jobs:
       - name: Build runtime catalog
         run: npm run build
 
+      - name: Run resolver examples
+        run: |
+          npm run resolve:example
+          npm run resolve:saas
+          npm run resolve:metadata
+          npm run resolve:expected-rejection
+
       - name: Create release package
         run: npm run package
 
