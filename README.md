@@ -164,6 +164,7 @@ instrument-atlas-sounds/
     render-request.json
     render-karplus-strong.mjs
     resolve-expected-rejection.mjs
+    check-resolver-output.mjs
     client-safe-resolve-request.json
     saas-safe-success-request.json
     saas-safe-expected-rejection-request.json
@@ -754,6 +755,12 @@ Check an expected runtime rejection:
 npm run resolve:expected-rejection
 ```
 
+Check resolver output shape:
+
+```sh
+npm run check:resolver-output
+```
+
 Render the local Karplus-Strong prototype:
 
 ```sh
@@ -776,6 +783,7 @@ npm run resolve:example
 npm run resolve:saas
 npm run resolve:metadata
 npm run resolve:expected-rejection
+npm run check:resolver-output
 npm run package:from-dist
 npm run check:boundaries
 ```
@@ -801,6 +809,13 @@ Generated indexes: 5
 Indexed sound sources: 3
 ```
 
+Expected resolver output check:
+
+```txt
+Resolver output check OK
+Checked complianceRequirements, compliancePlan, complianceDiagnostics, and expected rejection shape.
+```
+
 Expected package output:
 
 ```txt
@@ -811,7 +826,7 @@ Included files: 31
 Size: <size>
 ```
 
-## Validation
+## Validation and CI checks
 
 The validation script checks:
 
@@ -841,6 +856,7 @@ The validation script checks:
 - policy license group references
 - policy and license group semantic conflicts
 - deprecated attribution field checks
+- resolver output shape checks through `npm run check:resolver-output`
 
 ## Build process
 

@@ -14,11 +14,12 @@
     "package": "node scripts/package-release.mjs",
     "package:from-dist": "node scripts/package-release.mjs --skip-build",
     "check:boundaries": "node scripts/check-license-boundaries.mjs",
-    "ci": "npm run validate && npm run build:skip-validation && npm run resolve:example && npm run resolve:saas && npm run resolve:metadata && npm run resolve:expected-rejection && npm run package:from-dist && npm run check:boundaries",
+    "ci": "npm run validate && npm run build:skip-validation && npm run resolve:example && npm run resolve:saas && npm run resolve:metadata && npm run resolve:expected-rejection && npm run check:resolver-output && npm run package:from-dist && npm run check:boundaries",
     "resolve:example": "node examples/resolve-sound-source.mjs",
     "resolve:saas": "node examples/resolve-sound-source.mjs examples/saas-safe-success-request.json",
     "resolve:metadata": "node examples/resolve-sound-source.mjs examples/metadata-resolve-request.json",
     "resolve:expected-rejection": "node examples/resolve-expected-rejection.mjs examples/saas-safe-expected-rejection-request.json",
+    "check:resolver-output": "node examples/check-resolver-output.mjs",
     "render:karplus": "node examples/render-karplus-strong.mjs"
   },
   "keywords": [

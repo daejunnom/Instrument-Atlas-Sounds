@@ -41,6 +41,9 @@ jobs:
           npm run resolve:metadata
           npm run resolve:expected-rejection
 
+      - name: Check resolver output shape
+        run: npm run check:resolver-output
+
       - name: Create release package
         run: npm run package:from-dist
 
