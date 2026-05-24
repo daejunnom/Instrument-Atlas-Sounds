@@ -597,6 +597,111 @@ function buildComplianceRequirements(selectedSource, policy) {
   };
 }
 
+function resolveComplianceWarningLevel(plan) {
+  if (!plan.canRender || plan.requiresNetworkDisclosureReview) {
+    return 'blocked';
+  }
+
+  if (
+    plan.requiresUserConsent ||
+    plan.requiresSourceDisclosureReview ||
+    plan.shouldBlockDownload
+  ) {
+    return 'warning';
+  }
+
+  if (
+    plan.requiresLicenseNotice ||
+    plan.requiresLicenseText ||
+    plan.requiresNoticeReport ||
+    plan.requiresAttributionReport ||
+    plan.requiresCreatorAttribution ||
+    plan.requiresOutputAttribution
+  ) {
+    return 'notice';
+  }
+
+  return 'none';
+}
+
+function buildCompliancePlan(selectedSource, request, complianceRequirements) {
+  if (!selectedSource || !complianceRequirements) {
+    return null;
+  }
+
+  const license = selectedSource.license ?? {};
+  const executionTargets = isStringArray(selectedSource.executionTargets)
+    ? selectedSource.executionTargets
+    : [];
+
+  const requestedTarget =
+    typeof request.executionTarget === 'string' && request.executionTarget.trim()
+      ? request.executionTarget
+      : null;
+
+  const runtimeReady =
+    selectedSource.status !== 'disabled' &&
+    !METADATA_ONLY_STATUSES.has(selectedSource.status);
+
+  const executionTargetAllowed = requestedTarget
+    ? executionTargets.includes(requestedTarget)
+    : executionTargets.length > 0;
+
+  const effective = complianceRequirements.effective;
+  const source = complianceRequirements.source;
+
+  const canRender = Boolean(runtimeReady && executionTargetAllowed);
+
+  const canDistributeToClient = Boolean(
+    executionTargets.includes('client') &&
+    license.clientDistributionAllowed === true &&
+    !effective.sourceDisclosureReviewRequired &&
+    !effective.networkSourceDisclosureReviewRequired
+  );
+
+  const canUseInSaaS = Boolean(
+    executionTargets.includes('server') &&
+    license.serverUseAllowed === true &&
+    !effective.explicitConsentRequired &&
+    !effective.networkSourceDisclosureReviewRequired
+  );
+
+  const requiresUserConsent = Boolean(effective.explicitConsentRequired);
+  const requiresSourceDisclosureReview = Boolean(effective.sourceDisclosureReviewRequired);
+  const requiresNetworkDisclosureReview = Boolean(effective.networkSourceDisclosureReviewRequired);
+
+  const shouldBlockDownload = Boolean(
+    !canRender ||
+    requiresUserConsent ||
+    requiresSourceDisclosureReview ||
+    requiresNetworkDisclosureReview ||
+    (requestedTarget === 'client' && !canDistributeToClient)
+  );
+
+  const plan = {
+    canRender,
+    canDistributeToClient,
+    canUseInSaaS,
+    requiresUserConsent,
+    requiresLicenseNotice: Boolean(source.noticeRequired),
+    requiresLicenseText: Boolean(source.licenseTextRequired),
+    requiresNoticeReport: Boolean(effective.noticeReportRequired),
+    requiresAttributionReport: Boolean(effective.attributionReportRequired),
+    requiresCreatorAttribution: Boolean(source.creatorAttributionRequired),
+    requiresOutputAttribution: Boolean(source.outputAttributionRequired),
+    requiresSourceDisclosureReview,
+    requiresNetworkDisclosureReview,
+    shouldBlockDownload,
+    shouldShowWarning: false,
+    warningLevel: 'none'
+  };
+
+  plan.warningLevel = resolveComplianceWarningLevel(plan);
+  plan.shouldShowWarning = plan.warningLevel !== 'none';
+
+  return plan;
+}
+
 export function resolveSoundSource(request = {}, options = {}) {
   if (!isPlainObject(request)) {
     throw new TypeError('resolveSoundSource request must be an object.');
@@ -663,6 +768,7 @@ export function resolveSoundSource(request = {}, options = {}) {
 
   const selectedSource = candidates[0] ?? null;
   const complianceRequirements = buildComplianceRequirements(selectedSource, policy);
+  const compliancePlan = buildCompliancePlan(selectedSource, request, complianceRequirements);
 
   const noticeReportRequired = Boolean(
     complianceRequirements?.effective.noticeReportRequired
@@ -702,6 +808,7 @@ export function resolveSoundSource(request = {}, options = {}) {
       rejected: rejected.length
     },
     complianceRequirements,
+    compliancePlan,
     noticeReportRequired,
     attributionReportRequired
   };

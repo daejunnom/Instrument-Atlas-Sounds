@@ -88,6 +88,28 @@ function main() {
     console.log(`- effective.attributionReportRequired: ${requirements.effective.attributionReportRequired ? 'yes' : 'no'}`);
   }
 
+  if (result.compliancePlan) {
+    const plan = result.compliancePlan;
+
+    console.log('');
+    console.log('Compliance plan:');
+    console.log(`- canRender: ${plan.canRender ? 'yes' : 'no'}`);
+    console.log(`- canDistributeToClient: ${plan.canDistributeToClient ? 'yes' : 'no'}`);
+    console.log(`- canUseInSaaS: ${plan.canUseInSaaS ? 'yes' : 'no'}`);
+    console.log(`- requiresUserConsent: ${plan.requiresUserConsent ? 'yes' : 'no'}`);
+    console.log(`- requiresLicenseNotice: ${plan.requiresLicenseNotice ? 'yes' : 'no'}`);
+    console.log(`- requiresLicenseText: ${plan.requiresLicenseText ? 'yes' : 'no'}`);
+    console.log(`- requiresNoticeReport: ${plan.requiresNoticeReport ? 'yes' : 'no'}`);
+    console.log(`- requiresAttributionReport: ${plan.requiresAttributionReport ? 'yes' : 'no'}`);
+    console.log(`- requiresCreatorAttribution: ${plan.requiresCreatorAttribution ? 'yes' : 'no'}`);
+    console.log(`- requiresOutputAttribution: ${plan.requiresOutputAttribution ? 'yes' : 'no'}`);
+    console.log(`- requiresSourceDisclosureReview: ${plan.requiresSourceDisclosureReview ? 'yes' : 'no'}`);
+    console.log(`- requiresNetworkDisclosureReview: ${plan.requiresNetworkDisclosureReview ? 'yes' : 'no'}`);
+    console.log(`- shouldBlockDownload: ${plan.shouldBlockDownload ? 'yes' : 'no'}`);
+    console.log(`- shouldShowWarning: ${plan.shouldShowWarning ? 'yes' : 'no'}`);
+    console.log(`- warningLevel: ${plan.warningLevel}`);
+  }
+
   if (result.rejectedSources.length > 0) {
     console.log('');
     console.log('Rejected sources:');

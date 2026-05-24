@@ -976,6 +976,7 @@ complianceRequirements
 complianceRequirements.source
 complianceRequirements.policy
 complianceRequirements.effective
+compliancePlan
 noticeReportRequired
 attributionReportRequired
 ```
@@ -994,6 +995,12 @@ If no source is selected, `complianceRequirements` is `null`.
 
 `noticeReportRequired` and `attributionReportRequired` are convenience booleans derived from `complianceRequirements.effective`.
 
+`compliancePlan` provides application action hints derived from the selected source, selected policy, runtime readiness, and execution target.
+
+It is not legal advice and does not replace final license review.
+
+Use `compliancePlan` when an application needs to decide whether to render, warn, block download, or require additional review.
+
 The resolver separates compliance requirements into three layers:
 
 ```txt
@@ -1008,6 +1015,30 @@ effective
 ```
 
 This separation prevents MIT/BSD/Apache notice preservation from being confused with CC-BY-style creator or output attribution.
+
+The resolver also provides a `compliancePlan` object.
+
+`compliancePlan` is action-oriented:
+
+```txt
+canRender
+canDistributeToClient
+canUseInSaaS
+requiresUserConsent
+requiresLicenseNotice
+requiresLicenseText
+requiresNoticeReport
+requiresAttributionReport
+requiresCreatorAttribution
+requiresOutputAttribution
+requiresSourceDisclosureReview
+requiresNetworkDisclosureReview
+shouldBlockDownload
+shouldShowWarning
+warningLevel
+```
+
+`compliancePlan` should be treated as application behavior guidance, not as a legal verdict.
 
 The resolver enforces policy license groups.
 
