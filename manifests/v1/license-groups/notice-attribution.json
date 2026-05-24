@@ -1,20 +1,17 @@
 {
   "schemaVersion": 1,
   "id": "notice-attribution",
-  "title": "Notice or Attribution Required",
-  "description": "Sources that may be commercially usable but require attribution, license notice preservation, or generated attribution reports.",
+  "title": "Creator or Output Attribution Required",
+  "description": "Sources that may be commercially usable but require creator attribution, generated-output attribution, or attribution reports.",
   "riskLevel": "medium",
   "defaultBehavior": "allow_with_report",
   "licenseIds": [
-    "Apache-2.0",
     "CC-BY-4.0"
   ],
   "licenseFamilies": [
-    "permissive",
     "commercial_attribution"
   ],
   "restrictions": [
-    "preserve_license_notice",
     "creator_attribution_required",
     "output_attribution_required"
   ],
@@ -22,6 +19,10 @@
   "derivativesAllowed": true,
   "redistributionAllowed": true,
   "noticeRequired": true,
+  "licenseTextRequired": true,
+  "noticeReportRequired": true,
+  "creatorAttributionRequired": true,
+  "outputAttributionRequired": true,
   "shareAlikeRequired": false,
   "sourceDisclosureRequired": false,
   "networkSourceDisclosureRequired": false,
@@ -30,15 +31,10 @@
   "defaultIncludedInCore": false,
   "fetchableByDefault": false,
   "requiresExplicitConsent": false,
+  "requiresNoticeReport": true,
   "requiresAttributionReport": true,
   "notes": [
-    "CC-BY sources require attribution.",
-    "Apache-2.0 code may require NOTICE preservation.",
-    "This group is commercially usable only when attribution and notice handling are implemented."
-  ],
-  "licenseTextRequired": true,
-  "noticeReportRequired": true,
-  "creatorAttributionRequired": "license_dependent",
-  "outputAttributionRequired": "license_dependent",
-  "requiresNoticeReport": true
+    "CC-BY sources require creator/output attribution.",
+    "Apache-2.0 remains covered by the permissive group and may still require notice preservation, but it should not be treated as an output-attribution source by default."
+  ]
 }
