@@ -152,6 +152,9 @@ instrument-atlas-sounds/
       karplus-strong/
         README.md
         manifest.json
+        karplus-strong-core.mjs
+        wav-encode-browser.mjs
+        wav-encode-node.mjs
         karplus-strong.mjs
 
   assets/
@@ -587,6 +590,26 @@ Expected output:
 ```txt
 _local/renders/src_custom_karplus_strong_pluck_C4.wav
 ```
+
+The prototype is split by runtime boundary:
+
+```txt
+karplus-strong-core.mjs
+  Client/server-safe render core.
+
+wav-encode-browser.mjs
+  Browser-safe WAV encoding using ArrayBuffer, Uint8Array, and DataView.
+
+wav-encode-node.mjs
+  Node-only WAV Buffer and file output helpers.
+
+karplus-strong.mjs
+  Compatibility aggregate module.
+```
+
+The `client` execution target applies to the render core and browser-safe WAV encoding helpers.
+
+Node-only helpers such as `encodeWavPcm16ToBuffer`, `encodeWavPcm16`, and `writeWavFile` should not be treated as browser-safe exports.
 
 This prototype is useful for early local testing. It is not intended to replace a production-grade guitar, harp, lute, or koto model.
 

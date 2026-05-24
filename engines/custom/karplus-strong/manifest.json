@@ -7,10 +7,44 @@
   "implementation": {
     "language": "javascript",
     "module": "karplus-strong.mjs",
+    "coreModule": "karplus-strong-core.mjs",
+    "browserEncodingModule": "wav-encode-browser.mjs",
+    "nodeEncodingModule": "wav-encode-node.mjs",
     "exports": [
+      "midiToFrequency",
+      "noteNameToMidi",
+      "resolveNoteFrequency",
       "renderKarplusStrongNote",
       "renderKarplusStrongFromRequest",
-      "encodeWavPcm16"
+      "encodeWavPcm16ToArrayBuffer",
+      "encodeWavPcm16ToUint8Array",
+      "encodeWavPcm16ToBuffer",
+      "encodeWavPcm16",
+      "writeWavFile"
+    ],
+    "clientExports": [
+      "midiToFrequency",
+      "noteNameToMidi",
+      "resolveNoteFrequency",
+      "renderKarplusStrongNote",
+      "renderKarplusStrongFromRequest",
+      "encodeWavPcm16ToArrayBuffer",
+      "encodeWavPcm16ToUint8Array"
+    ],
+    "serverExports": [
+      "midiToFrequency",
+      "noteNameToMidi",
+      "resolveNoteFrequency",
+      "renderKarplusStrongNote",
+      "renderKarplusStrongFromRequest",
+      "encodeWavPcm16ToBuffer",
+      "encodeWavPcm16",
+      "writeWavFile"
+    ],
+    "nodeOnlyExports": [
+      "encodeWavPcm16ToBuffer",
+      "encodeWavPcm16",
+      "writeWavFile"
     ]
   },
   "license": {

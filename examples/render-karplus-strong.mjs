@@ -1,9 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import {
-  renderKarplusStrongFromRequest,
-  encodeWavPcm16
-} from '../engines/custom/karplus-strong/karplus-strong.mjs';
+import { renderKarplusStrongFromRequest } from '../engines/custom/karplus-strong/karplus-strong-core.mjs';
+import { encodeWavPcm16ToBuffer } from '../engines/custom/karplus-strong/wav-encode-node.mjs';
 
 const rootDir = process.cwd();
 
@@ -36,7 +34,7 @@ function main() {
   }
 
   const rendered = renderKarplusStrongFromRequest(request);
-  const wav = encodeWavPcm16(rendered);
+  const wav = encodeWavPcm16ToBuffer(rendered);
 
   const noteName = request.note?.name ?? request.note?.midi ?? 'note';
   const fileName = `${sanitizeFilePart(request.sourceId)}_${sanitizeFilePart(noteName)}.wav`;
