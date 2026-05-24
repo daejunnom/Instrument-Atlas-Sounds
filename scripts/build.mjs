@@ -167,7 +167,11 @@ function summarizeSource(source) {
       id: source.license.id,
       category: source.license.category,
       commercialUse: source.license.commercialUse,
-      attributionRequired: source.license.attributionRequired,
+      noticeRequired: source.license.noticeRequired,
+      licenseTextRequired: source.license.licenseTextRequired,
+      noticeReportRequired: source.license.noticeReportRequired,
+      creatorAttributionRequired: source.license.creatorAttributionRequired,
+      outputAttributionRequired: source.license.outputAttributionRequired,
       clientDistributionAllowed: source.license.clientDistributionAllowed,
       serverUseAllowed: source.license.serverUseAllowed
     },

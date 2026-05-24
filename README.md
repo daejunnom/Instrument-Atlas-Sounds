@@ -121,7 +121,7 @@ instrument-atlas-sounds/
         cc0-only.json
         permissive-only.json
         commercial-safe.json
-        commercial-safe-no-attribution.json
+        commercial-safe-no-output-attribution.json
         commercial-safe-with-attribution.json
         noncommercial-opt-in.json
         no-derivatives-opt-in.json
@@ -234,7 +234,7 @@ Recommended default behavior:
 - Server-side execution may allow weak-copyleft and server-only copyleft sources only when the application policy permits it.
 - AGPL, non-commercial, no-derivatives, proprietary, unknown-license, and unverified sources should be blocked by default.
 - Commercial-safe workflows should block non-commercial, no-derivatives, network-copyleft, proprietary, unknown, disputed, and unverified sources by default.
-- Attribution-required sources should be used only when the consuming application can generate or preserve attribution and notice reports.
+- Creator/output-attribution-required sources should be used only when the consuming application can generate attribution reports. Notice-required sources may still be usable when license and copyright notices are preserved.
 
 ## Included policies
 
@@ -311,11 +311,11 @@ MIT-STK
 
 For applications that want commercial-safe sources while blocking non-commercial, no-derivatives, AGPL, proprietary, unknown, disputed, and unverified sources by default.
 
-### commercial-safe-no-attribution
+### commercial-safe-no-output-attribution
 
-For applications that want commercial-safe sources without generated-output attribution requirements.
+For applications that want commercial-safe sources without creator or generated-output attribution requirements.
 
-License notices may still be required for software licenses.
+License text, copyright notices, and NOTICE preservation may still be required.
 
 ### commercial-safe-with-attribution
 
@@ -434,7 +434,11 @@ Example:
     "id": "MIT",
     "category": "permissive_code",
     "commercialUse": true,
-    "attributionRequired": true,
+    "noticeRequired": true,
+    "licenseTextRequired": true,
+    "noticeReportRequired": true,
+    "creatorAttributionRequired": false,
+    "outputAttributionRequired": false,
     "sourceRequiredOnDistribution": false,
     "networkSourceRequired": false,
     "clientDistributionAllowed": true,
@@ -563,7 +567,7 @@ dist/sounds/v1/
     cc0-only.json
     permissive-only.json
     commercial-safe.json
-    commercial-safe-no-attribution.json
+    commercial-safe-no-output-attribution.json
     commercial-safe-with-attribution.json
     noncommercial-opt-in.json
     no-derivatives-opt-in.json
@@ -780,25 +784,14 @@ by-source-type.json
   "instrumentId": "inst_acoustic_guitar",
   "executionTarget": "server",
   "useCase": "render",
-  "licensePolicy": {
-    "allowCategories": [
-      "public_domain",
-      "permissive_code",
-      "weak_copyleft",
-      "server_only_copyleft"
+  "policyId": "saas-safe",
+  "runtime": {
+    "allowStatuses": [
+      "production",
+      "production_candidate",
+      "prototype"
     ],
-    "denyLicenses": [
-      "AGPL-3.0-only",
-      "AGPL-3.0-or-later",
-      "CC-BY-NC",
-      "CC-BY-ND",
-      "unknown"
-    ],
-    "allowCommercialUseOnly": true,
-    "allowAttributionRequired": true,
-    "allowClientDistribution": false,
-    "allowServerOnlyCopyleft": true,
-    "preferPublicDomain": true
+    "allowMetadataOnly": false
   },
   "enginePreference": {
     "preferSourceTypes": [
@@ -886,7 +879,8 @@ selectedSource
 candidates
 rejectedSources
 rejectionReasons
-attributionRequired
+noticeReportRequired
+attributionReportRequired
 ```
 
 The resolver does not execute third-party engines.
@@ -948,7 +942,7 @@ A consuming application should use this flow:
 8. Prefer physical_model sources when available.
 9. Fall back to sample_instrument, one_shot_sample, or synth_patch sources when needed.
 10. Check runtime readiness before rendering.
-11. Check attribution, notice, and source disclosure requirements.
+11. Check notice, creator attribution, output attribution, and source disclosure requirements.
 12. Send a render request to a client or server engine only when the selected source is actually runnable.
 13. Return audio plus a license report when required.
 ```

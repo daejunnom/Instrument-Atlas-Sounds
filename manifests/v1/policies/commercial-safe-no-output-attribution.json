@@ -1,7 +1,7 @@
 {
-  "id": "commercial-safe-no-attribution",
-  "title": "Commercial Safe Without Runtime Attribution",
-  "description": "Allows commercial-safe sources that do not require generated-output attribution reports. License notice preservation may still be required for software licenses.",
+  "id": "commercial-safe-no-output-attribution",
+  "title": "Commercial Safe Without Output Attribution",
+  "description": "Allows commercial-safe sources that do not require creator or generated-output attribution. License text, copyright notice, and NOTICE preservation may still be required.",
   "allowCategories": [
     "public_domain",
     "permissive_code"
@@ -64,7 +64,8 @@
     "unverified"
   ],
   "denyRestrictions": [
-    "attribution_required",
+    "creator_attribution_required",
+    "output_attribution_required",
     "sharealike_required",
     "noncommercial",
     "no_derivatives",
@@ -73,9 +74,12 @@
     "rights_unknown"
   ],
   "allowCommercialUseOnly": true,
-  "allowAttributionRequired": false,
+  "allowNoticeRequired": true,
+  "allowCreatorAttributionRequired": false,
+  "allowOutputAttributionRequired": false,
   "allowClientDistribution": true,
   "allowServerOnlyCopyleft": false,
   "preferPublicDomain": true,
+  "requiresNoticeReport": true,
   "requiresAttributionReport": false
 }

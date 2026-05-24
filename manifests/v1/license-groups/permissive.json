@@ -23,7 +23,6 @@
   "commercialUse": true,
   "derivativesAllowed": true,
   "redistributionAllowed": true,
-  "attributionRequired": false,
   "noticeRequired": true,
   "shareAlikeRequired": false,
   "sourceDisclosureRequired": false,
@@ -36,5 +35,11 @@
   "notes": [
     "Apache-2.0 may require preserving NOTICE files when present.",
     "MIT, BSD, ISC, and Zlib still require preserving license notices."
-  ]
+  ],
+  "licenseTextRequired": true,
+  "noticeReportRequired": true,
+  "creatorAttributionRequired": false,
+  "outputAttributionRequired": false,
+  "requiresNoticeReport": true,
+  "requiresAttributionReport": false
 }

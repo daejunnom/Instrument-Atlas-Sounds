@@ -367,7 +367,7 @@ function checkDefaultPolicies() {
   const clientSafe = loadPolicy('client-safe');
   const saasSafe = loadPolicy('saas-safe');
   const commercialSafe = loadPolicy('commercial-safe');
-  const commercialSafeNoAttribution = loadPolicy('commercial-safe-no-attribution');
+  const commercialSafeNoOutputAttribution = loadPolicy('commercial-safe-no-output-attribution');
   const noncommercialOptIn = loadPolicy('noncommercial-opt-in');
   const noDerivativesOptIn = loadPolicy('no-derivatives-opt-in');
   const networkCopyleftOptIn = loadPolicy('network-copyleft-opt-in');
@@ -383,8 +383,16 @@ function checkDefaultPolicies() {
       fail('policy "client-safe" must set allowServerOnlyCopyleft to false.');
     }
 
-    if (clientSafe.allowAttributionRequired !== false) {
-      fail('policy "client-safe" must set allowAttributionRequired to false.');
+    if (clientSafe.allowNoticeRequired !== true) {
+      fail('policy "client-safe" must set allowNoticeRequired to true.');
+    }
+
+    if (clientSafe.allowCreatorAttributionRequired !== false) {
+      fail('policy "client-safe" must set allowCreatorAttributionRequired to false.');
+    }
+
+    if (clientSafe.allowOutputAttributionRequired !== false) {
+      fail('policy "client-safe" must set allowOutputAttributionRequired to false.');
     }
   }
 
@@ -416,12 +424,20 @@ function checkDefaultPolicies() {
     }
   }
 
-  if (commercialSafeNoAttribution) {
-    if (commercialSafeNoAttribution.allowAttributionRequired !== false) {
-      fail('policy "commercial-safe-no-attribution" must set allowAttributionRequired to false.');
+  if (commercialSafeNoOutputAttribution) {
+    if (commercialSafeNoOutputAttribution.allowNoticeRequired !== true) {
+      fail('policy "commercial-safe-no-output-attribution" must set allowNoticeRequired to true.');
     }
 
-    checkPolicyArray(commercialSafeNoAttribution, 'denyCategories', [
+    if (commercialSafeNoOutputAttribution.allowCreatorAttributionRequired !== false) {
+      fail('policy "commercial-safe-no-output-attribution" must set allowCreatorAttributionRequired to false.');
+    }
+
+    if (commercialSafeNoOutputAttribution.allowOutputAttributionRequired !== false) {
+      fail('policy "commercial-safe-no-output-attribution" must set allowOutputAttributionRequired to false.');
+    }
+
+    checkPolicyArray(commercialSafeNoOutputAttribution, 'denyCategories', [
       'commercial_attribution',
       'commercial_sharealike',
       'noncommercial',

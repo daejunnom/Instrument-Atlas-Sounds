@@ -3,35 +3,6 @@
   "executionTarget": "client",
   "useCase": "preview",
   "policyId": "client-safe",
-  "licensePolicy": {
-    "allowCategories": [
-      "public_domain",
-      "permissive_code"
-    ],
-    "denyCategories": [
-      "weak_copyleft",
-      "server_only_copyleft",
-      "network_copyleft",
-      "restricted",
-      "to_be_verified"
-    ],
-    "denyLicenses": [
-      "AGPL-3.0-only",
-      "AGPL-3.0-or-later",
-      "GPL-2.0-only",
-      "GPL-2.0-or-later",
-      "GPL-3.0-only",
-      "GPL-3.0-or-later",
-      "CC-BY-NC",
-      "CC-BY-ND",
-      "unknown"
-    ],
-    "allowCommercialUseOnly": true,
-    "allowAttributionRequired": true,
-    "allowClientDistribution": true,
-    "allowServerOnlyCopyleft": false,
-    "preferPublicDomain": true
-  },
   "enginePreference": {
     "preferSourceTypes": [
       "physical_model",

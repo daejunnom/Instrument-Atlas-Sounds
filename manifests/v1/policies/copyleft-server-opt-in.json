@@ -46,10 +46,14 @@
     "client_distribution_risk"
   ],
   "allowCommercialUseOnly": true,
-  "allowAttributionRequired": true,
-  "allowClientDistribution": false,
   "allowServerOnlyCopyleft": true,
+  "allowClientDistribution": false,
   "preferPublicDomain": false,
   "requiresExplicitConsent": true,
-  "requiresSourceDisclosureReview": true
+  "requiresSourceDisclosureReview": true,
+  "allowNoticeRequired": true,
+  "allowCreatorAttributionRequired": false,
+  "allowOutputAttributionRequired": false,
+  "requiresNoticeReport": true,
+  "requiresAttributionReport": false
 }

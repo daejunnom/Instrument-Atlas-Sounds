@@ -15,12 +15,12 @@
   ],
   "restrictions": [
     "noncommercial",
-    "attribution_required"
+    "creator_attribution_required",
+    "output_attribution_required"
   ],
   "commercialUse": false,
   "derivativesAllowed": "license_dependent",
   "redistributionAllowed": true,
-  "attributionRequired": true,
   "noticeRequired": true,
   "shareAlikeRequired": "license_dependent",
   "sourceDisclosureRequired": false,
@@ -33,5 +33,11 @@
   "notes": [
     "Non-commercial sources must not be used in paid SaaS, monetized content, commercial products, or commercial-safe release packages.",
     "Some non-commercial licenses may also include ShareAlike or NoDerivatives restrictions."
-  ]
+  ],
+  "licenseTextRequired": true,
+  "noticeReportRequired": true,
+  "creatorAttributionRequired": true,
+  "outputAttributionRequired": true,
+  "requiresNoticeReport": true,
+  "requiresAttributionReport": true
 }

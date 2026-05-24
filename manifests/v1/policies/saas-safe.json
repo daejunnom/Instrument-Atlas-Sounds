@@ -57,9 +57,12 @@
     "rights_unknown"
   ],
   "allowCommercialUseOnly": true,
-  "allowAttributionRequired": true,
+  "allowNoticeRequired": true,
+  "allowCreatorAttributionRequired": true,
+  "allowOutputAttributionRequired": true,
   "allowClientDistribution": false,
   "allowServerOnlyCopyleft": true,
   "preferPublicDomain": true,
+  "requiresNoticeReport": true,
   "requiresAttributionReport": true
 }

@@ -22,7 +22,6 @@
   "commercialUse": true,
   "derivativesAllowed": true,
   "redistributionAllowed": true,
-  "attributionRequired": true,
   "noticeRequired": true,
   "shareAlikeRequired": true,
   "sourceDisclosureRequired": true,
@@ -36,5 +35,11 @@
     "GPL sources must not be included in default release packages.",
     "GPL sources must not be assigned client execution targets by default.",
     "Server-side use may still require careful isolation and compliance review."
-  ]
+  ],
+  "licenseTextRequired": true,
+  "noticeReportRequired": true,
+  "creatorAttributionRequired": false,
+  "outputAttributionRequired": false,
+  "requiresNoticeReport": true,
+  "requiresAttributionReport": false
 }

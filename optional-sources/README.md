@@ -159,7 +159,11 @@ bitDepth
 commercialUse
 derivativesAllowed
 redistributionAllowed
-attributionRequired
+noticeRequired
+licenseTextRequired
+noticeReportRequired
+creatorAttributionRequired
+outputAttributionRequired
 shareAlikeRequired
 mirrorAllowed
 previewAllowed
@@ -225,7 +229,7 @@ execution target
 runtime readiness
 asset verification
 download status
-attribution requirements
+notice, creator attribution, and output attribution requirements
 source disclosure requirements
 ```
 

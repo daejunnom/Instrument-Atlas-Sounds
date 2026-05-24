@@ -24,7 +24,6 @@
   "commercialUse": false,
   "derivativesAllowed": false,
   "redistributionAllowed": false,
-  "attributionRequired": "unknown",
   "noticeRequired": "unknown",
   "shareAlikeRequired": "unknown",
   "sourceDisclosureRequired": "unknown",
@@ -37,5 +36,11 @@
   "notes": [
     "Blocked sources may be documented only as disabled metadata when there is a clear reason to track them.",
     "Blocked sources must not be downloaded, mirrored, packaged, or exposed as usable runtime sources."
-  ]
+  ],
+  "licenseTextRequired": "unknown",
+  "noticeReportRequired": "unknown",
+  "creatorAttributionRequired": "unknown",
+  "outputAttributionRequired": "unknown",
+  "requiresNoticeReport": "unknown",
+  "requiresAttributionReport": "unknown"
 }

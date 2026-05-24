@@ -1,4 +1,3 @@
-
 {
   "schemaVersion": 1,
   "soundLibraryVersion": "0.1.0",
@@ -19,7 +18,7 @@
     "cc0Only": "policies/cc0-only.json",
     "permissiveOnly": "policies/permissive-only.json",
     "commercialSafe": "policies/commercial-safe.json",
-    "commercialSafeNoAttribution": "policies/commercial-safe-no-attribution.json",
+    "commercialSafeNoOutputAttribution": "policies/commercial-safe-no-output-attribution.json",
     "commercialSafeWithAttribution": "policies/commercial-safe-with-attribution.json",
     "noncommercialOptIn": "policies/noncommercial-opt-in.json",
     "noDerivativesOptIn": "policies/no-derivatives-opt-in.json",

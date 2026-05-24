@@ -171,7 +171,7 @@ Sample-based sources must include:
 - verification date
 - checksum when an audio file is mirrored or stored
 - commercial-use status
-- attribution requirement status
+- notice, creator attribution, and output attribution requirement status
 
 Samples are allowed only when one of the following is true:
 

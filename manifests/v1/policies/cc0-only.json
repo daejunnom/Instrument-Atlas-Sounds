@@ -69,7 +69,8 @@
   ],
   "denyRestrictions": [
     "preserve_license_notice",
-    "attribution_required",
+    "creator_attribution_required",
+    "output_attribution_required",
     "sharealike_required",
     "noncommercial",
     "no_derivatives",
@@ -78,9 +79,12 @@
     "rights_unknown"
   ],
   "allowCommercialUseOnly": true,
-  "allowAttributionRequired": false,
+  "allowNoticeRequired": false,
+  "allowCreatorAttributionRequired": false,
+  "allowOutputAttributionRequired": false,
   "allowClientDistribution": true,
   "allowServerOnlyCopyleft": false,
   "preferPublicDomain": true,
+  "requiresNoticeReport": false,
   "requiresAttributionReport": false
 }

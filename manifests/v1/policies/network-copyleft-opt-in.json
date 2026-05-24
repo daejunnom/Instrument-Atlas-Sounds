@@ -35,10 +35,14 @@
     "integration_model_sensitive"
   ],
   "allowCommercialUseOnly": true,
-  "allowAttributionRequired": true,
+  "allowNoticeRequired": true,
+  "allowCreatorAttributionRequired": false,
+  "allowOutputAttributionRequired": false,
   "allowClientDistribution": false,
   "allowServerOnlyCopyleft": false,
   "preferPublicDomain": false,
+  "requiresNoticeReport": true,
+  "requiresAttributionReport": false,
   "requiresExplicitConsent": true,
   "requiresNetworkSourceDisclosureReview": true,
   "blockedUseCases": [

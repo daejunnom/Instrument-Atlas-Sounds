@@ -16,7 +16,6 @@
   "commercialUse": true,
   "derivativesAllowed": true,
   "redistributionAllowed": true,
-  "attributionRequired": false,
   "shareAlikeRequired": false,
   "sourceDisclosureRequired": false,
   "networkSourceDisclosureRequired": false,
@@ -24,5 +23,12 @@
   "serverUseAllowed": true,
   "defaultIncludedInCore": true,
   "fetchableByDefault": true,
-  "requiresExplicitConsent": false
+  "requiresExplicitConsent": false,
+  "noticeRequired": false,
+  "licenseTextRequired": false,
+  "noticeReportRequired": false,
+  "creatorAttributionRequired": false,
+  "outputAttributionRequired": false,
+  "requiresNoticeReport": false,
+  "requiresAttributionReport": false
 }

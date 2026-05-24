@@ -34,8 +34,11 @@ license.restrictions
 license.commercialUse
 license.derivativesAllowed
 license.redistributionAllowed
-license.attributionRequired
 license.noticeRequired
+license.licenseTextRequired
+license.noticeReportRequired
+license.creatorAttributionRequired
+license.outputAttributionRequired
 license.shareAlikeRequired
 license.sourceDisclosureRequired
 license.networkSourceDisclosureRequired
@@ -198,7 +201,7 @@ Project default:
 
 ```txt
 allow only when attribution handling is implemented
-exclude from no-attribution workflows
+exclude from no-output-attribution workflows
 allow in commercial-safe-with-attribution workflows
 ```
 
@@ -210,7 +213,7 @@ preserve source URL
 preserve author or creator name when known
 preserve license ID
 preserve modification notes when required
-generate attribution report for consuming applications
+generate creator/output attribution report for consuming applications
 ```
 
 Notes:
@@ -232,7 +235,7 @@ Project default:
 ```txt
 opt-in only
 exclude from default commercial-safe workflows
-exclude from no-attribution workflows
+exclude from no-output-attribution workflows
 ```
 
 Typical requirements:

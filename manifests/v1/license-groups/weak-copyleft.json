@@ -20,7 +20,6 @@
   "commercialUse": true,
   "derivativesAllowed": true,
   "redistributionAllowed": true,
-  "attributionRequired": true,
   "noticeRequired": true,
   "shareAlikeRequired": false,
   "sourceDisclosureRequired": "license_dependent",
@@ -33,5 +32,11 @@
   "notes": [
     "Weak copyleft sources should not be treated as client-safe by default.",
     "Use server-side or clearly separated integration unless compliance is fully handled."
-  ]
+  ],
+  "licenseTextRequired": true,
+  "noticeReportRequired": true,
+  "creatorAttributionRequired": false,
+  "outputAttributionRequired": false,
+  "requiresNoticeReport": true,
+  "requiresAttributionReport": false
 }

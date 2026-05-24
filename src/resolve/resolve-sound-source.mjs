@@ -325,8 +325,22 @@ export function evaluateSourceAgainstPolicy(source, request, policy) {
     return reject('commercial_use_not_allowed');
   }
 
-  if (policy.allowAttributionRequired === false && license.attributionRequired === true) {
-    return reject('attribution_required_but_policy_disallows_it');
+  if (policy.allowNoticeRequired === false && license.noticeRequired === true) {
+    return reject('notice_required_but_policy_disallows_it');
+  }
+
+  if (
+    policy.allowCreatorAttributionRequired === false &&
+    license.creatorAttributionRequired === true
+  ) {
+    return reject('creator_attribution_required_but_policy_disallows_it');
+  }
+
+  if (
+    policy.allowOutputAttributionRequired === false &&
+    license.outputAttributionRequired === true
+  ) {
+    return reject('output_attribution_required_but_policy_disallows_it');
   }
 
   if (policy.allowServerOnlyCopyleft === false) {
@@ -455,8 +469,15 @@ export function resolveSoundSource(request = {}, options = {}) {
 
   const selectedSource = candidates[0] ?? null;
 
-  const attributionRequired = Boolean(
-    selectedSource?.license?.attributionRequired ||
+  const noticeReportRequired = Boolean(
+    selectedSource?.license?.noticeRequired ||
+    selectedSource?.license?.noticeReportRequired ||
+    policy.requiresNoticeReport
+  );
+
+  const attributionReportRequired = Boolean(
+    selectedSource?.license?.creatorAttributionRequired ||
+    selectedSource?.license?.outputAttributionRequired ||
     policy.requiresAttributionReport
   );
 
@@ -487,6 +508,7 @@ export function resolveSoundSource(request = {}, options = {}) {
       accepted: candidates.length,
       rejected: rejected.length
     },
-    attributionRequired
+    noticeReportRequired,
+    attributionReportRequired
   };
 }

@@ -14,13 +14,13 @@
     "noncommercial"
   ],
   "restrictions": [
-    "attribution_required",
+    "creator_attribution_required",
+    "output_attribution_required",
     "sharealike_required"
   ],
   "commercialUse": "license_dependent",
   "derivativesAllowed": true,
   "redistributionAllowed": true,
-  "attributionRequired": true,
   "noticeRequired": true,
   "shareAlikeRequired": true,
   "sourceDisclosureRequired": false,
@@ -34,5 +34,10 @@
   "notes": [
     "ShareAlike sources are not suitable for default commercial-safe workflows unless the consuming application explicitly supports the relevant obligations.",
     "CC-BY-NC-SA also carries a non-commercial restriction."
-  ]
+  ],
+  "licenseTextRequired": true,
+  "noticeReportRequired": true,
+  "creatorAttributionRequired": true,
+  "outputAttributionRequired": true,
+  "requiresNoticeReport": true
 }

@@ -14,12 +14,12 @@
   ],
   "restrictions": [
     "no_derivatives",
-    "attribution_required"
+    "creator_attribution_required",
+    "output_attribution_required"
   ],
   "commercialUse": "license_dependent",
   "derivativesAllowed": false,
   "redistributionAllowed": true,
-  "attributionRequired": true,
   "noticeRequired": true,
   "shareAlikeRequired": false,
   "sourceDisclosureRequired": false,
@@ -40,5 +40,11 @@
   ],
   "notes": [
     "No-derivatives sources should not be used in music generation, sample mapping, or editing workflows unless the use case clearly preserves the original work without creating derivatives."
-  ]
+  ],
+  "licenseTextRequired": true,
+  "noticeReportRequired": true,
+  "creatorAttributionRequired": true,
+  "outputAttributionRequired": true,
+  "requiresNoticeReport": true,
+  "requiresAttributionReport": true
 }

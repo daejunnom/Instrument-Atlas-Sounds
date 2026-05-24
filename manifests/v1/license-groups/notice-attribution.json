@@ -15,12 +15,12 @@
   ],
   "restrictions": [
     "preserve_license_notice",
-    "attribution_required"
+    "creator_attribution_required",
+    "output_attribution_required"
   ],
   "commercialUse": true,
   "derivativesAllowed": true,
   "redistributionAllowed": true,
-  "attributionRequired": true,
   "noticeRequired": true,
   "shareAlikeRequired": false,
   "sourceDisclosureRequired": false,
@@ -35,5 +35,10 @@
     "CC-BY sources require attribution.",
     "Apache-2.0 code may require NOTICE preservation.",
     "This group is commercially usable only when attribution and notice handling are implemented."
-  ]
+  ],
+  "licenseTextRequired": true,
+  "noticeReportRequired": true,
+  "creatorAttributionRequired": "license_dependent",
+  "outputAttributionRequired": "license_dependent",
+  "requiresNoticeReport": true
 }

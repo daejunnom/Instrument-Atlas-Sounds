@@ -30,15 +30,20 @@
   ],
   "allowRestrictions": [
     "noncommercial",
-    "attribution_required",
+    "creator_attribution_required",
+    "output_attribution_required",
     "sharealike_required",
     "no_derivatives"
   ],
   "allowCommercialUseOnly": false,
-  "allowAttributionRequired": true,
+  "allowNoticeRequired": true,
+  "allowCreatorAttributionRequired": true,
+  "allowOutputAttributionRequired": true,
   "allowClientDistribution": false,
   "allowServerOnlyCopyleft": false,
   "preferPublicDomain": false,
+  "requiresNoticeReport": true,
+  "requiresAttributionReport": true,
   "requiresExplicitConsent": true,
   "blockedUseCases": [
     "commercial_project",

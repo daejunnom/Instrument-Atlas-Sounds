@@ -266,12 +266,23 @@ function validatePolicyFile(fileName, policyIds) {
     }
   }
 
+  if (policy.allowAttributionRequired !== undefined) {
+    fail(`${context}.allowAttributionRequired is deprecated. Use allowNoticeRequired, allowCreatorAttributionRequired, and allowOutputAttributionRequired instead.`);
+  }
+
   for (const field of [
     'allowCommercialUseOnly',
-    'allowAttributionRequired',
+    'allowNoticeRequired',
+    'allowCreatorAttributionRequired',
+    'allowOutputAttributionRequired',
     'allowClientDistribution',
     'allowServerOnlyCopyleft',
-    'preferPublicDomain'
+    'preferPublicDomain',
+    'requiresNoticeReport',
+    'requiresAttributionReport',
+    'requiresExplicitConsent',
+    'requiresSourceDisclosureReview',
+    'requiresNetworkSourceDisclosureReview'
   ]) {
     if (policy[field] !== undefined && typeof policy[field] !== 'boolean') {
       fail(`${context}.${field} must be boolean when present.`);
@@ -417,9 +428,17 @@ function validateLicense(source, context) {
     fail(`${context}.license.category has invalid value "${license.category}".`);
   }
 
+  if (license.attributionRequired !== undefined) {
+    fail(`${context}.license.attributionRequired is deprecated. Use noticeRequired, creatorAttributionRequired, and outputAttributionRequired instead.`);
+  }
+
   for (const field of [
     'commercialUse',
-    'attributionRequired',
+    'noticeRequired',
+    'licenseTextRequired',
+    'noticeReportRequired',
+    'creatorAttributionRequired',
+    'outputAttributionRequired',
     'sourceRequiredOnDistribution',
     'networkSourceRequired',
     'clientDistributionAllowed',

@@ -63,7 +63,8 @@ function main() {
   console.log(`- engineType: ${result.selectedSource.engineType ?? 'none'}`);
   console.log(`- status: ${result.selectedSource.status}`);
   console.log(`- license: ${result.selectedSource.license?.id ?? 'unknown'}`);
-  console.log(`- attributionRequired: ${result.attributionRequired ? 'yes' : 'no'}`);
+  console.log(`- noticeReportRequired: ${result.noticeReportRequired ? 'yes' : 'no'}`);
+  console.log(`- attributionReportRequired: ${result.attributionReportRequired ? 'yes' : 'no'}`);
   console.log(`- resolverScore: ${result.selectedSource.resolverScore}`);
 
   if (result.rejectedSources.length > 0) {
