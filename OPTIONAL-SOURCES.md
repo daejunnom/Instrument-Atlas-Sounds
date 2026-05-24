@@ -438,6 +438,21 @@ complianceDiagnostics
 
 At minimum, optional sources should preserve exact license ID, license family, restrictions, notice requirements, attribution requirements, disclosure requirements, provenance, and checksum metadata.
 
+Optional source metadata should also preserve enough information for applications to distinguish:
+
+```txt
+noticeReportRequired
+  Notice, copyright, license text, or NOTICE-file preservation.
+
+attributionReportRequired
+  Creator or generated-output attribution requirements.
+
+complianceReportRequired
+  Broader policy, audit, consent, notice, attribution, or disclosure tracking.
+```
+
+This distinction matters because permissive code licenses may require notice preservation while still not requiring CC-BY-style creator or generated-output attribution.
+
 Optional sources should not become automatically renderable only because they are present in metadata.
 
 They must still pass policy filtering, runtime readiness checks, execution target checks, and compliance planning.

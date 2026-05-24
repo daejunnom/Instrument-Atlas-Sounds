@@ -1040,6 +1040,7 @@ complianceDiagnostics.matchedPolicyRules
 
 noticeReportRequired
 attributionReportRequired
+complianceReportRequired
 ```
 
 ### Compliance output semantics
@@ -1065,16 +1066,29 @@ Use `complianceDiagnostics` when a developer or administrator needs to understan
 
 `compliancePlan` is application behavior guidance, not legal advice or a legal verdict.
 
-`noticeReportRequired` and `attributionReportRequired` are convenience booleans derived from `complianceRequirements.effective`.
+`noticeReportRequired`, `attributionReportRequired`, and `complianceReportRequired` are convenience booleans derived from `complianceRequirements.effective`.
 
 Applications that need precise behavior should prefer:
 
 ```txt
 complianceRequirements.effective.noticeReportRequired
 complianceRequirements.effective.attributionReportRequired
+complianceRequirements.effective.complianceReportRequired
 ```
 
 instead of relying only on the top-level convenience booleans.
+
+`attributionReportRequired` means that the selected source requires creator or generated-output attribution handling, such as CC-BY-style attribution.
+
+`complianceReportRequired` is broader. It may be true because a policy requires audit/report capability, because notices must be preserved, because source disclosure must be reviewed, or because creator/output attribution is required.
+
+A SaaS-safe MIT/BSD/Apache-style source may therefore have:
+
+```txt
+noticeReportRequired: true
+attributionReportRequired: false
+complianceReportRequired: true
+```
 
 ### complianceRequirements
 
@@ -1099,10 +1113,16 @@ Examples:
 ```txt
 requiresNoticeReport
 requiresAttributionReport
+requiresComplianceReportCapability
+requiresAttributionReportCapability
 requiresExplicitConsent
 requiresSourceDisclosureReview
 requiresNetworkSourceDisclosureReview
 ```
+
+`requiresAttributionReport` is a transitional legacy policy field. New policy logic should prefer `requiresAttributionReportCapability` and `requiresComplianceReportCapability`.
+
+Policy capability fields describe what the consuming application must be able to handle. They do not automatically mean that the selected source itself requires creator or output attribution.
 
 `complianceRequirements.effective` combines source and policy requirements into final requirements that the consuming application should handle.
 
@@ -1111,6 +1131,7 @@ Examples:
 ```txt
 noticeReportRequired
 attributionReportRequired
+complianceReportRequired
 explicitConsentRequired
 sourceDisclosureReviewRequired
 networkSourceDisclosureReviewRequired
@@ -1137,8 +1158,8 @@ requiresLicenseNotice
 requiresLicenseText
 requiresNoticeReport
 requiresAttributionReport
+requiresComplianceReport
 requiresCreatorAttribution
-requiresOutputAttribution
 requiresSourceDisclosureReview
 requiresNetworkDisclosureReview
 shouldBlockDownload
@@ -1281,7 +1302,7 @@ A consuming application should use this flow:
 12. Use complianceDiagnostics for logs, administrator views, and audit trails.
 13. Select a runnable source definition.
 14. Send a render request to a client or server engine only when the selected source is actually runnable.
-15. Return audio plus a license or attribution report when required.
+15. Return audio plus notice, attribution, or compliance report data when required.
 ```
 
 ## Relationship with Instrument Atlas

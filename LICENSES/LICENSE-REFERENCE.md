@@ -549,3 +549,35 @@ complianceDiagnostics
 License reference metadata should inform resolver requirements, but resolver output should not be treated as legal advice.
 
 Consuming applications remain responsible for final license compliance, report generation, notice preservation, and attribution handling.
+
+## Report terminology
+
+Instrument Atlas Sounds separates report terminology to avoid confusing notice preservation with creator/output attribution.
+
+```txt
+noticeReportRequired
+  The selected source or policy requires license notice, copyright notice,
+  license text, or NOTICE-file preservation to be tracked.
+
+attributionReportRequired
+  The selected source requires creator or generated-output attribution handling.
+  This is the field applications should use for CC-BY-style attribution behavior.
+
+complianceReportRequired
+  The selected source or policy requires broader application-side compliance
+  tracking. This may include notice preservation, attribution handling,
+  source disclosure review, network disclosure review, explicit consent, or
+  SaaS policy-level audit/report capability.
+```
+
+A permissive MIT/BSD/Apache-style source can require notice preservation without requiring creator or generated-output attribution.
+
+Example:
+
+```txt
+noticeReportRequired: true
+attributionReportRequired: false
+complianceReportRequired: true
+```
+
+`complianceReportRequired` is not legal advice. It is a machine-readable signal that the consuming application should preserve enough information to produce compliance, notice, attribution, or review records when needed.

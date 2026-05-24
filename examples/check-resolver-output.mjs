@@ -91,6 +91,18 @@ function checkSuccessfulSaasResolution() {
   assertEqual(
     result.complianceRequirements?.policy.requiresAttributionReport,
     true,
+    'saas-safe legacy policy field should remain true during migration'
+  );
+
+  assertEqual(
+    result.complianceRequirements?.policy.requiresComplianceReportCapability,
+    true,
+    'saas-safe policy should require compliance report capability'
+  );
+
+  assertEqual(
+    result.complianceRequirements?.policy.requiresAttributionReportCapability,
+    true,
     'saas-safe policy should require attribution report capability'
   );
 
@@ -102,8 +114,32 @@ function checkSuccessfulSaasResolution() {
 
   assertEqual(
     result.complianceRequirements?.effective.attributionReportRequired,
+    false,
+    'MIT source should not require effective creator/output attribution report'
+  );
+
+  assertEqual(
+    result.complianceRequirements?.effective.complianceReportRequired,
     true,
-    'effective attribution report requirement should be true'
+    'effective compliance report requirement should be true'
+  );
+
+  assertEqual(
+    result.noticeReportRequired,
+    true,
+    'top-level noticeReportRequired should be true'
+  );
+
+  assertEqual(
+    result.attributionReportRequired,
+    false,
+    'top-level attributionReportRequired should be false for MIT source'
+  );
+
+  assertEqual(
+    result.complianceReportRequired,
+    true,
+    'top-level complianceReportRequired should be true'
   );
 
   assertPlainObject(result.compliancePlan, 'result.compliancePlan');
@@ -118,6 +154,24 @@ function checkSuccessfulSaasResolution() {
     result.compliancePlan?.canUseInSaaS,
     true,
     'saas-safe success source should be usable in SaaS'
+  );
+
+  assertEqual(
+    result.compliancePlan?.requiresNoticeReport,
+    true,
+    'saas-safe MIT source should require notice report handling'
+  );
+
+  assertEqual(
+    result.compliancePlan?.requiresAttributionReport,
+    false,
+    'saas-safe MIT source should not require creator/output attribution report'
+  );
+
+  assertEqual(
+    result.compliancePlan?.requiresComplianceReport,
+    true,
+    'saas-safe MIT source should require compliance report handling'
   );
 
   assertEqual(
@@ -283,7 +337,7 @@ function main() {
   }
 
   console.log('Resolver output check OK');
-  console.log('Checked complianceRequirements, compliancePlan, complianceDiagnostics, and expected rejection shape.');
+  console.log('Checked complianceRequirements, compliancePlan, complianceDiagnostics, report booleans, and expected rejection shape.'); 
 }
 
 main();
