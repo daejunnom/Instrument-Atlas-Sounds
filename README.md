@@ -977,6 +977,9 @@ complianceRequirements.source
 complianceRequirements.policy
 complianceRequirements.effective
 compliancePlan
+complianceDiagnostics
+complianceDiagnostics.reasons
+complianceDiagnostics.matchedPolicyRules
 noticeReportRequired
 attributionReportRequired
 ```
@@ -1000,6 +1003,14 @@ If no source is selected, `complianceRequirements` is `null`.
 It is not legal advice and does not replace final license review.
 
 Use `compliancePlan` when an application needs to decide whether to render, warn, block download, or require additional review.
+
+`complianceDiagnostics` explains why the selected source received its compliance requirements and action plan.
+
+Use `complianceDiagnostics` for debugging, logs, administrator views, or audit trails.
+
+`complianceDiagnostics.reasons` lists machine-readable explanation codes.
+
+`complianceDiagnostics.matchedPolicyRules` shows which policy allow or deny rule groups matched the selected source.
 
 The resolver separates compliance requirements into three layers:
 
@@ -1039,6 +1050,21 @@ warningLevel
 ```
 
 `compliancePlan` should be treated as application behavior guidance, not as a legal verdict.
+
+The resolver also provides a `complianceDiagnostics` object.
+
+`complianceDiagnostics` is explanation-oriented:
+
+```txt
+policyId
+sourceLicenseGroups
+reasons
+matchedPolicyRules
+```
+
+`rejectionReasons` summarizes why rejected candidates were rejected.
+
+`complianceDiagnostics` explains the selected source.
 
 The resolver enforces policy license groups.
 

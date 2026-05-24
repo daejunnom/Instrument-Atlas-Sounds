@@ -702,6 +702,119 @@ function buildCompliancePlan(selectedSource, request, complianceRequirements) {
   return plan;
 }
 
+function getMatchedValues(left = [], right = []) {
+  const rightSet = new Set(right);
+  return left.filter((value) => rightSet.has(value));
+}
+
+function getMatchedLicenseRules(licenseId, ruleLicenseIds = []) {
+  if (typeof licenseId !== 'string' || !isStringArray(ruleLicenseIds)) {
+    return [];
+  }
+
+  return ruleLicenseIds.filter((ruleLicenseId) => {
+    return licenseMatches(licenseId, ruleLicenseId);
+  });
+}
+
+function getMatchedPolicyRules(source, policy) {
+  const license = source?.license ?? {};
+  const licenseId = license.id;
+  const category = license.category;
+  const licenseGroups = isStringArray(source?.licenseGroups) ? source.licenseGroups : [];
+  const restrictions = collectSourceRestrictions(source ?? {});
+
+  return {
+    allowCategories:
+      typeof category === 'string' && getPolicyStringArray(policy, 'allowCategories').includes(category)
+        ? [category]
+        : [],
+    denyCategories:
+      typeof category === 'string' && getPolicyStringArray(policy, 'denyCategories').includes(category)
+        ? [category]
+        : [],
+    allowLicenseGroups: getMatchedValues(
+      licenseGroups,
+      getPolicyStringArray(policy, 'allowLicenseGroups')
+    ),
+    denyLicenseGroups: getMatchedValues(
+      licenseGroups,
+      getPolicyStringArray(policy, 'denyLicenseGroups')
+    ),
+    allowLicenses: getMatchedLicenseRules(
+      licenseId,
+      getPolicyStringArray(policy, 'allowLicenses')
+    ),
+    denyLicenses: getMatchedLicenseRules(
+      licenseId,
+      getPolicyStringArray(policy, 'denyLicenses')
+    ),
+    allowRestrictions: getMatchedValues(
+      restrictions,
+      getPolicyStringArray(policy, 'allowRestrictions')
+    ),
+    denyRestrictions: getMatchedValues(
+      restrictions,
+      getPolicyStringArray(policy, 'denyRestrictions')
+    )
+  };
+}
+
+function collectComplianceDiagnosticReasons(complianceRequirements, compliancePlan) {
+  const reasons = [];
+
+  if (!complianceRequirements || !compliancePlan) {
+    return reasons;
+  }
+
+  const { source, policy, effective } = complianceRequirements;
+
+  if (source.noticeRequired) reasons.push('source_notice_required');
+  if (source.licenseTextRequired) reasons.push('source_license_text_required');
+  if (source.noticeReportRequired) reasons.push('source_notice_report_required');
+  if (source.creatorAttributionRequired) reasons.push('source_creator_attribution_required');
+  if (source.outputAttributionRequired) reasons.push('source_output_attribution_required');
+  if (source.sourceDisclosureRequired) reasons.push('source_disclosure_required');
+  if (source.networkSourceDisclosureRequired) reasons.push('source_network_disclosure_required');
+
+  if (policy.requiresNoticeReport) reasons.push('policy_requires_notice_report');
+  if (policy.requiresAttributionReport) reasons.push('policy_requires_attribution_report');
+  if (policy.requiresExplicitConsent) reasons.push('policy_requires_explicit_consent');
+  if (policy.requiresSourceDisclosureReview) reasons.push('policy_requires_source_disclosure_review');
+  if (policy.requiresNetworkSourceDisclosureReview) {
+    reasons.push('policy_requires_network_source_disclosure_review');
+  }
+
+  if (effective.noticeReportRequired) reasons.push('effective_notice_report_required');
+  if (effective.attributionReportRequired) reasons.push('effective_attribution_report_required');
+  if (effective.explicitConsentRequired) reasons.push('effective_explicit_consent_required');
+  if (effective.sourceDisclosureReviewRequired) reasons.push('effective_source_disclosure_review_required');
+  if (effective.networkSourceDisclosureReviewRequired) {
+    reasons.push('effective_network_disclosure_review_required');
+  }
+
+  if (!compliancePlan.canRender) reasons.push('plan_cannot_render');
+  if (!compliancePlan.canDistributeToClient) reasons.push('plan_cannot_distribute_to_client');
+  if (!compliancePlan.canUseInSaaS) reasons.push('plan_cannot_use_in_saas');
+  if (compliancePlan.shouldBlockDownload) reasons.push('plan_blocks_download');
+  if (compliancePlan.shouldShowWarning) reasons.push(`warning_level_${compliancePlan.warningLevel}`);
+
+  return uniqueStrings(reasons).sort((a, b) => a.localeCompare(b));
+}
+
+function buildComplianceDiagnostics(selectedSource, policy, complianceRequirements, compliancePlan) {
+  if (!selectedSource || !complianceRequirements || !compliancePlan) {
+    return null;
+  }
+
+  return {
+    policyId: policy.id ?? 'inline-policy',
+    sourceLicenseGroups: selectedSource.licenseGroups ?? [],
+    reasons: collectComplianceDiagnosticReasons(complianceRequirements, compliancePlan),
+    matchedPolicyRules: getMatchedPolicyRules(selectedSource, policy)
+  };
+}
+
 export function resolveSoundSource(request = {}, options = {}) {
   if (!isPlainObject(request)) {
     throw new TypeError('resolveSoundSource request must be an object.');
@@ -769,6 +882,12 @@ export function resolveSoundSource(request = {}, options = {}) {
   const selectedSource = candidates[0] ?? null;
   const complianceRequirements = buildComplianceRequirements(selectedSource, policy);
   const compliancePlan = buildCompliancePlan(selectedSource, request, complianceRequirements);
+  const complianceDiagnostics = buildComplianceDiagnostics(
+    selectedSource,
+    policy,
+    complianceRequirements,
+    compliancePlan
+  );
 
   const noticeReportRequired = Boolean(
     complianceRequirements?.effective.noticeReportRequired
@@ -809,6 +928,7 @@ export function resolveSoundSource(request = {}, options = {}) {
     },
     complianceRequirements,
     compliancePlan,
+    complianceDiagnostics,
     noticeReportRequired,
     attributionReportRequired
   };

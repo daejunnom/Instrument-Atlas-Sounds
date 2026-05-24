@@ -110,6 +110,21 @@ function main() {
     console.log(`- warningLevel: ${plan.warningLevel}`);
   }
 
+  if (result.complianceDiagnostics) {
+    const diagnostics = result.complianceDiagnostics;
+
+    console.log('');
+    console.log('Compliance diagnostics:');
+    console.log(`- policyId: ${diagnostics.policyId}`);
+    console.log(`- sourceLicenseGroups: ${(diagnostics.sourceLicenseGroups ?? []).join(', ') || 'none'}`);
+    console.log(`- reasons: ${(diagnostics.reasons ?? []).join(', ') || 'none'}`);
+
+    console.log('- matchedPolicyRules:');
+    for (const [field, values] of Object.entries(diagnostics.matchedPolicyRules ?? {})) {
+      console.log(`  - ${field}: ${(values ?? []).join(', ') || 'none'}`);
+    }
+  }
+
   if (result.rejectedSources.length > 0) {
     console.log('');
     console.log('Rejected sources:');
