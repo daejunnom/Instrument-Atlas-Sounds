@@ -269,7 +269,6 @@ Allows:
 public_domain
 permissive_code
 weak_copyleft
-server_only_copyleft
 ```
 
 Blocks by default:

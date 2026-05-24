@@ -1,12 +1,11 @@
 {
   "id": "saas-safe",
   "title": "SaaS Safe",
-  "description": "Allows server-side use of public-domain, permissive, weak-copyleft, and server-only copyleft sources while blocking AGPL, non-commercial, no-derivatives, proprietary, unknown, disputed, and unverified sources by default.",
+  "description": "Allows server-side use of public-domain, permissive, and weak-copyleft sources while blocking GPL, AGPL, non-commercial, no-derivatives, proprietary, unknown, disputed, and unverified sources by default.",
   "allowCategories": [
     "public_domain",
     "permissive_code",
-    "weak_copyleft",
-    "server_only_copyleft"
+    "weak_copyleft"
   ],
   "allowLicenseGroups": [
     "public-domain",
@@ -14,6 +13,7 @@
     "weak-copyleft"
   ],
   "denyCategories": [
+    "server_only_copyleft",
     "commercial_sharealike",
     "strong_copyleft",
     "network_copyleft",
@@ -25,7 +25,6 @@
     "to_be_verified"
   ],
   "denyLicenseGroups": [
-    "sharealike",
     "strong-copyleft",
     "network-copyleft",
     "noncommercial",
@@ -52,6 +51,7 @@
     "sharealike_required",
     "noncommercial",
     "no_derivatives",
+    "source_disclosure_required",
     "network_source_disclosure_required",
     "saas_risk",
     "rights_unknown"
@@ -61,7 +61,7 @@
   "allowCreatorAttributionRequired": true,
   "allowOutputAttributionRequired": true,
   "allowClientDistribution": false,
-  "allowServerOnlyCopyleft": true,
+  "allowServerOnlyCopyleft": false,
   "preferPublicDomain": true,
   "requiresNoticeReport": true,
   "requiresAttributionReport": true

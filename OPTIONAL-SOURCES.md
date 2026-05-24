@@ -188,19 +188,33 @@ Apache-2.0 should still preserve license and notice obligations.
 
 CC-BY may be allowed in commercial workflows only when attribution handling is implemented.
 
-## Notice and attribution-required groups
+## Notice and creator/output-attribution groups
 
-The following groups may require attribution reports or notice handling:
+Some sources require license notice preservation.
+
+Examples:
 
 ```txt
+MIT
+BSD-2-Clause
+BSD-3-Clause
 Apache-2.0
+ISC
+Zlib
+```
+
+These sources may still be usable in no-output-attribution workflows when creator/output attribution is not required.
+
+Some sources require creator or generated-output attribution.
+
+Examples:
+
+```txt
 CC-BY-4.0
 CC-BY-SA-4.0
 ```
 
-These sources should not be treated as no-output-attribution sources unless creator/output attribution is not required.
-
-A consuming application should be able to produce an attribution report before using them in generated outputs, redistributed assets, or public releases.
+A consuming application should be able to produce an attribution report before using creator/output-attribution-required sources in generated outputs, redistributed assets, or public releases.
 
 ## ShareAlike groups
 
