@@ -36,7 +36,7 @@ jobs:
         run: npm run validate
 
       - name: Build runtime catalog
-        run: npm run build
+        run: npm run build:skip-validation
 
       - name: Run resolver examples
         run: |
@@ -46,7 +46,7 @@ jobs:
           npm run resolve:expected-rejection
 
       - name: Create release package
-        run: npm run package
+        run: npm run package:from-dist
 
       - name: Check license boundaries
         run: npm run check:boundaries

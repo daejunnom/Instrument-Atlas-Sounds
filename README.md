@@ -60,6 +60,7 @@ Current project state:
 validation script
 runtime build script
 release package script
+license boundary check script
 example resolve/render requests
 GitHub Actions CI and release workflows
 ```
@@ -172,6 +173,11 @@ instrument-atlas-sounds/
     validate.mjs
     build.mjs
     package-release.mjs
+    check-license-boundaries.mjs
+
+  src/
+    resolve/
+      resolve-sound-source.mjs
 
   dist/
     sounds/
@@ -236,7 +242,7 @@ Recommended default behavior:
 - Client-side execution should allow only public-domain and permissive sources.
 - Server-side execution may allow weak-copyleft and server-only copyleft sources only when the application policy permits it.
 - AGPL, non-commercial, no-derivatives, proprietary, unknown-license, and unverified sources should be blocked by default.
-- Commercial-safe workflows should block non-commercial, no-derivatives, network-copyleft, proprietary, unknown, disputed, and unverified sources by default.
+- Commercial-safe workflows should block commercial-sharealike, weak-copyleft, server-only copyleft, strong-copyleft, network-copyleft, non-commercial, no-derivatives, proprietary, unknown, disputed, and unverified sources by default.
 - Creator/output-attribution-required sources should be used only when the consuming application can generate attribution reports. Notice-required sources may still be usable when license and copyright notices are preserved.
 
 ## Included policies
@@ -255,9 +261,16 @@ permissive_code
 Blocks by default:
 
 ```txt
+commercial_attribution
+commercial_sharealike
 weak_copyleft
 server_only_copyleft
+strong_copyleft
 network_copyleft
+noncommercial
+no_derivatives
+proprietary
+unknown
 restricted
 to_be_verified
 ```
@@ -312,6 +325,8 @@ Public Domain
 MIT
 BSD-2-Clause
 BSD-3-Clause
+ISC
+Zlib
 Apache-2.0
 MIT-STK
 ```
@@ -468,6 +483,28 @@ Example:
     "defaultDurationMs": 1200,
     "minDurationMs": 80,
     "maxDurationMs": 8000
+  },
+  "parameters": [
+    {
+      "id": "damping",
+      "type": "number",
+      "min": 0,
+      "max": 1,
+      "default": 0.35
+    },
+    {
+      "id": "brightness",
+      "type": "number",
+      "min": 0,
+      "max": 1,
+      "default": 0.65
+    }
+  ],
+  "provenance": {
+    "origin": "instrument-atlas-sounds",
+    "upstreamName": null,
+    "upstreamUrl": null,
+    "verifiedAt": "2026-05-23"
   }
 }
 ```
@@ -607,6 +644,14 @@ Applications should load `manifest.json` first, then load indexes, policies, lic
 
 ## Release package
 
+The package script runs the build by default.
+
+When `dist/sounds/v1/` was already generated, use:
+
+```sh
+npm run package:from-dist
+```
+
 The package script creates a zip file for GitHub Releases.
 
 Expected output:
@@ -667,10 +712,22 @@ Build runtime catalog files:
 npm run build
 ```
 
+Build runtime catalog files after validation has already been run:
+
+```sh
+npm run build:skip-validation
+```
+
 Create a release zip:
 
 ```sh
 npm run package
+```
+
+Create a release zip from the existing `dist/sounds/v1/` output:
+
+```sh
+npm run package:from-dist
 ```
 
 Resolve the default runtime source example:
@@ -706,10 +763,21 @@ npm run render:karplus
 Recommended local workflow:
 
 ```sh
-npm run validate
-npm run build
-npm run package
+npm run ci
 npm run render:karplus
+```
+
+Expanded CI-equivalent workflow:
+
+```sh
+npm run validate
+npm run build:skip-validation
+npm run resolve:example
+npm run resolve:saas
+npm run resolve:metadata
+npm run resolve:expected-rejection
+npm run package:from-dist
+npm run check:boundaries
 ```
 
 Expected validation output:
@@ -740,6 +808,7 @@ Package OK
 Generated: release/instrument-atlas-sounds-v0.1.0.zip
 Archive root: sounds/v1/
 Included files: 31
+Size: <size>
 ```
 
 ## Validation
@@ -767,12 +836,17 @@ The validation script checks:
 - parameter ranges
 - provenance metadata
 - manifest references to source, policy, and license group files
+- duplicate policy array values
+- policy allow/deny overlap checks
+- policy license group references
+- policy and license group semantic conflicts
+- deprecated attribution field checks
 
 ## Build process
 
 The build script:
 
-1. Runs validation.
+1. Runs validation by default, unless `--skip-validation` is provided.
 2. Reads source manifests.
 3. Reads license policies.
 4. Reads license groups.
@@ -892,10 +966,11 @@ Resolver output includes:
 
 ```txt
 selectedSource
+selectedSource.licenseGroups
 candidates
 rejectedSources
+rejectedSources[].licenseGroups
 rejectionReasons
-licenseGroups
 noticeReportRequired
 attributionReportRequired
 ```
@@ -975,15 +1050,15 @@ A consuming application should use this flow:
 ```txt
 1. Load Instrument Atlas metadata.
 2. Let the user search or select an instrument.
-3. Resolve the selected Instrument Atlas instrument ID.
-4. Load Instrument Atlas Sounds manifest.
-5. Load by-instrument index.
-6. Find available sound sources for the instrument ID.
-7. Filter sources using the application license policy.
+3. Load the Instrument Atlas Sounds manifest.
+4. Load the by-instrument index and the selected license policy.
+5. Find available sound sources for the selected Instrument Atlas instrument ID.
+6. Filter sources using the application license policy.
+7. Enforce runtime readiness and execution target requirements.
 8. Prefer physical_model sources when available.
 9. Fall back to sample_instrument, one_shot_sample, or synth_patch sources when needed.
-10. Check runtime readiness before rendering.
-11. Check notice, creator attribution, output attribution, and source disclosure requirements.
+10. Check notice, creator attribution, output attribution, and source disclosure requirements.
+11. Select a runnable source definition.
 12. Send a render request to a client or server engine only when the selected source is actually runnable.
 13. Return audio plus a license report when required.
 ```

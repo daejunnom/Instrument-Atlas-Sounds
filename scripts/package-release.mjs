@@ -75,6 +75,10 @@ function getPackageInfo() {
   };
 }
 
+function shouldSkipBuild() {
+  return process.argv.includes('--skip-build');
+}
+
 function runBuild() {
   if (!fs.existsSync(paths.buildScript)) {
     throw new Error('Missing scripts/build.mjs. Package requires build first.');
@@ -92,6 +96,7 @@ function assertDistExists() {
   const manifestPath = path.join(paths.distRoot, 'manifest.json');
   const sourcesDir = path.join(paths.distRoot, 'sources');
   const policiesDir = path.join(paths.distRoot, 'policies');
+  const licenseGroupsDir = path.join(paths.distRoot, 'license-groups');
   const indexesDir = path.join(paths.distRoot, 'indexes');
 
   if (!fs.existsSync(manifestPath)) {
@@ -104,6 +109,10 @@ function assertDistExists() {
 
   if (!fs.existsSync(policiesDir)) {
     throw new Error('Missing dist/sounds/v1/policies directory. Run npm run build first.');
+  }
+
+  if (!fs.existsSync(licenseGroupsDir)) {
+    throw new Error('Missing dist/sounds/v1/license-groups directory. Run npm run build first.');
   }
 
   if (!fs.existsSync(indexesDir)) {
@@ -155,7 +164,13 @@ function formatBytes(bytes) {
 function main() {
   const { name, version } = getPackageInfo();
 
-  runBuild();
+  if (shouldSkipBuild()) {
+    console.log('Skipping build because --skip-build was provided.');
+    console.log('');
+  } else {
+    runBuild();
+  }
+
   assertDistExists();
 
   const result = createZip(name, version);

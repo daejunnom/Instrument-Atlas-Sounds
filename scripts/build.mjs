@@ -361,8 +361,17 @@ function copyLicenseGroups(licenseGroupFiles) {
   }
 }
 
+function shouldSkipValidation() {
+  return process.argv.includes('--skip-validation');
+}
+
 function main() {
-  runValidation();
+  if (shouldSkipValidation()) {
+    console.log('Skipping validation because --skip-validation was provided.');
+    console.log('');
+  } else {
+    runValidation();
+  }
 
   const version = loadPackageVersion();
   const sourceManifest = readJson(paths.sourceManifest);

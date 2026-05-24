@@ -10,9 +10,11 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "build": "node scripts/build.mjs",
+    "build:skip-validation": "node scripts/build.mjs --skip-validation",
     "package": "node scripts/package-release.mjs",
+    "package:from-dist": "node scripts/package-release.mjs --skip-build",
     "check:boundaries": "node scripts/check-license-boundaries.mjs",
-    "ci": "npm run validate && npm run build && npm run resolve:example && npm run resolve:saas && npm run resolve:metadata && npm run resolve:expected-rejection && npm run package && npm run check:boundaries",
+    "ci": "npm run validate && npm run build:skip-validation && npm run resolve:example && npm run resolve:saas && npm run resolve:metadata && npm run resolve:expected-rejection && npm run package:from-dist && npm run check:boundaries",
     "resolve:example": "node examples/resolve-sound-source.mjs",
     "resolve:saas": "node examples/resolve-sound-source.mjs examples/saas-safe-success-request.json",
     "resolve:metadata": "node examples/resolve-sound-source.mjs examples/metadata-resolve-request.json",
