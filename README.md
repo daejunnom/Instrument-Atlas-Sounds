@@ -44,6 +44,68 @@ Audio files should not be added unless their license and provenance are clear.
 
 By default, common audio file extensions are ignored by this repository.
 
+## Quick example
+
+Instrument Atlas Sounds resolves an Instrument Atlas instrument ID into a playable, policy-aware sound source.
+
+```txt
+Request:
+  instrumentId: inst_acoustic_guitar
+  executionTarget: server
+  policyId: saas-safe
+
+Selected source:
+  id: src_custom_karplus_strong_pluck
+  title: Custom Karplus-Strong Plucked String
+  sourceType: physical_model
+  engineType: karplus_strong
+  license: MIT
+
+Compliance:
+  noticeReportRequired: true
+  attributionReportRequired: false
+  complianceReportRequired: true
+```
+
+This means a SaaS application can use the selected MIT Karplus-Strong prototype while preserving notice and compliance information.
+
+It does not treat the source as requiring CC-BY-style creator or generated-output attribution.
+
+## Relationship with Instrument Atlas
+
+Instrument Atlas Sounds depends on stable Instrument Atlas instrument IDs.
+
+```txt
+Instrument Atlas
+  inst_acoustic_guitar
+  inst_kick_drum
+  inst_flute
+  inst_cello
+        |
+        | instrumentId
+        v
+Instrument Atlas Sounds
+  source resolver
+  sound source manifests
+  license policies
+  compliance plan
+  render metadata
+```
+
+Instrument Atlas provides the instrument identity and metadata.
+
+Instrument Atlas Sounds maps that identity to one or more sound sources.
+
+A consuming application can use both projects together:
+
+```txt
+1. Search or select an instrument with Instrument Atlas.
+2. Pass the instrumentId to Instrument Atlas Sounds.
+3. Choose a policy such as client-safe or saas-safe.
+4. Resolve a compatible sound source.
+5. Read complianceRequirements and compliancePlan before rendering or loading the source.
+```
+
 ## Current status
 
 Instrument Atlas Sounds is in early alpha development.
